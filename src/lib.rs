@@ -490,10 +490,15 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
                     && (left.2.is_none() || right.2.is_none() || left.2 == right.2)
             })
         };
-        if let Some((asset, method)) = exact
-            .map(|asset| (asset, "sha256"))
-            .or_else(|| fallback().map(|asset| (asset, "name_size_date")))
-        {
+        let allow_fallback = source_asset.sha256.is_none()
+            || source.hash_mode != HashMode::Sha256
+            || destination.hash_mode != HashMode::Sha256;
+        if let Some((asset, method)) = exact.map(|asset| (asset, "sha256")).or_else(|| {
+            allow_fallback
+                .then(fallback)
+                .flatten()
+                .map(|asset| (asset, "name_size_date"))
+        }) {
             used_destination.insert(asset.relative_path.clone());
             matches.push(MatchRecord {
                 source_path: source_asset.relative_path.clone(),
@@ -663,11 +668,12 @@ pub fn build_manifest(
     let policy_warnings = validate_policies(&policies);
     let safe_policy = policies.original_cloud_retention_days >= 30 && !policies.devices.is_empty();
     let signed_at = signer.as_ref().map(|_| now());
+    let is_signed = signer.as_ref().is_some_and(|name| !name.trim().is_empty());
     SignedManifest {
         schema_version: 1,
         tool_version: VERSION.into(),
         generated_at: now(),
-        status: if audit.ready && safe_policy {
+        status: if audit.ready && safe_policy && is_signed {
             "ready_for_cutover"
         } else {
             "hold"
@@ -929,6 +935,17 @@ mod tests {
     }
 
     #[test]
+    fn compare_never_accepts_name_and_size_when_hashes_disagree() {
+        let mut source = inventory_fixture("source-hash");
+        let mut destination = inventory_fixture("destination-hash");
+        source.assets[0].sha256 = Some("aaa".into());
+        destination.assets[0].sha256 = Some("bbb".into());
+        let audit = compare(&source, &destination, &ExceptionFile::default());
+        assert_eq!(audit.matched_assets, 0);
+        assert!(!audit.ready);
+    }
+
+    #[test]
     fn manifest_holds_when_retention_is_unsafe() {
         let audit = Audit {
             schema_version: 1,
@@ -954,5 +971,31 @@ mod tests {
         let manifest = build_manifest(&audit, policies, Some("Tester".into()));
         assert_eq!(manifest.status, "hold");
         assert!(render_manifest(&manifest, &audit).contains("Status: HOLD"));
+    }
+
+    fn inventory_fixture(hash: &str) -> Inventory {
+        Inventory {
+            schema_version: 1,
+            tool_version: VERSION.into(),
+            generated_at: now(),
+            root_label: "photos".into(),
+            kind: InventoryKind::Folder,
+            hash_mode: HashMode::Sha256,
+            physical_asset_count: 1,
+            unique_asset_count: 1,
+            total_bytes: 4,
+            assets: vec![Asset {
+                relative_path: "photo.jpg".into(),
+                file_name: "photo.jpg".into(),
+                bytes: 4,
+                sha256: Some(hash.into()),
+                captured_at: None,
+                albums: vec![],
+                aliases: vec![],
+                edited_version: false,
+                sidecar_found: false,
+            }],
+            warnings: vec![],
+        }
     }
 }
