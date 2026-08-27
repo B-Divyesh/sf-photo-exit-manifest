@@ -830,11 +830,28 @@ pub fn ensure_output_outside(output: &Path, inputs: &[&Path]) -> Result<()> {
     } else {
         current.join(output)
     };
+    let mut existing = absolute_output.as_path();
+    let mut missing_parts = Vec::new();
+    while !existing.exists() {
+        let part = existing
+            .file_name()
+            .context("output path has no resolvable parent")?;
+        missing_parts.push(part.to_os_string());
+        existing = existing
+            .parent()
+            .context("output path has no resolvable parent")?;
+    }
+    let mut resolved_output = existing
+        .canonicalize()
+        .with_context(|| format!("cannot resolve output parent {}", existing.display()))?;
+    for part in missing_parts.iter().rev() {
+        resolved_output.push(part);
+    }
     for input in inputs {
         let canonical = input
             .canonicalize()
             .with_context(|| format!("cannot resolve {}", input.display()))?;
-        if absolute_output.starts_with(&canonical) {
+        if resolved_output.starts_with(&canonical) {
             bail!(
                 "output {} must be outside scanned source/destination {}",
                 output.display(),
