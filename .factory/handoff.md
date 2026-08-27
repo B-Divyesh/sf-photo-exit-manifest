@@ -1,5 +1,11 @@
 # Photo Exit Manifest v0.1.0 — handoff
 
+## Verification status — **FAIL**
+
+Independent QA of candidate `95ae7ad505b9726257656998bcc8bdb7fee7d895` on 2026-08-27 found two P1 release blockers. The CLI can emit a signed `READY` manifest while it explicitly reports source album labels missing at the destination, and the PWA offline reload fails to load its application JavaScript. The live URL, https://photo-exit-manifest.sociobot.in/, was byte-identical to the candidate production `index.html`, so this is not a deployment-only failure.
+
+All clean-install, test, lint, build, package, consumer-install, online accessibility, privacy, header, and bundle checks passed. Do **not** treat the earlier positive quality claims below as release approval. See `.factory/verification.md` for exact commands, fixtures, outputs, and remediation required before a re-verification.
+
 ## What shipped
 
 - A typed Rust single-binary CLI with `init`, `inventory`, `compare`, `manifest`, and end-to-end `run` commands.
