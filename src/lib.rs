@@ -666,9 +666,19 @@ pub fn build_manifest(
     signer: Option<String>,
 ) -> SignedManifest {
     let policy_warnings = validate_policies(&policies);
-    let safe_policy = policies.original_cloud_retention_days >= 30 && !policies.devices.is_empty();
+    let safe_policy = policies.original_cloud_retention_days >= 30
+        && !policies.household.trim().is_empty()
+        && !policies.archive_label.trim().is_empty()
+        && !policies.devices.is_empty()
+        && policies
+            .devices
+            .iter()
+            .all(|device| !device.name.trim().is_empty() && !device.owner.trim().is_empty());
+    let signer = signer
+        .map(|name| name.trim().to_owned())
+        .filter(|name| !name.is_empty());
     let signed_at = signer.as_ref().map(|_| now());
-    let is_signed = signer.as_ref().is_some_and(|name| !name.trim().is_empty());
+    let is_signed = signer.is_some();
     SignedManifest {
         schema_version: 1,
         tool_version: VERSION.into(),
@@ -971,6 +981,19 @@ mod tests {
         let manifest = build_manifest(&audit, policies, Some("Tester".into()));
         assert_eq!(manifest.status, "hold");
         assert!(render_manifest(&manifest, &audit).contains("Status: HOLD"));
+    }
+
+    #[test]
+    fn ready_audit_stays_on_hold_until_signed() {
+        let audit = compare(
+            &inventory_fixture("same"),
+            &inventory_fixture("same"),
+            &ExceptionFile::default(),
+        );
+        assert!(audit.ready);
+        let manifest = build_manifest(&audit, policy_template(), None);
+        assert_eq!(manifest.status, "hold");
+        assert!(manifest.signed_at.is_none());
     }
 
     fn inventory_fixture(hash: &str) -> Inventory {
