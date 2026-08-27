@@ -1,0 +1,13 @@
+{
+  "slug": "photo-exit-manifest",
+  "title": "Photo Exit Manifest",
+  "artifact_class": "cli",
+  "job": "Give families leaving a consumer photo cloud a verifiable, interruption-safe migration plan into an independent archive.",
+  "scope": [
+    "Inventory Takeout and ordinary folders without modifying them",
+    "Compare assets, hashes, dates, album hints, edits, and exceptions",
+    "Record explicit backup, deletion, conflict, and offline policies per device",
+    "Write a signed cutover manifest and machine-readable audit"
+  ],
+  "non_goals": ["Transfer photos", "Host photos", "Facial recognition", "Two-way sync"]
+}
