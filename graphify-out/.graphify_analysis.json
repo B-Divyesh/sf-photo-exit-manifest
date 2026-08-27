@@ -1,6 +1,9 @@
 {
   "communities": {
     "0": [
+      "path",
+      "pathbuf",
+      "result",
       "src_lib",
       "src_lib_album_for",
       "src_lib_backupmode",
@@ -17,12 +20,10 @@
       "src_lib_parse_sidecar",
       "src_lib_portable_relative",
       "src_lib_read_json",
-      "src_lib_rs_path",
-      "src_lib_rs_pathbuf",
-      "src_lib_rs_result",
       "src_lib_save",
       "src_lib_sha256",
       "src_lib_sidecar_candidates",
+      "src_lib_sidecardata",
       "src_lib_supported_extension",
       "src_lib_takeout_inventory_collapses_album_copies_and_reads_sidecars",
       "src_lib_write_json",
@@ -30,6 +31,35 @@
       "t"
     ],
     "1": [
+      "option",
+      "src_lib_asset",
+      "src_lib_audit",
+      "src_lib_auditsummary",
+      "src_lib_build_manifest",
+      "src_lib_compare",
+      "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
+      "src_lib_compare_requires_hashes_and_accounts_named_exception",
+      "src_lib_exceptionfile",
+      "src_lib_fallback_key",
+      "src_lib_inventory_fixture",
+      "src_lib_manifest_holds_when_retention_is_unsafe",
+      "src_lib_matchrecord",
+      "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
+      "src_lib_namedalbumexception",
+      "src_lib_namedexception",
+      "src_lib_now",
+      "src_lib_policy_template",
+      "src_lib_policyset",
+      "src_lib_ready_audit_stays_on_hold_until_signed",
+      "src_lib_render_manifest",
+      "src_lib_signedmanifest",
+      "src_lib_timestamp_to_rfc3339",
+      "src_lib_validate_policies",
+      "string",
+      "value",
+      "vec"
+    ],
+    "2": [
       "axe_core",
       "fontsource_ibm_plex_mono",
       "fontsource_variable_instrument_sans",
@@ -48,6 +78,7 @@
       "package_scripts_build_site",
       "package_scripts_dev",
       "package_scripts_test",
+      "package_scripts_test_pwa",
       "package_scripts_test_site",
       "package_type",
       "package_version",
@@ -55,7 +86,7 @@
       "typescript",
       "vite"
     ],
-    "2": [
+    "3": [
       "from",
       "self",
       "src_main",
@@ -76,12 +107,9 @@
       "src_main_rs_result",
       "src_main_rs_string",
       "src_main_run",
-      "src_main_status",
-      "tests_cli_e2e",
-      "tests_cli_e2e_an_empty_scan_is_an_actionable_error",
-      "tests_cli_e2e_documented_run_writes_a_signed_ready_manifest"
+      "src_main_status"
     ],
-    "3": [
+    "4": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -101,26 +129,6 @@
       "tsconfig_compileroptions_types",
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
-    ],
-    "4": [
-      "src_lib_asset",
-      "src_lib_audit",
-      "src_lib_auditsummary",
-      "src_lib_build_manifest",
-      "src_lib_exceptionfile",
-      "src_lib_fallback_key",
-      "src_lib_matchrecord",
-      "src_lib_namedexception",
-      "src_lib_policyset",
-      "src_lib_render_manifest",
-      "src_lib_rs_option",
-      "src_lib_rs_string",
-      "src_lib_sidecardata",
-      "src_lib_signedmanifest",
-      "src_lib_timestamp_to_rfc3339",
-      "src_lib_validate_policies",
-      "value",
-      "vec"
     ],
     "5": [
       "site_src_app",
@@ -142,14 +150,12 @@
       "site_test_calculator_test"
     ],
     "6": [
-      "src_lib_compare",
-      "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
-      "src_lib_compare_requires_hashes_and_accounts_named_exception",
-      "src_lib_inventory_fixture",
-      "src_lib_manifest_holds_when_retention_is_unsafe",
-      "src_lib_now",
-      "src_lib_policy_template",
-      "src_lib_ready_audit_stays_on_hold_until_signed"
+      "scripts_build_sw",
+      "scripts_build_sw_assets",
+      "scripts_build_sw_pages",
+      "scripts_build_sw_shell",
+      "scripts_build_sw_siteroot",
+      "scripts_build_sw_version"
     ],
     "7": [
       "scripts_package",
@@ -158,38 +164,71 @@
       "scripts_package_packaged"
     ],
     "8": [
+      "site_test_pwa_test",
+      "site_test_pwa_test_servebuiltsite",
+      "site_test_pwa_test_siteroot",
+      "site_test_pwa_test_withbrowser"
+    ],
+    "9": [
+      "tests_cli_e2e",
+      "tests_cli_e2e_album_gaps_hold_a_signed_run_until_reviewed_by_name",
+      "tests_cli_e2e_an_empty_scan_is_an_actionable_error",
+      "tests_cli_e2e_documented_run_writes_a_signed_ready_manifest"
+    ],
+    "10": [
       "site_src_legal",
       "site_src_legal_offline",
       "site_src_legal_updatenetwork"
     ],
-    "9": [
-      "site_public_sw",
-      "site_public_sw_shell"
-    ],
-    "10": [
+    "11": [
       "pkg_photo_exit_manifest"
     ],
-    "11": [
+    "12": [
       "scripts_a11y"
     ],
-    "12": [
+    "13": [
+      "site_public_sw"
+    ],
+    "14": [
+      "src_lib_rs_option"
+    ],
+    "15": [
+      "src_lib_rs_path"
+    ],
+    "16": [
+      "src_lib_rs_pathbuf"
+    ],
+    "17": [
+      "src_lib_rs_result"
+    ],
+    "18": [
+      "src_lib_rs_string"
+    ],
+    "19": [
       "vite_config"
     ]
   },
   "cohesion": {
-    "0": 0.18518518518518517,
-    "1": 0.08333333333333333,
-    "2": 0.14492753623188406,
-    "3": 0.10526315789473684,
-    "4": 0.2549019607843137,
+    "0": 0.17724867724867724,
+    "1": 0.18803418803418803,
+    "2": 0.08,
+    "3": 0.1761904761904762,
+    "4": 0.10526315789473684,
     "5": 0.16911764705882354,
-    "6": 0.39285714285714285,
+    "6": 0.3333333333333333,
     "7": 0.5,
-    "8": 0.6666666666666666,
-    "9": 1.0,
-    "10": 1.0,
+    "8": 0.5,
+    "9": 0.5,
+    "10": 0.6666666666666666,
     "11": 1.0,
-    "12": 1.0
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0
   },
   "gods": [
     {
@@ -203,29 +242,24 @@
       "degree": 13
     },
     {
+      "id": "src_lib_build_manifest",
+      "label": "build_manifest()",
+      "degree": 12
+    },
+    {
       "id": "tsconfig_compileroptions",
       "label": "compilerOptions",
       "degree": 11
     },
     {
-      "id": "src_lib_build_manifest",
-      "label": "build_manifest()",
-      "degree": 11
-    },
-    {
       "id": "src_lib_compare",
       "label": "compare()",
-      "degree": 10
-    },
-    {
-      "id": "src_main_command",
-      "label": "Command",
-      "degree": 8
+      "degree": 11
     },
     {
       "id": "src_lib_audit",
       "label": "Audit",
-      "degree": 8
+      "degree": 9
     },
     {
       "id": "src_lib_policyset",
@@ -241,9 +275,36 @@
       "id": "src_lib_now",
       "label": "now()",
       "degree": 8
+    },
+    {
+      "id": "src_main_command",
+      "label": "Command",
+      "degree": 7
     }
   ],
   "surprises": [
+    {
+      "source": "run()",
+      "target": "build_manifest()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "run()",
+      "target": "compare()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
     {
       "source": "run()",
       "target": "ensure_output_outside()",
@@ -257,40 +318,18 @@
     },
     {
       "source": "run()",
+      "target": "policy_template()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "run()",
       "target": "read_json()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "write_json()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "write_text()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "build_manifest()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
