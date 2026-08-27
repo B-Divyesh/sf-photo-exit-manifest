@@ -2,7 +2,7 @@
 
 ## Release status — PASS
 
-Repair commit `04f0158f88f3b2c3f352c01ec955e8c42660d0ec` fixes both P1 findings from the independent verification of `95ae7ad505b9726257656998bcc8bdb7fee7d895`. It was pushed to `main` and deployed as the same static documentation site at https://photo-exit-manifest.sociobot.in/ (Azure deployment `63311828-dbe3-4c1b-be03-e53874005b95`).
+Repair commit `04f0158c76607b589407c7fac3e97223f759e14c` fixes both P1 findings from the independent verification of `95ae7ad505b9726257656998bcc8bdb7fee7d895`. It was pushed to `main` and deployed as the same static documentation site at https://photo-exit-manifest.sociobot.in/ (Azure deployment `63311828-dbe3-4c1b-be03-e53874005b95`).
 
 ## What changed
 
