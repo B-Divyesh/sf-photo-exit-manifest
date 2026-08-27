@@ -21,7 +21,7 @@ Create and edit a documented policy template first:
 photo-exit-manifest init --output policies.json
 ```
 
-The run writes `source-inventory.json`, `destination-inventory.json`, `audit.json`, `manifest.json`, and `CUTOVER.md`. It succeeds only when every source asset is matched or has a named exception and at least 99.5% of assets are accounted for. A non-ready audit exits with code `2`, while invalid input or I/O failure exits with `1`.
+The run writes `source-inventory.json`, `destination-inventory.json`, `audit.json`, `manifest.json`, and `CUTOVER.md`. It succeeds only when every source asset is matched or has a named exception, at least 99.5% of assets are accounted for, and `--sign` names the reviewer. An unsigned or non-ready audit exits with code `2`, while invalid input or I/O failure exits with `1`.
 
 For staged or automated workflows:
 

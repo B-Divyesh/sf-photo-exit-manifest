@@ -1,0 +1,21 @@
+{
+  "name": "photo-exit-manifest-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.js",
+    "test": "cargo test && npm run test:site",
+    "test:site": "tsc --noEmit && node --test site/test/*.test.mjs",
+    "build:site": "vite build --config vite.config.js",
+    "build": "cargo build --release && npm run build:site && node scripts/package.mjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/instrument-sans": "^5.2.6",
+    "@fontsource/ibm-plex-mono": "^5.2.6",
+    "axe-core": "^4.10.3",
+    "playwright": "1.58.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3"
+  }
+}

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Verify a Google Photos or cloud photo migration with a local, read-only CLI and signed cutover manifest.">
+    <meta name="theme-color" content="#07121a">
+    <title>Photo Exit Manifest — Prove your photo migration is complete</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml">
+    <link rel="preload" href="/archive-landscape.webp" as="image" type="image/webp" fetchpriority="high">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <p id="offline-notice" class="offline" role="status" hidden>You’re offline. The docs and planner still work; license verification will resume when you reconnect.</p>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Photo Exit Manifest home"><span class="brand-mark" aria-hidden="true"></span><span>Photo Exit Manifest</span></a>
+      <nav aria-label="Primary">
+        <a href="#workflow">Workflow</a><a href="#docs">Docs</a><a href="#family-pack">Family Pack</a>
+      </nav>
+      <a class="header-link" href="https://github.com/B-Divyesh/sf-photo-exit-manifest">Source</a>
+    </header>
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Local migration assurance</p>
+          <h1 id="hero-title">Leave the cloud.<br><em>Keep the proof.</em></h1>
+          <p class="lede">Inventory every photo, name every difference, and decide what each phone will do next—before your family cuts over.</p>
+          <div class="actions"><a class="button primary" href="#docs">Run your first audit</a><a class="button secondary" href="#planner">Try the readiness gate</a></div>
+          <p class="trust"><span aria-hidden="true">✓</span> Read-only · local · provider-neutral</p>
+        </div>
+        <figure class="hero-art">
+          <img src="/archive-landscape.webp" width="1280" height="853" alt="Warm photo frames pass through three transparent verification layers into a cyan archive vault." fetchpriority="high">
+          <figcaption><span>source</span><span>verify</span><span>archive</span></figcaption>
+        </figure>
+      </section>
+
+      <section class="evidence-strip" aria-label="Product guarantees">
+        <div><strong>0</strong><span>photos uploaded by us</span></div><div><strong>SHA-256</strong><span>byte-level evidence</span></div><div><strong>99.5%+</strong><span>accounting target</span></div><div><strong>1 file</strong><span>signed cutover record</span></div>
+      </section>
+
+      <section id="workflow" class="section workflow">
+        <div class="section-heading"><p class="eyebrow">The safe way out</p><h2>One path through the uncertainty.</h2><p>The tool observes. You decide. Your source and archive remain untouched.</p></div>
+        <ol class="steps">
+          <li><span class="step-no">01</span><div><h3>Inventory both sides</h3><p>Read Takeout sidecars, dates, album hints, rendered edits, media types, byte sizes, and SHA-256 hashes.</p></div><span class="step-state">read-only</span></li>
+          <li><span class="step-no">02</span><div><h3>Account for differences</h3><p>Match exact bytes, surface missing items, and require a plain-language reason for every accepted exception.</p></div><span class="step-state">verifiable</span></li>
+          <li><span class="step-no">03</span><div><h3>Freeze the cutover plan</h3><p>Record uploads, deletions, conflicts, and offline behavior per device. Sign only when the evidence is ready.</p></div><span class="step-state">reviewed</span></li>
+        </ol>
+      </section>
+
+      <section id="planner" class="section planner-section">
+        <div class="section-heading"><p class="eyebrow">Live readiness gate</p><h2>See what “accounted for” means.</h2><p>This browser demo calculates only the gate. The CLI performs the real local scan.</p></div>
+        <form id="planner-form" class="planner-form">
+          <label>Source assets<input name="source" type="number" min="1" value="2048" inputmode="numeric"></label>
+          <label>Matched assets<input name="matched" type="number" min="0" value="2046" inputmode="numeric"></label>
+          <label>Named exceptions<input name="exceptions" type="number" min="0" value="2" inputmode="numeric"></label>
+          <label class="check"><input name="hashes" type="checkbox" checked><span>Both sides hashed with SHA-256</span></label>
+        </form>
+        <output id="planner-result" class="planner-result ready" aria-live="polite"><strong>Ready</strong><span>100.000% accounted · 0 unresolved</span><small>Ready to review and sign. Keep the old cloud during the retention window.</small></output>
+      </section>
+
+      <section id="docs" class="section docs">
+        <div class="section-heading"><p class="eyebrow">Four commands, one record</p><h2>From folders to a signed manifest.</h2><p>Install from source today. Factory-built release binaries follow the same interface.</p></div>
+        <div class="terminal" aria-label="Terminal command">
+          <div class="terminal-bar"><span><i></i><i></i><i></i></span><span>terminal — local</span><button id="copy-command" type="button">Copy command</button></div>
+          <pre tabindex="0" aria-label="Installation command"><code id="install-command">cargo install --git https://github.com/B-Divyesh/sf-photo-exit-manifest</code></pre>
+          <pre class="run" tabindex="0" aria-label="Example audit command and result"><code><span class="prompt">$</span> photo-exit-manifest init --output policies.json
+<span class="prompt">$</span> photo-exit-manifest run \
+    --source ~/Takeout/Google\ Photos \
+    --destination /Volumes/FamilyArchive \
+    --policies policies.json \
+    --out ./exit-manifest \
+    --sign "Alex Morgan"
+
+<span class="success">ready_for_cutover: exit-manifest (100.000% accounted)</span></code></pre>
+        </div>
+        <div class="doc-notes"><article><h3>Defensive Takeout reader</h3><p>Adjacent and title-indexed JSON sidecars are recognized. Duplicate album copies collapse by content hash while retaining album labels.</p></article><article><h3>Honest failure modes</h3><p>No hashes means planning-only. Missing files, absent album labels, edited copies, and unsafe retention policies keep the manifest on hold.</p></article><article><h3>Automation-ready</h3><p>Every command is non-interactive. Add <code>--json</code> for scripts; exit code 2 means evidence exists but cutover is not ready.</p></article></div>
+      </section>
+
+      <section id="family-pack" class="section pack">
+        <div class="pack-intro"><p class="eyebrow">Optional Family Pack</p><h2>Make the device decisions together.</h2><p>The free CLI performs unlimited inventories, comparisons, exceptions, JSON exports, and signed manifests. A $29 one-time license unlocks this browser-based multi-device policy builder and a reusable annual review worksheet.</p><ul><li>No subscription</li><li>No photo access</li><li>License works across your browsers</li></ul><a class="button primary" href="https://api.sociobot.in/api/v1/products/photo-exit-manifest/checkout">Buy Family Pack — $29</a><p class="merchant">Sociobot / Dodo is merchant of record. Refunds are handled there and revoke the license.</p></div>
+        <div class="license-pane">
+          <h3>Restore a purchase</h3><form id="restore-form"><label for="license-token">License token</label><div class="input-action"><input id="license-token" type="password" autocomplete="off"><button class="button secondary" type="submit">Verify license</button></div></form><p id="license-status" class="notice" role="status">The free CLI remains fully available.</p>
+          <div id="family-builder" class="builder" aria-labelledby="builder-title">
+            <div class="builder-lock"><span aria-hidden="true">◇</span><p>Unlock the Family Pack to build this file in your browser.</p></div>
+            <form id="policy-form"><h3 id="builder-title">Device policy builder</h3><div id="device-list"><fieldset class="device-row"><legend>Device 1</legend><label>Device name<input name="device-name" required value="Parent phone"></label><label>Owner<input name="device-owner" required></label><label>Upload behavior<select name="backup-mode"><option value="backup">Backup new photos</option><option value="mirror">Mirror library</option><option value="manual">Manual only</option></select></label><label>Deletion behavior<select name="deletion-behavior"><option value="manual_review">Review manually</option><option value="keep_in_archive">Keep in archive</option><option value="mirror_after_thirty_days">Mirror after 30 days</option></select></label><label>Conflicts<select name="conflict-policy"><option value="keep_both">Keep both</option><option value="newest_wins">Newest wins</option><option value="device_wins">Device wins</option><option value="archive_wins">Archive wins</option></select></label></fieldset></div><div class="builder-actions"><button id="add-device" class="button secondary" type="button">Add device</button><button class="button primary" type="submit">Download policies.json</button></div></form>
+          </div>
+          <p class="legal-links"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></p>
+        </div>
+      </section>
+
+      <section class="section final-cta"><p class="eyebrow">Keep the old cloud for now</p><h2>Proof first. Cutover second.</h2><a class="button primary" href="#docs">Start with the free CLI</a></section>
+    </main>
+    <footer><a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span>Photo Exit Manifest</span></a><p>Local migration assurance for family archives.</p><nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-photo-exit-manifest">Source</a></nav></footer>
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>
