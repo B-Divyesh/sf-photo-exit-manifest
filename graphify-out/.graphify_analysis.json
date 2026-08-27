@@ -203,19 +203,24 @@
       "degree": 13
     },
     {
-      "id": "src_lib_build_manifest",
-      "label": "build_manifest()",
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
       "degree": 11
     },
     {
-      "id": "tsconfig_compileroptions",
-      "label": "compilerOptions",
+      "id": "src_lib_build_manifest",
+      "label": "build_manifest()",
       "degree": 11
     },
     {
       "id": "src_lib_compare",
       "label": "compare()",
       "degree": 10
+    },
+    {
+      "id": "src_main_command",
+      "label": "Command",
+      "degree": 8
     },
     {
       "id": "src_lib_audit",
@@ -236,50 +241,12 @@
       "id": "src_lib_now",
       "label": "now()",
       "degree": 8
-    },
-    {
-      "id": "src_main_command",
-      "label": "Command",
-      "degree": 8
     }
   ],
   "surprises": [
     {
       "source": "run()",
-      "target": "compare()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "policy_template()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "build_manifest()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "render_manifest()",
+      "target": "ensure_output_outside()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -291,6 +258,39 @@
     {
       "source": "run()",
       "target": "read_json()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "run()",
+      "target": "write_json()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "run()",
+      "target": "write_text()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "run()",
+      "target": "build_manifest()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
