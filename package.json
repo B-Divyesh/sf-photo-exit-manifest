@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.js",
-    "test": "cargo test && npm run test:site",
-    "test:site": "tsc --noEmit && node --test site/test/*.test.mjs",
-    "build:site": "vite build --config vite.config.js",
+    "test": "cargo test && npm run test:site && npm run test:pwa",
+    "test:site": "tsc --noEmit && node --test site/test/calculator.test.mjs",
+    "test:pwa": "npm run build:site && node --test site/test/pwa.test.mjs",
+    "build:site": "vite build --config vite.config.js && node scripts/build-sw.mjs",
     "build": "cargo build --release && npm run build:site && node scripts/package.mjs"
   },
   "devDependencies": {

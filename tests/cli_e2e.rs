@@ -83,3 +83,130 @@ fn an_empty_scan_is_an_actionable_error() {
     assert_eq!(output.status.code(), Some(1));
     assert!(String::from_utf8_lossy(&output.stderr).contains("no supported photo or video assets"));
 }
+
+#[test]
+fn album_gaps_hold_a_signed_run_until_reviewed_by_name() {
+    let workspace = tempdir().unwrap();
+    let takeout = workspace.path().join("takeout/Google Photos");
+    let destination = workspace.path().join("archive");
+    fs::create_dir_all(takeout.join("Family Album")).unwrap();
+    fs::create_dir_all(takeout.join("Second Album")).unwrap();
+    fs::create_dir_all(takeout.join("Photos from 2024")).unwrap();
+    fs::create_dir_all(&destination).unwrap();
+    fs::write(
+        takeout.join("Family Album/family.jpg"),
+        b"family photo bytes",
+    )
+    .unwrap();
+    fs::write(
+        takeout.join("Second Album/family.jpg"),
+        b"family photo bytes",
+    )
+    .unwrap();
+    fs::write(
+        takeout.join("Photos from 2024/missing.mp4"),
+        b"missing video",
+    )
+    .unwrap();
+    fs::write(destination.join("family.jpg"), b"family photo bytes").unwrap();
+
+    let policies = workspace.path().join("policies.json");
+    let init = Command::new(env!("CARGO_BIN_EXE_photo-exit-manifest"))
+        .args(["init", "--output"])
+        .arg(&policies)
+        .status()
+        .unwrap();
+    assert!(init.success());
+    let mut configured: PolicySet = serde_json::from_slice(&fs::read(&policies).unwrap()).unwrap();
+    configured.independent_second_copy = true;
+    fs::write(&policies, serde_json::to_vec_pretty(&configured).unwrap()).unwrap();
+
+    let exceptions = workspace.path().join("exceptions.json");
+    fs::write(
+        &exceptions,
+        serde_json::to_vec_pretty(&serde_json::json!({
+            "exceptions": [{
+                "source_path": "Google Photos/Photos from 2024/missing.mp4",
+                "reason": "The original recording is retained on tape while it is recovered."
+            }]
+        }))
+        .unwrap(),
+    )
+    .unwrap();
+    let out = workspace.path().join("result");
+    let held = Command::new(env!("CARGO_BIN_EXE_photo-exit-manifest"))
+        .args(["run", "--source"])
+        .arg(workspace.path().join("takeout"))
+        .arg("--destination")
+        .arg(&destination)
+        .arg("--policies")
+        .arg(&policies)
+        .arg("--exceptions")
+        .arg(&exceptions)
+        .arg("--out")
+        .arg(&out)
+        .args(["--sign", "Test Family", "--json"])
+        .output()
+        .unwrap();
+    assert_eq!(held.status.code(), Some(2));
+    assert_eq!(
+        serde_json::from_slice::<serde_json::Value>(&held.stdout).unwrap()["status"],
+        "hold"
+    );
+    let audit: serde_json::Value =
+        serde_json::from_slice(&fs::read(out.join("audit.json")).unwrap()).unwrap();
+    assert_eq!(audit["ready"], false);
+    assert_eq!(
+        audit["unresolved_source_albums_missing_at_destination"],
+        serde_json::json!(["Family Album", "Second Album"])
+    );
+    let held_cutover = fs::read_to_string(out.join("CUTOVER.md")).unwrap();
+    assert!(held_cutover.contains("Unresolved album labels (block cutover)"));
+
+    fs::write(
+        &exceptions,
+        serde_json::to_vec_pretty(&serde_json::json!({
+            "exceptions": [{
+                "source_path": "Google Photos/Photos from 2024/missing.mp4",
+                "reason": "The original recording is retained on tape while it is recovered."
+            }],
+            "album_exceptions": [
+                {"album": "Family Album", "reason": "Reviewer recreated this label in the archive catalog."},
+                {"album": "Second Album", "reason": "Reviewer recorded the duplicate membership in the archive catalog."}
+            ]
+        }))
+        .unwrap(),
+    )
+    .unwrap();
+    let ready = Command::new(env!("CARGO_BIN_EXE_photo-exit-manifest"))
+        .args(["run", "--source"])
+        .arg(workspace.path().join("takeout"))
+        .arg("--destination")
+        .arg(&destination)
+        .arg("--policies")
+        .arg(&policies)
+        .arg("--exceptions")
+        .arg(&exceptions)
+        .arg("--out")
+        .arg(&out)
+        .args(["--sign", "Test Family", "--force", "--json"])
+        .output()
+        .unwrap();
+    assert_eq!(ready.status.code(), Some(0));
+    assert_eq!(
+        serde_json::from_slice::<serde_json::Value>(&ready.stdout).unwrap()["status"],
+        "ready_for_cutover"
+    );
+    let manifest: serde_json::Value =
+        serde_json::from_slice(&fs::read(out.join("manifest.json")).unwrap()).unwrap();
+    assert_eq!(
+        manifest["audit"]["album_exceptions"]
+            .as_array()
+            .unwrap()
+            .len(),
+        2
+    );
+    assert!(fs::read_to_string(out.join("CUTOVER.md"))
+        .unwrap()
+        .contains("Reviewed album exceptions:"));
+}

@@ -56,11 +56,20 @@ pub struct Inventory {
 pub struct ExceptionFile {
     #[serde(default)]
     pub exceptions: Vec<NamedException>,
+    /// Album labels missing at the destination require their own reviewed resolution.
+    #[serde(default)]
+    pub album_exceptions: Vec<NamedAlbumException>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 pub struct NamedException {
     pub source_path: String,
+    pub reason: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
+pub struct NamedAlbumException {
+    pub album: String,
     pub reason: String,
 }
 
@@ -89,6 +98,10 @@ pub struct Audit {
     pub extra_destination: Vec<String>,
     pub exceptions: Vec<NamedException>,
     pub source_albums_missing_at_destination: Vec<String>,
+    #[serde(default)]
+    pub album_exceptions: Vec<NamedAlbumException>,
+    #[serde(default)]
+    pub unresolved_source_albums_missing_at_destination: Vec<String>,
     pub warnings: Vec<String>,
 }
 
@@ -163,6 +176,9 @@ pub struct AuditSummary {
     pub excepted_assets: usize,
     pub accounted_percent: f64,
     pub evidence_level: String,
+    pub source_albums_missing_at_destination: Vec<String>,
+    pub album_exceptions: Vec<NamedAlbumException>,
+    pub unresolved_source_albums_missing_at_destination: Vec<String>,
 }
 
 fn now() -> String {
@@ -544,9 +560,29 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
         .iter()
         .flat_map(|asset| asset.albums.iter().map(String::as_str))
         .collect();
-    let album_gaps = source_albums
+    let album_gaps: Vec<String> = source_albums
         .difference(&destination_albums)
         .map(|value| (*value).to_owned())
+        .collect();
+    let album_exception_by_name: HashMap<&str, &NamedAlbumException> = exceptions
+        .album_exceptions
+        .iter()
+        .filter(|exception| !exception.reason.trim().is_empty())
+        .map(|exception| (exception.album.as_str(), exception))
+        .collect();
+    let applied_album_exceptions: Vec<NamedAlbumException> = album_gaps
+        .iter()
+        .filter_map(|album| {
+            album_exception_by_name
+                .get(album.as_str())
+                .copied()
+                .cloned()
+        })
+        .collect();
+    let unresolved_album_gaps: Vec<String> = album_gaps
+        .iter()
+        .filter(|album| !album_exception_by_name.contains_key(album.as_str()))
+        .cloned()
         .collect();
     let mut warnings = source.warnings.clone();
     warnings.extend(destination.warnings.clone());
@@ -566,6 +602,16 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
             ));
         }
     }
+    for exception in &exceptions.album_exceptions {
+        if exception.album.trim().is_empty() || exception.reason.trim().is_empty() {
+            warnings.push("Album exception needs both an album label and a review reason; it was not applied.".into());
+        } else if !album_gaps.contains(&exception.album) {
+            warnings.push(format!(
+                "Album exception for {} does not correspond to a destination album gap.",
+                exception.album
+            ));
+        }
+    }
     Audit {
         schema_version: 1,
         tool_version: VERSION.into(),
@@ -576,7 +622,10 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
         excepted_assets: applied_exceptions.len(),
         accounted_assets: accounted,
         accounted_percent: (percent * 1000.0).round() / 1000.0,
-        ready: strong_evidence && percent >= 99.5 && unresolved.is_empty(),
+        ready: strong_evidence
+            && percent >= 99.5
+            && unresolved.is_empty()
+            && unresolved_album_gaps.is_empty(),
         evidence_level: if strong_evidence {
             "sha256"
         } else {
@@ -593,6 +642,8 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
             .collect(),
         exceptions: applied_exceptions,
         source_albums_missing_at_destination: album_gaps,
+        album_exceptions: applied_album_exceptions,
+        unresolved_source_albums_missing_at_destination: unresolved_album_gaps,
         warnings,
     }
 }
@@ -679,11 +730,20 @@ pub fn build_manifest(
         .filter(|name| !name.is_empty());
     let signed_at = signer.as_ref().map(|_| now());
     let is_signed = signer.is_some();
+    let album_gaps_resolved = audit
+        .source_albums_missing_at_destination
+        .iter()
+        .all(|album| {
+            audit
+                .album_exceptions
+                .iter()
+                .any(|exception| exception.album == *album && !exception.reason.trim().is_empty())
+        });
     SignedManifest {
         schema_version: 1,
         tool_version: VERSION.into(),
         generated_at: now(),
-        status: if audit.ready && safe_policy && is_signed {
+        status: if audit.ready && album_gaps_resolved && safe_policy && is_signed {
             "ready_for_cutover"
         } else {
             "hold"
@@ -697,6 +757,13 @@ pub fn build_manifest(
             excepted_assets: audit.excepted_assets,
             accounted_percent: audit.accounted_percent,
             evidence_level: audit.evidence_level.clone(),
+            source_albums_missing_at_destination: audit
+                .source_albums_missing_at_destination
+                .clone(),
+            album_exceptions: audit.album_exceptions.clone(),
+            unresolved_source_albums_missing_at_destination: audit
+                .unresolved_source_albums_missing_at_destination
+                .clone(),
         },
         policies,
         policy_warnings,
@@ -752,12 +819,38 @@ pub fn render_manifest(manifest: &SignedManifest, audit: &Audit) -> String {
         }
         output.push('\n');
     }
-    if !audit.source_albums_missing_at_destination.is_empty() {
-        output.push_str("Album labels not observed at the destination: ");
-        output.push_str(&audit.source_albums_missing_at_destination.join(", "));
+    output.push_str("## Album label resolution\n\n");
+    if audit.source_albums_missing_at_destination.is_empty() {
         output.push_str(
-            ". Album membership may need a provider-specific export or manual recreation.\n\n",
+            "Every observed source album label was also observed at the destination.\n\n",
         );
+    } else {
+        output.push_str("Source album labels not observed at the destination: ");
+        output.push_str(&audit.source_albums_missing_at_destination.join(", "));
+        output.push_str(".\n\n");
+        if audit.album_exceptions.is_empty() {
+            output.push_str(
+                "No reviewed album exceptions were supplied. These gaps block cutover.\n\n",
+            );
+        } else {
+            output.push_str("Reviewed album exceptions:\n");
+            for exception in &audit.album_exceptions {
+                output.push_str(&format!("- `{}` — {}\n", exception.album, exception.reason));
+            }
+            output.push('\n');
+        }
+        if !audit
+            .unresolved_source_albums_missing_at_destination
+            .is_empty()
+        {
+            output.push_str("Unresolved album labels (block cutover): ");
+            output.push_str(
+                &audit
+                    .unresolved_source_albums_missing_at_destination
+                    .join(", "),
+            );
+            output.push_str(".\n\n");
+        }
     }
     for warning in audit.warnings.iter().chain(manifest.policy_warnings.iter()) {
         output.push_str(&format!("- Review: {warning}\n"));
@@ -954,6 +1047,7 @@ mod tests {
                 source_path: "b.jpg".into(),
                 reason: "known corrupt original".into(),
             }],
+            ..ExceptionFile::default()
         };
         let audit = compare(&source, &destination, &exceptions);
         assert!(audit.ready);
@@ -970,6 +1064,48 @@ mod tests {
         let audit = compare(&source, &destination, &ExceptionFile::default());
         assert_eq!(audit.matched_assets, 0);
         assert!(!audit.ready);
+    }
+
+    #[test]
+    fn missing_album_labels_block_until_each_has_a_reviewed_exception() {
+        let mut source = inventory_fixture("same");
+        source.assets[0].albums = vec!["Family Album".into(), "Second Album".into()];
+        let mut destination = inventory_fixture("same");
+        destination.assets[0].albums = vec![];
+
+        let held = compare(&source, &destination, &ExceptionFile::default());
+        assert!(!held.ready);
+        assert_eq!(
+            held.unresolved_source_albums_missing_at_destination,
+            vec!["Family Album", "Second Album"]
+        );
+
+        let exceptions = ExceptionFile {
+            album_exceptions: vec![
+                NamedAlbumException {
+                    album: "Family Album".into(),
+                    reason: "Recreated in the archive catalog; reviewer checked the members."
+                        .into(),
+                },
+                NamedAlbumException {
+                    album: "Second Album".into(),
+                    reason:
+                        "Intentional duplicate label; reviewer recorded the membership elsewhere."
+                            .into(),
+                },
+            ],
+            ..ExceptionFile::default()
+        };
+        let resolved = compare(&source, &destination, &exceptions);
+        assert!(resolved.ready);
+        assert!(resolved
+            .unresolved_source_albums_missing_at_destination
+            .is_empty());
+        let manifest = build_manifest(&resolved, policy_template(), Some("Reviewer".into()));
+        assert_eq!(manifest.status, "ready_for_cutover");
+        let text = render_manifest(&manifest, &resolved);
+        assert!(text.contains("Reviewed album exceptions:"));
+        assert!(text.contains("Family Album"));
     }
 
     #[test]
@@ -991,6 +1127,8 @@ mod tests {
             extra_destination: vec![],
             exceptions: vec![],
             source_albums_missing_at_destination: vec![],
+            album_exceptions: vec![],
+            unresolved_source_albums_missing_at_destination: vec![],
             warnings: vec![],
         };
         let mut policies = policy_template();

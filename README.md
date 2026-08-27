@@ -21,7 +21,7 @@ Create and edit a documented policy template first:
 photo-exit-manifest init --output policies.json
 ```
 
-The run writes `source-inventory.json`, `destination-inventory.json`, `audit.json`, `manifest.json`, and `CUTOVER.md`. It succeeds only when every source asset is matched or has a named exception, at least 99.5% of assets are accounted for, and `--sign` names the reviewer. An unsigned or non-ready audit exits with code `2`, while invalid input or I/O failure exits with `1`.
+The run writes `source-inventory.json`, `destination-inventory.json`, `audit.json`, `manifest.json`, and `CUTOVER.md`. It succeeds only when every source asset is matched or has a named exception, every source album label is observed at the destination or has a named reviewed resolution, at least 99.5% of assets are accounted for, and `--sign` names the reviewer. An unsigned or non-ready audit exits with code `2`, while invalid input or I/O failure exits with `1`.
 
 For staged or automated workflows:
 
@@ -40,9 +40,14 @@ photo-exit-manifest manifest --audit audit.json --policies policies.json \
 {
   "exceptions": [
     {"source_path": "2012/IMG_0042.JPG", "reason": "Unreadable before export; paper original retained"}
+  ],
+  "album_exceptions": [
+    {"album": "Family Album", "reason": "Recreated in the archive catalog; reviewer checked membership"}
   ]
 }
 ```
+
+An album exception is only for a source label the destination cannot expose (for example, a provider-only shared album). It must name that label and state the reviewed resolution; unreviewed album gaps keep the manifest on hold.
 
 Use `--hash sha256` (the default) for cutover evidence. `--hash none` is a faster planning pass and matches conservatively by filename, byte size, and capture time where available. The scanner recognizes common photo, RAW, and video formats and reads adjacent Google Takeout JSON defensively. Proprietary edits may not be portable; edited-looking files and sidecar gaps are called out in the report.
 
