@@ -1,63 +1,48 @@
-# Verification 1 — FAIL
+# Verification 2 — PASS
 
-**Candidate:** `95ae7ad505b9726257656998bcc8bdb7fee7d895`  
-**Verified:** 2026-08-27 UTC  
+**Repair commit:** `04f0158f88f3b2c3f352c01ec955e8c42660d0ec`
+**Baseline report:** `e32cb52f4ea2d039c6a2e4dd9e83bfc065506157`
+**Verified:** 2026-08-27 UTC
 **Live URL:** https://photo-exit-manifest.sociobot.in/
 
 ## Decision
 
-**FAIL — do not release this candidate as migration assurance.** Two P1 defects violate the product contract: it can declare a migration ready while known album labels are absent at the destination, and its advertised PWA offline reload does not load the application JavaScript.
+**PASS — release repair verified.** The two P1 defects in Verification 1 were reproduced with the verifier's fixture shape, corrected at their root causes, covered by exact regressions, and verified in the deployed artifact.
 
-## Clean-checkout evidence
+## P1 remediation evidence
 
-Testing used a detached clean worktree at the candidate commit (`/tmp/photo-exit-manifest-qa`), not the working tree.
+### Album labels now block cutover until reviewed by name
 
-- `npm ci`: passed; npm audit reported 0 vulnerabilities.
+`ExceptionFile` now accepts a separate `album_exceptions` list with an exact source album label and a non-empty review reason. `compare` writes both the applied resolutions and `unresolved_source_albums_missing_at_destination` to `audit.json`; unresolved labels are a hard prerequisite of `ready`. `build_manifest` independently rechecks this condition before it can write `ready_for_cutover`. `manifest.json` and `CUTOVER.md` preserve the source gaps and the reviewed resolutions.
+
+The new CLI integration regression uses the original failure shape: one photo duplicated in `Family Album` and `Second Album`, an archive containing the bytes but neither label, and an unrelated missing video covered by a normal asset exception. A signed `run --json` returns `hold` / exit 2 and records both unresolved album labels. Adding one named review reason for each label then returns `ready_for_cutover` / exit 0; the JSON manifest has two album resolutions and `CUTOVER.md` has a “Reviewed album exceptions” section. The Rust unit suite also proves the same gate and output independently.
+
+### Offline shell caching now follows the Vite build
+
+`scripts/build-sw.mjs` reads the emitted HTML after Vite has assigned asset hashes, writes a cache name derived from the complete shell, and precaches the routes, local assets, and every emitted hashed JS/CSS file. Installation and runtime cache writes use `event.waitUntil`; activation removes prior Photo Exit Manifest caches and claims clients. The deployed worker is `photo-exit-manifest-4a96bc7d8a16` and lists both `/assets/main-DDZNZNwM.js` and `/assets/style-DJLeNWj_.css`.
+
+`site/test/pwa.test.mjs` exercises the production build in Chromium: it asserts hashed JS/CSS in Cache Storage, disables network, reloads, and finds the planner form without a page error. It then registers a prior worker/cache, serves the generated worker as an update, confirms its versioned cache, and confirms the prior cache is removed.
+
+## Clean verification matrix
+
+- `npm ci`: passed; 0 npm audit vulnerabilities.
+- `npm test`: passed — 6 Rust library tests, 3 CLI integration tests, 3 site tests, and 1 Chromium PWA/offline/update regression.
 - `cargo fmt --check`: passed.
 - `cargo clippy --all-targets -- -D warnings`: passed.
-- `npm test`: passed: 5 Rust library tests, 2 CLI integration tests, 3 site tests; no failures.
-- `npm run build`: passed and produced `dist/site/` plus `dist/package/photo-exit-manifest-linux-x86_64` (1.3 MB stripped executable).
-- `cargo package --allow-dirty`: passed; package verification passed; crate 168.3 KB compressed.
-- Clean-consumer install: `cargo install --path target/package/photo-exit-manifest-0.1.0 --root /tmp/pem-consumer.wC1HdX --locked` passed. The installed binary exposed the documented help and wrote a JSON policy template with `init --json`.
+- `npm run build`: passed; outputs `dist/site/` and `dist/package/photo-exit-manifest-linux-x86_64` (1,288,472 bytes).
+- `cargo package --allow-dirty`: passed, including crate verification; 194.2 KB compressed.
+- Clean consumer install passed: `cargo install --path target/package/photo-exit-manifest-0.1.0 --root /tmp/pem-consumer.sBsq4w --locked`. The installed binary showed the documented help, and `init --json` emitted a valid device policy template.
 
-## Product exercises
+## Web, accessibility, privacy, and live identity
 
-Black-box CLI fixtures used a Takeout-shaped source, an independent-folder destination, a valid sidecar, a malformed sidecar, duplicate content in two source albums, and a missing video.
+- `node scripts/a11y.mjs` reported 0 axe violations, including 0 serious/critical, at 1366px and 390px for `/`, `/privacy/`, and `/terms/`, locally and live. The checker uses Playwright's test-only CSP bypass to inject axe; the production CSP remains strict.
+- `/opt/fleet/lib/verify-url.sh` passed against the live URL: title, `lang="en"`, one `<h1>`, `<main>`, image alt text, labels, and zero console errors.
+- Desktop and 390px Playwright smoke checks had no horizontal overflow, no page/console errors, visible keyboard skip link, no initial third-party request, and reduced-motion `scroll-behavior: auto`.
+- The production worker regression proves clean-context offline reload and prior-worker update. It cached 11 versioned shell URLs, including the hashed application JS/CSS.
+- Live `index.html` SHA-256 is `1e16d254e559d4e9987836d13f8fcaebac2ff497264d35cf7369442aca090b1f` both remotely and in `dist/site/`; live `sw.js` SHA-256 is `e23c7996192e16c8707882149047cf68432cb85aada1b7046ece8a8550ad1898` both remotely and in `dist/site/`.
+- Live headers include HTTPS/HSTS, `nosniff`, strict-origin referrer policy, restrictive Permissions-Policy/CSP, immutable hashed assets, and `Cache-Control: no-cache` for `/sw.js`. Source/request review found no analytics, telemetry, CDN assets, or CLI network access; the no-license web first load made same-origin requests only.
+- Bundle sizes remain inside budgets: initial application JS 5.74 KB, CSS 14.93 KB, self-hosted fonts 44.98 KB total, and hero WebP 71.84 KB. Live mobile Lighthouse report recorded Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 1.0 s, LCP 1.2 s, TBT 40 ms, CLS 0. The Lighthouse process logged a browser-target shutdown error after writing the complete scored JSON report.
 
-- A missing asset without an exception returned JSON `hold` and exit 2.
-- Adding a concrete named exception returned `ready_for_cutover`, exit 0, all five expected reports, and a signed `CUTOVER.md`.
-- Existing output was refused with exit 1 unless `--force`; attempting output inside a scanned source was refused with exit 1. Hashes of source and destination media before/after were identical.
-- Missing input / empty-scan invalid paths returned actionable exit-1 errors. `--json`, `--help`, and the documented non-interactive workflow worked.
+## Deployment
 
-### P1 — album loss is permitted in a `READY` manifest
-
-The source fixture had the same image in `Family Album` and `Second Album`; the destination had that image but no corresponding album folders. The completed audit reported:
-
-```json
-{
-  "ready": true,
-  "accounted_percent": 100,
-  "source_albums_missing_at_destination": ["Family Album", "Second Album"]
-}
-```
-
-With the unrelated missing video named as an exception, `run --sign 'QA Family' --json` returned `ready_for_cutover` / exit 0. `CUTOVER.md` merely says the album membership “may need … manual recreation.” This contradicts the researched job (not losing albums), the requirement to compare albums where available, and the site’s own claim that absent album labels keep a manifest on hold. Album gaps must block cutover until each is represented by a named, reviewable exception or otherwise resolved.
-
-### P1 — offline PWA reload is not functional
-
-On the exact production build served by Vite preview, Playwright installed and activated the service worker (`navigator.serviceWorker.controller === true`). Cache Storage contained only `/`, legal pages, hero, mark, and fonts; it did **not** contain `assets/main-DDZNZNwM.js` or the CSS. After network was disabled, a reload returned cached HTML (HTTP 200) but `assets/main-DDZNZNwM.js` failed with `net::ERR_FAILED` and a browser console error. The planner/application therefore cannot function offline. The worker must precache the hashed JS/CSS shell (and await cache writes with `event.waitUntil`) and use a build-versioned cache/update test.
-
-## Web, privacy, and deployment checks
-
-- The live `index.html` SHA-256 exactly matched `dist/site/index.html`; it referenced the same `main-DDZNZNwM.js` and `style-DJLeNWj_.css`. Live `sw.js` also matched the candidate worker. The deployment is current, not a deployment-only failure.
-- Live headers: HTTPS, HSTS, `X-Content-Type-Options: nosniff`, strict-origin referrer policy, restrictive Permissions-Policy, and CSP restricting scripts/styles/fonts/images to self and `connect-src` to self plus the documented Sociobot API. Hashed assets returned `Cache-Control: public, max-age=31536000, immutable`; worker returned `no-cache`.
-- Source/build request review found no analytics, telemetry, CDN scripts, or CLI network capability. With no license supplied, Playwright observed only same-origin web requests. The sole intentional external path is the documented Sociobot billing API when a user supplies a license or opens checkout.
-- `node scripts/a11y.mjs http://127.0.0.1:4173` reported 0 axe violations, including 0 serious/critical, on `/`, `/privacy/`, and `/terms/` at both 1366px and 390px.
-- Desktop and 390px smoke tests had no horizontal overflow or page errors online; one `<h1>` and `<main>` were present. Keyboard Tab reached the skip link; after its transition it was visible at y=12 with a 3px focus outline. Planner normal, zero/invalid, and over-accounted values showed the expected ready and recovery messages. Reduced-motion emulation yielded `scroll-behavior: auto`.
-- Production bundles meet static size budgets: initial application JS 5.74 KB, CSS 14.93 KB, self-hosted fonts 44.98 KB total, and hero WebP 71.84 KB. The offline console failure above remains a release blocker despite those results.
-
-## Required remediation and re-test
-
-1. Make destination album gaps a blocking, explicitly exceptable condition; include the reviewed resolution in JSON and `CUTOVER.md`.
-2. Precache the versioned JS/CSS application shell with service-worker lifetime-safe writes, version the cache for each deploy, and prove a clean-context offline reload and update from the prior worker.
-3. Re-run this verification on the remediation commit and replace this report only with a fresh PASS backed by the same fixtures.
+`/opt/fleet/lib/deploy-static.sh photo-exit-manifest dist/site` completed successfully on 2026-08-27 UTC (Azure Static Web Apps deployment `63311828-dbe3-4c1b-be03-e53874005b95`). The custom domain was ready and HTTPS returned 200. No DNS, billing, or registry configuration was changed outside this configured factory deployment.
