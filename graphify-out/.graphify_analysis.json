@@ -31,6 +31,9 @@
       "vite"
     ],
     "1": [
+      "path",
+      "pathbuf",
+      "result",
       "src_lib",
       "src_lib_album_for",
       "src_lib_backupmode",
@@ -45,9 +48,6 @@
       "src_lib_offlinebehavior",
       "src_lib_parse_sidecar",
       "src_lib_portable_relative",
-      "src_lib_rs_path",
-      "src_lib_rs_pathbuf",
-      "src_lib_rs_result",
       "src_lib_save",
       "src_lib_sha256",
       "src_lib_sidecar_candidates",
@@ -107,10 +107,10 @@
       "tsconfig_include"
     ],
     "4": [
+      "option",
       "src_lib_asset",
       "src_lib_audit",
       "src_lib_auditsummary",
-      "src_lib_build_manifest",
       "src_lib_exceptionfile",
       "src_lib_fallback_key",
       "src_lib_matchrecord",
@@ -118,15 +118,42 @@
       "src_lib_namedexception",
       "src_lib_policyset",
       "src_lib_render_manifest",
-      "src_lib_rs_option",
-      "src_lib_rs_string",
       "src_lib_signedmanifest",
       "src_lib_timestamp_to_rfc3339",
       "src_lib_validate_policies",
+      "string",
       "value",
       "vec"
     ],
     "5": [
+      "site_src_app",
+      "site_src_app_copy",
+      "site_src_app_params",
+      "site_src_demo",
+      "site_src_demo_reset",
+      "site_src_demo_status",
+      "site_src_legal",
+      "site_src_shared",
+      "site_src_shared_announceroute",
+      "site_src_shared_offline",
+      "site_src_shared_rememberscrollposition",
+      "site_src_shared_updatenetwork"
+    ],
+    "6": [
+      "src_lib_build_manifest",
+      "src_lib_compare",
+      "src_lib_compare_deduplicates_warnings_shared_by_both_inventories",
+      "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
+      "src_lib_compare_requires_hashes_and_accounts_named_exception",
+      "src_lib_inventory_fixture",
+      "src_lib_manifest_holds_when_retention_is_unsafe",
+      "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
+      "src_lib_now",
+      "src_lib_planning_comparison_never_reuses_one_destination_for_two_sources",
+      "src_lib_policy_template",
+      "src_lib_ready_audit_stays_on_hold_until_signed"
+    ],
+    "7": [
       "scripts_copy_audit",
       "scripts_copy_audit_cleanmarkdown",
       "scripts_copy_audit_count",
@@ -139,50 +166,18 @@
       "scripts_copy_audit_server",
       "scripts_copy_audit_table"
     ],
-    "6": [
-      "site_src_app",
-      "site_src_app_copy",
-      "site_src_app_params",
-      "site_src_demo",
-      "site_src_demo_reset",
-      "site_src_demo_status",
-      "site_src_legal",
-      "site_src_shared",
-      "site_src_shared_announceroute",
-      "site_src_shared_offline",
-      "site_src_shared_updatenetwork"
-    ],
-    "7": [
-      "src_lib_compare",
-      "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
-      "src_lib_compare_requires_hashes_and_accounts_named_exception",
-      "src_lib_inventory_fixture",
-      "src_lib_manifest_holds_when_retention_is_unsafe",
-      "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
-      "src_lib_now",
-      "src_lib_planning_comparison_never_reuses_one_destination_for_two_sources",
-      "src_lib_policy_template",
-      "src_lib_ready_audit_stays_on_hold_until_signed"
-    ],
     "8": [
       "site_test_claims_test",
       "site_test_claims_test_binary",
       "site_test_claims_test_run",
       "site_test_claims_test_runguarded",
+      "site_test_claims_test_runwithenv",
       "site_test_claims_test_servebuiltsite",
       "site_test_claims_test_siteroot",
       "site_test_claims_test_treedigest",
       "site_test_claims_test_treedigest_walk"
     ],
     "9": [
-      "path",
-      "tests_cli_e2e",
-      "tests_cli_e2e_album_gaps_hold_a_signed_run_until_reviewed_by_name",
-      "tests_cli_e2e_an_empty_scan_is_an_actionable_error",
-      "tests_cli_e2e_claim_demo_isolation_runs_bundled_sample_only_in_its_workspace",
-      "tests_cli_e2e_documented_run_writes_a_signed_ready_manifest"
-    ],
-    "10": [
       "scripts_build_sw",
       "scripts_build_sw_assets",
       "scripts_build_sw_pages",
@@ -190,13 +185,20 @@
       "scripts_build_sw_siteroot",
       "scripts_build_sw_version"
     ],
-    "11": [
+    "10": [
       "socklen_t",
       "tests_network_guard",
       "tests_network_guard_connect",
       "tests_network_guard_record_attempt",
       "tests_network_guard_sendto",
       "tests_network_guard_socket"
+    ],
+    "11": [
+      "tests_cli_e2e",
+      "tests_cli_e2e_album_gaps_hold_a_signed_run_until_reviewed_by_name",
+      "tests_cli_e2e_an_empty_scan_is_an_actionable_error",
+      "tests_cli_e2e_claim_demo_isolation_runs_bundled_sample_only_in_its_workspace",
+      "tests_cli_e2e_documented_run_writes_a_signed_ready_manifest"
     ],
     "12": [
       "scripts_package",
@@ -224,27 +226,30 @@
       "site_test_routes_test_routes"
     ],
     "17": [
-      "option"
-    ],
-    "18": [
-      "pathbuf"
-    ],
-    "19": [
       "pkg_photo_exit_manifest"
     ],
-    "20": [
-      "result"
-    ],
-    "21": [
+    "18": [
       "scripts_a11y"
     ],
-    "22": [
+    "19": [
       "site_public_sw"
     ],
+    "20": [
+      "src_lib_rs_option"
+    ],
+    "21": [
+      "src_lib_rs_path"
+    ],
+    "22": [
+      "src_lib_rs_pathbuf"
+    ],
     "23": [
-      "string"
+      "src_lib_rs_result"
     ],
     "24": [
+      "src_lib_rs_string"
+    ],
+    "25": [
       "vite_config"
     ]
   },
@@ -253,14 +258,14 @@
     "1": 0.18461538461538463,
     "2": 0.18333333333333332,
     "3": 0.10526315789473684,
-    "4": 0.27450980392156865,
-    "5": 0.23636363636363636,
-    "6": 0.18181818181818182,
-    "7": 0.35555555555555557,
-    "8": 0.25,
+    "4": 0.2647058823529412,
+    "5": 0.16666666666666666,
+    "6": 0.36363636363636365,
+    "7": 0.23636363636363636,
+    "8": 0.2222222222222222,
     "9": 0.3333333333333333,
-    "10": 0.3333333333333333,
-    "11": 0.6,
+    "10": 0.6,
+    "11": 0.4,
     "12": 0.5,
     "13": 0.5,
     "14": 0.6666666666666666,
@@ -273,7 +278,8 @@
     "21": 1.0,
     "22": 1.0,
     "23": 1.0,
-    "24": 1.0
+    "24": 1.0,
+    "25": 1.0
   },
   "gods": [
     {
@@ -292,14 +298,14 @@
       "degree": 15
     },
     {
-      "id": "src_lib_build_manifest",
-      "label": "build_manifest()",
-      "degree": 13
-    },
-    {
       "id": "src_lib_compare",
       "label": "compare()",
-      "degree": 13
+      "degree": 14
+    },
+    {
+      "id": "src_lib_build_manifest",
+      "label": "build_manifest()",
+      "degree": 14
     },
     {
       "id": "tsconfig_compileroptions",
@@ -330,51 +336,51 @@
   "surprises": [
     {
       "source": "execute_full_run()",
-      "target": "write_json()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "write_json()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "execute_full_run()",
-      "target": "write_text()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "write_text()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "execute_full_run()",
       "target": "build_manifest()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "execute_full_run()",
+      "target": "compare()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "execute_full_run()",
+      "target": "render_manifest()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "execute_full_run()",
+      "target": "write_json()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "execute_full_run()",
+      "target": "write_text()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
