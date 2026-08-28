@@ -1,4 +1,4 @@
-# Copy audit — polish 2
+# Copy audit — polish 3
 
 Generated from the production landing page and README on 28 August 2026 with `npm run audit:copy`.
 

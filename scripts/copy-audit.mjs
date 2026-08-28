@@ -91,7 +91,7 @@ function table(items) {
   return ['| Words | Exact text |', '| ---: | --- |', ...items.map((item) => `| ${count(item)} | ${item.replaceAll('|', '\\|')} |`)].join('\n');
 }
 
-const output = `# Copy audit — polish 2
+const output = `# Copy audit — polish 3
 
 Generated from the production landing page and README on 28 August 2026 with \`npm run audit:copy\`.
 
