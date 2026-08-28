@@ -22,10 +22,10 @@
   },
   {
     "id": "takeout-evidence",
-    "claim": "The scanner records SHA-256 hashes, Google export notes, album labels and edited-file warnings.",
+    "claim": "The scanner records SHA-256 hashes, Google export notes and album labels; missing export notes and edited-looking files produce warnings.",
     "where": "landing workflow and docs, demo, README",
     "test": "npm run test:claims -- @claim:takeout-evidence",
-    "sandbox": "fresh temporary demo; inspect the generated source inventory for all four evidence types"
+    "sandbox": "fresh temporary demo; inspect the source inventory for hashes, a parsed export note, album labels and an edit marker; assert both exact warnings in audit.json"
   },
   {
     "id": "readiness-rules",
@@ -88,7 +88,7 @@
     "claim": "The package is an MIT-licensed single CLI with Rust 1.85 as its minimum version.",
     "where": "README, LICENSE, Cargo.toml",
     "test": "npm run test:claims -- @claim:package-contract",
-    "sandbox": "fresh Cargo metadata; assert license, rust-version and exactly one binary target"
+    "sandbox": "fresh target directory; compile every locked Cargo target with Rust 1.85.0, then assert license, rust-version and exactly one binary target"
   },
   {
     "id": "build-artifacts",

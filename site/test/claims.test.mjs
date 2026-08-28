@@ -116,7 +116,7 @@ test('@claim:named-exception-gate an unexplained item holds the report and a nam
   assert.equal(ready.status, 'ready_for_cutover');
 });
 
-test('@claim:takeout-evidence scan records SHA-256, export notes, album labels and edited-file warnings', async () => {
+test('@claim:takeout-evidence scan records export evidence and warns about missing notes and edited files', async () => {
   const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-evidence-'));
   const workspace = join(sandbox, 'demo');
   assert.equal(run(['demo', '--output', workspace, '--json']).status, 0);
@@ -131,6 +131,9 @@ test('@claim:takeout-evidence scan records SHA-256, export notes, album labels a
   assert.ok(lake.albums.includes('Family Favorites'));
   const edited = inventory.assets.find((asset) => asset.relative_path.endsWith('bike-ride-edited.jpg'));
   assert.equal(edited.edited_version, true);
+  const audit = JSON.parse(await readFile(join(workspace, 'migration-report', 'audit.json'), 'utf8'));
+  assert.ok(audit.warnings.includes('Some Takeout assets have no readable JSON sidecar; capture dates or provider edits may be unavailable.'));
+  assert.ok(audit.warnings.includes('Edited-looking files were found. Proprietary edit instructions may not be portable; verify rendered copies visually.'));
 });
 
 test('@claim:readiness-rules hold conditions are separate from non-blocking edit warnings', async () => {
@@ -305,7 +308,16 @@ test('@claim:planning-mode hash-free inventory is marked planning-only and match
   assert.equal(audit.ready, false);
 });
 
-test('@claim:package-contract package is an MIT-licensed single CLI with Rust 1.85 as its minimum', () => {
+test('@claim:package-contract package compiles with Rust 1.85 and is an MIT-licensed single CLI', async () => {
+  const targetDirectory = await mkdtemp(join(tmpdir(), 'pem-rust-1.85-target-'));
+  const compiler = spawnSync('rustup', ['run', '1.85.0', 'rustc', '--version'], { encoding: 'utf8' });
+  assert.equal(compiler.status, 0, `Rust 1.85.0 is required for the compatibility claim:\n${compiler.stderr}`);
+  assert.match(compiler.stdout, /^rustc 1\.85\.0 /);
+  const compatibilityBuild = spawnSync('cargo', ['+1.85.0', 'test', '--locked', '--all-targets', '--no-run', '--target-dir', targetDirectory], {
+    encoding: 'utf8',
+    timeout: 300_000,
+  });
+  assert.equal(compatibilityBuild.status, 0, `locked package does not compile with Rust 1.85.0:\n${compatibilityBuild.stdout}\n${compatibilityBuild.stderr}`);
   const metadata = spawnSync('cargo', ['metadata', '--no-deps', '--format-version', '1'], { encoding: 'utf8' });
   assert.equal(metadata.status, 0, metadata.stderr);
   const packageInfo = JSON.parse(metadata.stdout).packages.find((item) => item.name === 'photo-exit-manifest');

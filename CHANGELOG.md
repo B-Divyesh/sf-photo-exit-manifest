@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0 — polish 3 — 2026-08-28
+
+- Protect the missing Google export note warning with a direct claim assertion.
+- Compile every locked Cargo target with Rust 1.85 in a fresh directory before accepting the minimum-version claim.
+
 ## 0.1.0 — repair — 2026-08-27
 
 - Block signed cutover until every source album label is present at the destination or has a named, reviewable album exception recorded in the audit and manifest.
