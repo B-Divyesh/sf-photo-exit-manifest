@@ -264,13 +264,13 @@
       "degree": 15
     },
     {
-      "id": "src_lib_compare",
-      "label": "compare()",
+      "id": "src_lib_build_manifest",
+      "label": "build_manifest()",
       "degree": 13
     },
     {
-      "id": "src_lib_build_manifest",
-      "label": "build_manifest()",
+      "id": "src_lib_compare",
+      "label": "compare()",
       "degree": 13
     },
     {
@@ -279,27 +279,49 @@
       "degree": 11
     },
     {
-      "id": "package_scripts",
-      "label": "scripts",
-      "degree": 9
-    },
-    {
       "id": "src_lib_audit",
       "label": "Audit",
       "degree": 9
     },
     {
-      "id": "src_lib_policyset",
-      "label": "PolicySet",
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 9
+    },
+    {
+      "id": "src_lib_now",
+      "label": "now()",
       "degree": 8
     },
     {
-      "id": "src_lib_signedmanifest",
-      "label": "SignedManifest",
+      "id": "src_lib_policyset",
+      "label": "PolicySet",
       "degree": 8
     }
   ],
   "surprises": [
+    {
+      "source": "execute_full_run()",
+      "target": "build_manifest()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "run()",
+      "target": "build_manifest()",
+      "source_files": [
+        "src/main.rs",
+        "src/lib.rs"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
     {
       "source": "execute_full_run()",
       "target": "compare()",
@@ -325,28 +347,6 @@
     {
       "source": "run()",
       "target": "policy_template()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "execute_full_run()",
-      "target": "build_manifest()",
-      "source_files": [
-        "src/main.rs",
-        "src/lib.rs"
-      ],
-      "confidence": "INFERRED",
-      "relation": "calls",
-      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
-    },
-    {
-      "source": "run()",
-      "target": "build_manifest()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
