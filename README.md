@@ -6,7 +6,7 @@ The CLI reads local folders without changing them. It does not move, edit, resto
 
 ## Try the bundled sample
 
-The sample is the quickest way to see a finished audit:
+Run the sample to see a finished audit:
 
 ```sh
 cargo run -- demo
@@ -92,7 +92,7 @@ cargo install --path .
 photo-exit-manifest --help
 ```
 
-The crate supports Rust 1.85 or newer. The factory creates release archives; this repository does not publish itself.
+The crate supports Rust 1.85 or newer.
 
 ## Develop and verify
 
@@ -105,14 +105,12 @@ cargo clippy --all-targets -- -D warnings
 cargo package --allow-dirty
 ```
 
-`npm test` runs Rust, browser, offline, routing, and claim tests. Every public claim and its command is listed in `.factory/claims.json`.
-
 The Vite site builds to `dist/site/`. The packaged Linux binary builds to `dist/package/`.
 
-The CLI has no account, paid feature, analytics, telemetry, or network code. The website uses no analytics or third-party scripts.
+The CLI has no account, paid feature, or network connection. The website uses no analytics or third-party scripts.
 
 ## Deploy
 
-Deploy `dist/site/` as the static root. The factory owns deployment, DNS, and package publishing.
+Deploy `dist/site/` as the static root.
 
 Version `0.1.0` is licensed under the [MIT License](LICENSE). See [CHANGELOG.md](CHANGELOG.md).

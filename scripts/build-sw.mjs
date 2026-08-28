@@ -51,14 +51,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
-  const result = caches.match(event.request).then((cached) => {
+  const requestUrl = new URL(event.request.url);
+  const cacheRequest = event.request.mode === 'navigate'
+    ? new Request(requestUrl.origin + requestUrl.pathname)
+    : event.request;
+  const result = caches.match(cacheRequest).then((cached) => {
     if (cached) return { response: cached, shouldCache: false };
     return fetch(event.request).then((response) => ({ response, shouldCache: response.ok }));
   });
   event.respondWith(result.then(({ response }) => response));
   event.waitUntil(result.then(({ response, shouldCache }) => {
     if (!shouldCache) return undefined;
-    return caches.open(CACHE).then((cache) => cache.put(event.request, response.clone()));
+    return caches.open(CACHE).then((cache) => cache.put(cacheRequest, response.clone()));
   }).catch(() => undefined));
 });
 `;

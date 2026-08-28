@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
-import { mkdtemp, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -12,6 +12,7 @@ const binary = resolve('target/debug/photo-exit-manifest');
 const siteRoot = resolve('dist/site');
 let server;
 let base;
+let networkGuard;
 
 async function serveBuiltSite() {
   return new Promise((resolveServer) => {
@@ -51,7 +52,19 @@ function run(args) {
   return spawnSync(binary, args, { encoding: 'utf8', timeout: 30_000 });
 }
 
+function runGuarded(args, log) {
+  return spawnSync(binary, args, {
+    encoding: 'utf8',
+    timeout: 30_000,
+    env: { ...process.env, LD_PRELOAD: networkGuard, PEM_NETWORK_LOG: log },
+  });
+}
+
 before(async () => {
+  const guardDirectory = await mkdtemp(join(tmpdir(), 'pem-network-guard-'));
+  networkGuard = join(guardDirectory, 'network-guard.so');
+  const compile = spawnSync('cc', ['-shared', '-fPIC', '-O2', '-o', networkGuard, 'tests/network_guard.c'], { encoding: 'utf8' });
+  assert.equal(compile.status, 0, `cannot compile runtime network guard: ${compile.stderr}`);
   server = await serveBuiltSite();
   base = `http://127.0.0.1:${server.address().port}`;
 });
@@ -120,31 +133,136 @@ test('@claim:takeout-evidence scan records SHA-256, export notes, album labels a
   assert.equal(edited.edited_version, true);
 });
 
-test('@claim:read-only-local the CLI leaves inputs unchanged and the website sends no cross-origin requests', async () => {
-  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-local-'));
+test('@claim:readiness-rules hold conditions are separate from non-blocking edit warnings', async () => {
+  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-readiness-'));
   const workspace = join(sandbox, 'demo');
   assert.equal(run(['demo', '--output', workspace, '--json']).status, 0);
+  const readyAudit = JSON.parse(await readFile(join(workspace, 'migration-report', 'audit.json'), 'utf8'));
+  assert.equal(readyAudit.ready, true);
+  assert.ok(readyAudit.warnings.some((warning) => warning.startsWith('Edited-looking files were found.')));
+
+  const noExceptions = join(workspace, 'no-exceptions.json');
+  await writeFile(noExceptions, '{"exceptions":[],"album_exceptions":[]}');
+  const missing = run(['run', '--source', join(workspace, 'source'), '--source-kind', 'takeout', '--destination', join(workspace, 'archive'), '--policies', join(workspace, 'policies.json'), '--exceptions', noExceptions, '--out', join(workspace, 'missing-hold'), '--sign', 'Morgan family', '--json']);
+  assert.equal(missing.status, 2, missing.stderr);
+
+  const unsafePolicies = JSON.parse(await readFile(join(workspace, 'policies.json'), 'utf8'));
+  unsafePolicies.original_cloud_retention_days = 7;
+  await writeFile(join(workspace, 'unsafe-policies.json'), JSON.stringify(unsafePolicies));
+  const unsafe = run(['run', '--source', join(workspace, 'source'), '--source-kind', 'takeout', '--destination', join(workspace, 'archive'), '--policies', join(workspace, 'unsafe-policies.json'), '--exceptions', join(workspace, 'exceptions.json'), '--out', join(workspace, 'unsafe-hold'), '--sign', 'Morgan family', '--json']);
+  assert.equal(unsafe.status, 2, unsafe.stderr);
+  assert.equal(JSON.parse(unsafe.stdout).status, 'hold');
+
+  const albumRoot = join(sandbox, 'album-only');
+  await mkdir(join(albumRoot, 'source', 'Takeout', 'Google Photos', 'Family Album'), { recursive: true });
+  await mkdir(join(albumRoot, 'archive'), { recursive: true });
+  await writeFile(join(albumRoot, 'source', 'Takeout', 'Google Photos', 'Family Album', 'family.jpg'), 'same family photo');
+  await writeFile(join(albumRoot, 'archive', 'family.jpg'), 'same family photo');
+  const albumHold = run(['run', '--source', join(albumRoot, 'source'), '--source-kind', 'takeout', '--destination', join(albumRoot, 'archive'), '--policies', join(workspace, 'policies.json'), '--out', join(albumRoot, 'report'), '--sign', 'Morgan family', '--json']);
+  assert.equal(albumHold.status, 2, albumHold.stderr);
+  const albumAudit = JSON.parse(await readFile(join(albumRoot, 'report', 'audit.json'), 'utf8'));
+  assert.deepEqual(albumAudit.missing, []);
+  assert.deepEqual(albumAudit.unresolved_source_albums_missing_at_destination, ['Family Album']);
+});
+
+test('@claim:read-only-local the CLI leaves inputs unchanged and attempts no network sockets', async () => {
+  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-local-'));
+  const workspace = join(sandbox, 'demo');
+  const networkLog = join(sandbox, 'network-attempts.log');
+  await writeFile(networkLog, '');
+  const demo = runGuarded(['demo', '--output', workspace, '--json'], networkLog);
+  assert.equal(demo.status, 0, demo.stderr);
   const before = await treeDigest(join(workspace, 'source'));
   const destinationBefore = await treeDigest(join(workspace, 'archive'));
-  const result = run(['run', '--source', join(workspace, 'source'), '--source-kind', 'takeout', '--destination', join(workspace, 'archive'), '--policies', join(workspace, 'policies.json'), '--exceptions', join(workspace, 'exceptions.json'), '--out', join(workspace, 'second-report'), '--sign', 'Morgan family', '--json']);
+  const result = runGuarded(['run', '--source', join(workspace, 'source'), '--source-kind', 'takeout', '--destination', join(workspace, 'archive'), '--policies', join(workspace, 'policies.json'), '--exceptions', join(workspace, 'exceptions.json'), '--out', join(workspace, 'second-report'), '--sign', 'Morgan family', '--json'], networkLog);
   assert.equal(result.status, 0, result.stderr);
   assert.deepEqual(await treeDigest(join(workspace, 'source')), before);
   assert.deepEqual(await treeDigest(join(workspace, 'archive')), destinationBefore);
-  const source = await readFile('src/main.rs', 'utf8') + await readFile('src/lib.rs', 'utf8');
-  assert.doesNotMatch(source, /TcpStream|UdpSocket|reqwest|hyper::|ureq|curl/);
+  assert.equal(await readFile(networkLog, 'utf8'), '', 'runtime guard recorded an IPv4 or IPv6 socket attempt');
+});
 
+test('@claim:device-policy-report report records two devices and all four choices', async () => {
+  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-devices-'));
+  const workspace = join(sandbox, 'demo');
+  assert.equal(run(['demo', '--output', workspace, '--json']).status, 0);
+  const report = join(workspace, 'migration-report');
+  const manifest = JSON.parse(await readFile(join(report, 'manifest.json'), 'utf8'));
+  assert.deepEqual(manifest.policies.devices, [
+    { name: "Alex's phone", owner: 'Alex Morgan', backup_mode: 'backup', deletion_behavior: 'manual_review', conflict_policy: 'keep_both', offline_behavior: 'queue_until_online' },
+    { name: "Sam's phone", owner: 'Sam Morgan', backup_mode: 'backup', deletion_behavior: 'manual_review', conflict_policy: 'keep_both', offline_behavior: 'manual_retry' },
+  ]);
+  const markdown = await readFile(join(report, 'CUTOVER.md'), 'utf8');
+  for (const expected of ["Alex's phone — Alex Morgan", "Sam's phone — Sam Morgan", 'Upload: backup', 'Deletions: manual review', 'Conflicts: keep both', 'Offline: queue until online', 'Offline: manual retry']) {
+    assert.ok(markdown.includes(expected), `CUTOVER.md is missing ${expected}`);
+  }
+});
+
+test('@claim:album-exception-gate an album-only gap holds until its named resolution is recorded', async () => {
+  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-album-'));
+  const source = join(sandbox, 'source', 'Takeout', 'Google Photos', 'Family Album');
+  const destination = join(sandbox, 'archive');
+  await mkdir(source, { recursive: true });
+  await mkdir(destination, { recursive: true });
+  await writeFile(join(source, 'family.jpg'), 'same family photo');
+  await writeFile(join(destination, 'family.jpg'), 'same family photo');
+  const heldExceptions = join(sandbox, 'held-exceptions.json');
+  const readyExceptions = join(sandbox, 'ready-exceptions.json');
+  await writeFile(heldExceptions, '{"exceptions":[],"album_exceptions":[]}');
+  await writeFile(readyExceptions, JSON.stringify({ exceptions: [], album_exceptions: [{ album: 'Family Album', reason: 'Reviewer recreated this label in the archive catalog.' }] }));
+  const common = ['run', '--source', join(sandbox, 'source'), '--source-kind', 'takeout', '--destination', destination, '--policies', 'examples/policies.json', '--sign', 'Morgan family', '--json'];
+  const held = run([...common, '--exceptions', heldExceptions, '--out', join(sandbox, 'held')]);
+  assert.equal(held.status, 2, held.stderr);
+  const heldAudit = JSON.parse(await readFile(join(sandbox, 'held', 'audit.json'), 'utf8'));
+  assert.deepEqual(heldAudit.missing, []);
+  assert.deepEqual(heldAudit.unresolved_source_albums_missing_at_destination, ['Family Album']);
+  const ready = run([...common, '--exceptions', readyExceptions, '--out', join(sandbox, 'ready')]);
+  assert.equal(ready.status, 0, ready.stderr);
+  const manifest = JSON.parse(await readFile(join(sandbox, 'ready', 'manifest.json'), 'utf8'));
+  assert.equal(manifest.status, 'ready_for_cutover');
+  assert.equal(manifest.audit.album_exceptions[0].album, 'Family Album');
+});
+
+test('@claim:no-tracking public routes use only allowlisted static resources and no browser tracking stores', async () => {
   const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  const crossOrigin = [];
-  page.on('request', (request) => {
-    if (new URL(request.url()).origin !== new URL(base).origin) crossOrigin.push(request.url());
-  });
-  await page.goto(`${base}/?demo=1`, { waitUntil: 'networkidle' });
-  await page.waitForURL(`${base}/demo/?demo=1`);
-  assert.deepEqual(crossOrigin, []);
-  assert.deepEqual(await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage }, cookies: document.cookie })), { local: {}, session: {}, cookies: '' });
-  await context.close();
+  const allowedFixed = new Set(['/archive-landscape.webp', '/mark.svg', '/apple-touch-icon.png', '/sw.js']);
+  for (const path of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
+    const context = await browser.newContext();
+    await context.addInitScript(() => {
+      globalThis.__pemBeaconCalls = [];
+      Object.defineProperty(navigator, 'sendBeacon', {
+        configurable: true,
+        value: (...args) => { globalThis.__pemBeaconCalls.push(args.map(String)); return false; },
+      });
+    });
+    const page = await context.newPage();
+    const requests = [];
+    page.on('request', (request) => requests.push(request.url()));
+    await page.goto(`${base}${path}`, { waitUntil: 'networkidle' });
+    for (const raw of requests) {
+      const url = new URL(raw);
+      assert.equal(url.origin, new URL(base).origin, `third-party request on ${path}: ${raw}`);
+      assert.equal(url.search, '', `unexpected query request on ${path}: ${raw}`);
+      const allowed = url.pathname === path || allowedFixed.has(url.pathname) || /^\/assets\/[a-zA-Z0-9_-]+\.(?:js|css)$/.test(url.pathname) || /^\/fonts\/[a-z0-9-]+\.woff2$/.test(url.pathname);
+      assert.equal(allowed, true, `unexpected first-party endpoint on ${path}: ${url.pathname}`);
+    }
+    const state = await page.evaluate(async () => {
+      const opfs = [];
+      if (navigator.storage?.getDirectory) {
+        const root = await navigator.storage.getDirectory();
+        for await (const name of root.keys()) opfs.push(name);
+      }
+      return {
+        local: localStorage.length,
+        session: sessionStorage.length,
+        cookies: document.cookie,
+        indexedDb: indexedDB.databases ? (await indexedDB.databases()).map((database) => database.name) : [],
+        opfs,
+        beacons: globalThis.__pemBeaconCalls,
+      };
+    });
+    assert.deepEqual(state, { local: 0, session: 0, cookies: '', indexedDb: [], opfs: [], beacons: [] }, path);
+    await context.close();
+  }
   await browser.close();
 });
 
@@ -196,17 +314,28 @@ test('@claim:package-contract package is an MIT-licensed single CLI with Rust 1.
   assert.equal(packageInfo.targets.filter((target) => target.kind.includes('bin')).length, 1);
 });
 
+test('@claim:build-artifacts production build creates the documented site and Linux executable', async () => {
+  assert.equal((await stat('dist/site/index.html')).isFile(), true);
+  const executable = await stat('dist/package/photo-exit-manifest-linux-x86_64');
+  assert.equal(executable.isFile(), true);
+  assert.notEqual(executable.mode & 0o111, 0, 'packaged CLI is executable');
+});
+
 test('@claim:offline-reload sample reloads offline after one online visit', async () => {
   const browser = await chromium.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.goto(`${base}/demo/`, { waitUntil: 'networkidle' });
+  await page.goto(`${base}/?demo=1`, { waitUntil: 'networkidle' });
+  await page.waitForURL(`${base}/demo/`);
   await page.waitForFunction(() => navigator.serviceWorker.ready.then(() => Boolean(navigator.serviceWorker.controller)));
   await context.setOffline(true);
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.waitForSelector('.demo-banner');
   assert.equal(await page.locator('h1').textContent(), 'Review the Morgan family archive check');
   assert.equal(await page.locator('#offline-notice').isVisible(), true);
+  await page.goto(`${base}/?demo=1`, { waitUntil: 'domcontentloaded' });
+  await page.waitForURL(`${base}/demo/`);
+  await page.waitForSelector('.demo-banner');
   await context.close();
   await browser.close();
 });

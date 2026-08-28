@@ -28,11 +28,39 @@
     "sandbox": "fresh temporary demo; inspect the generated source inventory for all four evidence types"
   },
   {
+    "id": "readiness-rules",
+    "claim": "Missing items, missing album labels and unsafe retention settings hold a report; edited-looking files add review warnings without holding it.",
+    "where": "landing docs, README, demo",
+    "test": "npm run test:claims -- @claim:readiness-rules",
+    "sandbox": "fresh temporary demos; assert the edited sample stays ready with a warning, then independently assert missing-item, album-label and unsafe-retention holds"
+  },
+  {
     "id": "read-only-local",
-    "claim": "The CLI does not change source files or send archive data over the network; the website makes only same-origin requests.",
-    "where": "landing first screen and privacy section, privacy policy, README",
+    "claim": "The CLI does not change source files or attempt network connections.",
+    "where": "landing first screen and privacy section, privacy policy, README, CLI help",
     "test": "npm run test:claims -- @claim:read-only-local",
-    "sandbox": "fresh temporary demo plus fresh browser context; compare source hashes, reject network code paths and capture every browser request"
+    "sandbox": "fresh temporary demo and complete run under a preload network guard; compare input hashes and assert zero IPv4 or IPv6 socket attempts"
+  },
+  {
+    "id": "device-policy-report",
+    "claim": "The signed migration report records each device's backup, deletion, conflict and offline choices.",
+    "where": "landing workflow, demo, README",
+    "test": "npm run test:claims -- @claim:device-policy-report",
+    "sandbox": "fresh temporary demo; assert two devices and all four choices in manifest.json and CUTOVER.md"
+  },
+  {
+    "id": "album-exception-gate",
+    "claim": "A missing album label holds the report until it has a named reviewed resolution.",
+    "where": "landing docs, README",
+    "test": "npm run test:claims -- @claim:album-exception-gate",
+    "sandbox": "fresh temporary source and archive with matching bytes but one album-label gap; assert exit 2, then add a named album resolution and assert exit 0"
+  },
+  {
+    "id": "no-tracking",
+    "claim": "The website uses no analytics, advertising, cookies, browser storage or third-party scripts.",
+    "where": "privacy policy, README",
+    "test": "npm run test:claims -- @claim:no-tracking",
+    "sandbox": "fresh browser contexts on every public route; enforce an explicit static-resource allowlist and assert no cookies, storage, IndexedDB or beacon calls"
   },
   {
     "id": "free-cli",
@@ -61,6 +89,13 @@
     "where": "README, LICENSE, Cargo.toml",
     "test": "npm run test:claims -- @claim:package-contract",
     "sandbox": "fresh Cargo metadata; assert license, rust-version and exactly one binary target"
+  },
+  {
+    "id": "build-artifacts",
+    "claim": "The production build creates the static site and packaged Linux executable in the documented paths.",
+    "where": "README",
+    "test": "npm run test:claims -- @claim:build-artifacts",
+    "sandbox": "clean checkout; run the production build and assert dist/site/index.html and the executable dist/package/photo-exit-manifest-linux-x86_64"
   },
   {
     "id": "offline-reload",

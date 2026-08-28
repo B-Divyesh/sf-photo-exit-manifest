@@ -1,1 +1,1 @@
-Verify a Google Photos export against your family archive before switching services.
+Check a Google Photos export against your family archive before switching services.

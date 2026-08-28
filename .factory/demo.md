@@ -2,7 +2,7 @@
 
 ## Browser
 
-- One-click entry: `https://photo-exit-manifest.sociobot.in/?demo=1`
+- One-click entry: `https://photo-exit-manifest.sociobot.in/?demo=1` (redirects to the canonical URL without a query string)
 - Canonical route: `https://photo-exit-manifest.sociobot.in/demo/`
 - Sample: six Morgan family media records, five exact archive matches, and one named exception.
 - Reset: **Reset demo** closes every disclosure and returns focus to the sample heading.

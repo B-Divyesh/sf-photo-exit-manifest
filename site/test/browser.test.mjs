@@ -71,8 +71,11 @@ test('the phone first screen states the job and opens the isolated demo in one c
   const action = page.getByRole('link', { name: 'Try it with sample data' }).first();
   assert.equal(await action.isVisible(), true);
   assert.ok((await action.boundingBox()).y < 844, 'primary action appears in the first phone viewport');
+  const facts = await page.locator('.hero-facts li').evaluateAll((items) => items.map((item) => ({ text: item.textContent.trim(), bottom: item.getBoundingClientRect().bottom })));
+  assert.deepEqual(facts.map((fact) => fact.text), ['Does not change source folders', 'No photos uploaded', 'Free command-line tool']);
+  assert.equal(facts.every((fact) => fact.bottom <= 844), true, 'all three facts appear in the first phone viewport');
   await action.click();
-  await page.waitForURL(`${base}/demo/?demo=1`);
+  await page.waitForURL(`${base}/demo/`);
   await page.getByText('Demo — sample data, nothing is saved').waitFor();
   const details = page.locator('details').first();
   await details.locator('summary').click();

@@ -27,3 +27,23 @@ test('static host rewrites missing paths to the designed 404 without a home fall
   assert.equal(config.responseOverrides['404'].rewrite, '/404.html');
   assert.equal(config.navigationFallback, undefined);
 });
+
+test('each registered claim has exactly one matching tagged test', async () => {
+  const claims = JSON.parse(await readFile('.factory/claims.json', 'utf8'));
+  const tests = await readFile('site/test/claims.test.mjs', 'utf8');
+  const ids = claims.map((claim) => claim.id);
+  assert.equal(new Set(ids).size, ids.length, 'claim IDs are unique');
+  for (const claim of claims) {
+    assert.equal(claim.test, `npm run test:claims -- @claim:${claim.id}`);
+    const tag = `@claim:${claim.id}`;
+    assert.equal(tests.split(tag).length - 1, 1, `${tag} occurs exactly once`);
+  }
+  const tags = [...tests.matchAll(/@claim:([a-z0-9-]+)/g)].map((match) => match[1]);
+  assert.deepEqual(tags.sort(), [...ids].sort(), 'no tagged test is outside the registry');
+});
+
+test('catalog description is verb-first and within 120 characters', async () => {
+  const description = (await readFile('.factory/catalog-description.txt', 'utf8')).trim();
+  assert.ok(description.length <= 120, `${description.length} characters`);
+  assert.match(description, /^(?:Check|Verify|Compare|Create|Review)\b/);
+});

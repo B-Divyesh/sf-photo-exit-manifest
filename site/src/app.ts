@@ -2,7 +2,7 @@ import './style.css';
 import './shared';
 
 const params = new URLSearchParams(location.search);
-if (params.get('demo') === '1') location.replace('/demo/?demo=1');
+if (params.get('demo') === '1') location.replace('/demo/');
 
 const copy = document.querySelector<HTMLButtonElement>('#copy-command');
 copy?.addEventListener('click', async () => {

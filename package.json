@@ -10,6 +10,7 @@
     "test:pwa": "npm run build:site && node --test site/test/pwa.test.mjs",
     "test:browser": "node --test site/test/browser.test.mjs",
     "test:claims": "node scripts/run-claims.mjs",
+    "audit:copy": "npm run build:site && node scripts/copy-audit.mjs",
     "build:site": "vite build --config vite.config.js && node scripts/build-sw.mjs",
     "build": "cargo build --release && npm run build:site && node scripts/package.mjs"
   },

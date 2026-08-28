@@ -53,6 +53,7 @@ test('production worker precaches the hashed shell, survives offline reload, and
   assert.ok(hashedAssets.some((entry) => entry.endsWith('.js')), 'hashed application JavaScript is precached');
   assert.ok(hashedAssets.some((entry) => entry.endsWith('.css')), 'hashed application CSS is precached');
   assert.match(worker, /event\.waitUntil\(result\.then/, 'runtime cache writes extend the fetch lifetime');
+  assert.match(worker, /event\.request\.mode === 'navigate'/, 'navigation cache lookup ignores query strings');
 
   const server = await serveBuiltSite();
   try {
