@@ -1,44 +1,6 @@
 {
   "communities": {
     "0": [
-      "src_lib",
-      "src_lib_asset",
-      "src_lib_audit",
-      "src_lib_auditsummary",
-      "src_lib_backupmode",
-      "src_lib_build_manifest",
-      "src_lib_compare",
-      "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
-      "src_lib_compare_requires_hashes_and_accounts_named_exception",
-      "src_lib_conflictpolicy",
-      "src_lib_deletionbehavior",
-      "src_lib_devicepolicy",
-      "src_lib_enum_label",
-      "src_lib_exceptionfile",
-      "src_lib_fallback_key",
-      "src_lib_inventory_fixture",
-      "src_lib_manifest_holds_when_retention_is_unsafe",
-      "src_lib_matchrecord",
-      "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
-      "src_lib_namedalbumexception",
-      "src_lib_namedexception",
-      "src_lib_now",
-      "src_lib_offlinebehavior",
-      "src_lib_planning_comparison_never_reuses_one_destination_for_two_sources",
-      "src_lib_policy_template",
-      "src_lib_policyset",
-      "src_lib_ready_audit_stays_on_hold_until_signed",
-      "src_lib_render_manifest",
-      "src_lib_rs_option",
-      "src_lib_rs_string",
-      "src_lib_sidecardata",
-      "src_lib_signedmanifest",
-      "src_lib_timestamp_to_rfc3339",
-      "src_lib_validate_policies",
-      "value",
-      "vec"
-    ],
-    "1": [
       "axe_core",
       "fontsource_ibm_plex_mono",
       "fontsource_variable_instrument_sans",
@@ -53,6 +15,7 @@
       "package_name",
       "package_private",
       "package_scripts",
+      "package_scripts_audit_copy",
       "package_scripts_build",
       "package_scripts_build_site",
       "package_scripts_dev",
@@ -67,9 +30,39 @@
       "typescript",
       "vite"
     ],
+    "1": [
+      "src_lib",
+      "src_lib_album_for",
+      "src_lib_backupmode",
+      "src_lib_conflictpolicy",
+      "src_lib_deletionbehavior",
+      "src_lib_devicepolicy",
+      "src_lib_ensure_writable",
+      "src_lib_enum_label",
+      "src_lib_hashmode",
+      "src_lib_inventory",
+      "src_lib_inventorykind",
+      "src_lib_offlinebehavior",
+      "src_lib_parse_sidecar",
+      "src_lib_portable_relative",
+      "src_lib_rs_path",
+      "src_lib_rs_pathbuf",
+      "src_lib_rs_result",
+      "src_lib_save",
+      "src_lib_sha256",
+      "src_lib_sidecar_candidates",
+      "src_lib_sidecardata",
+      "src_lib_supported_extension",
+      "src_lib_takeout_inventory_collapses_album_copies_and_reads_sidecars",
+      "src_lib_write_json",
+      "src_lib_write_text",
+      "t"
+    ],
     "2": [
       "from",
       "self",
+      "src_lib_ensure_output_outside",
+      "src_lib_read_json",
       "src_main",
       "src_main_cli",
       "src_main_command",
@@ -93,28 +86,6 @@
       "src_main_status"
     ],
     "3": [
-      "src_lib_album_for",
-      "src_lib_ensure_output_outside",
-      "src_lib_ensure_writable",
-      "src_lib_hashmode",
-      "src_lib_inventory",
-      "src_lib_inventorykind",
-      "src_lib_parse_sidecar",
-      "src_lib_portable_relative",
-      "src_lib_read_json",
-      "src_lib_rs_path",
-      "src_lib_rs_pathbuf",
-      "src_lib_rs_result",
-      "src_lib_save",
-      "src_lib_sha256",
-      "src_lib_sidecar_candidates",
-      "src_lib_supported_extension",
-      "src_lib_takeout_inventory_collapses_album_copies_and_reads_sidecars",
-      "src_lib_write_json",
-      "src_lib_write_text",
-      "t"
-    ],
-    "4": [
       "ref_dom",
       "ref_dom_iterable",
       "ref_es2022",
@@ -135,7 +106,40 @@
       "tsconfig_compileroptions_usedefineforclassfields",
       "tsconfig_include"
     ],
+    "4": [
+      "src_lib_asset",
+      "src_lib_audit",
+      "src_lib_auditsummary",
+      "src_lib_build_manifest",
+      "src_lib_exceptionfile",
+      "src_lib_fallback_key",
+      "src_lib_matchrecord",
+      "src_lib_namedalbumexception",
+      "src_lib_namedexception",
+      "src_lib_policyset",
+      "src_lib_render_manifest",
+      "src_lib_rs_option",
+      "src_lib_rs_string",
+      "src_lib_signedmanifest",
+      "src_lib_timestamp_to_rfc3339",
+      "src_lib_validate_policies",
+      "value",
+      "vec"
+    ],
     "5": [
+      "scripts_copy_audit",
+      "scripts_copy_audit_cleanmarkdown",
+      "scripts_copy_audit_count",
+      "scripts_copy_audit_flags",
+      "scripts_copy_audit_landingsentences",
+      "scripts_copy_audit_readmeparagraphs",
+      "scripts_copy_audit_readmesentences",
+      "scripts_copy_audit_root",
+      "scripts_copy_audit_sentences",
+      "scripts_copy_audit_server",
+      "scripts_copy_audit_table"
+    ],
+    "6": [
       "site_src_app",
       "site_src_app_copy",
       "site_src_app_params",
@@ -148,16 +152,29 @@
       "site_src_shared_offline",
       "site_src_shared_updatenetwork"
     ],
-    "6": [
+    "7": [
+      "src_lib_compare",
+      "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
+      "src_lib_compare_requires_hashes_and_accounts_named_exception",
+      "src_lib_inventory_fixture",
+      "src_lib_manifest_holds_when_retention_is_unsafe",
+      "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
+      "src_lib_now",
+      "src_lib_planning_comparison_never_reuses_one_destination_for_two_sources",
+      "src_lib_policy_template",
+      "src_lib_ready_audit_stays_on_hold_until_signed"
+    ],
+    "8": [
       "site_test_claims_test",
       "site_test_claims_test_binary",
       "site_test_claims_test_run",
+      "site_test_claims_test_runguarded",
       "site_test_claims_test_servebuiltsite",
       "site_test_claims_test_siteroot",
       "site_test_claims_test_treedigest",
       "site_test_claims_test_treedigest_walk"
     ],
-    "7": [
+    "9": [
       "path",
       "tests_cli_e2e",
       "tests_cli_e2e_album_gaps_hold_a_signed_run_until_reviewed_by_name",
@@ -165,7 +182,7 @@
       "tests_cli_e2e_claim_demo_isolation_runs_bundled_sample_only_in_its_workspace",
       "tests_cli_e2e_documented_run_writes_a_signed_ready_manifest"
     ],
-    "8": [
+    "10": [
       "scripts_build_sw",
       "scripts_build_sw_assets",
       "scripts_build_sw_pages",
@@ -173,79 +190,90 @@
       "scripts_build_sw_siteroot",
       "scripts_build_sw_version"
     ],
-    "9": [
+    "11": [
+      "socklen_t",
+      "tests_network_guard",
+      "tests_network_guard_connect",
+      "tests_network_guard_record_attempt",
+      "tests_network_guard_sendto",
+      "tests_network_guard_socket"
+    ],
+    "12": [
       "scripts_package",
       "scripts_package_binary",
       "scripts_package_out",
       "scripts_package_packaged"
     ],
-    "10": [
+    "13": [
       "site_test_pwa_test",
       "site_test_pwa_test_servebuiltsite",
       "site_test_pwa_test_siteroot",
       "site_test_pwa_test_withbrowser"
     ],
-    "11": [
+    "14": [
       "scripts_run_claims",
       "scripts_run_claims_args",
       "scripts_run_claims_run"
     ],
-    "12": [
+    "15": [
       "site_test_browser_test",
       "site_test_browser_test_siteroot"
     ],
-    "13": [
+    "16": [
       "site_test_routes_test",
       "site_test_routes_test_routes"
     ],
-    "14": [
+    "17": [
       "option"
     ],
-    "15": [
+    "18": [
       "pathbuf"
     ],
-    "16": [
+    "19": [
       "pkg_photo_exit_manifest"
     ],
-    "17": [
+    "20": [
       "result"
     ],
-    "18": [
+    "21": [
       "scripts_a11y"
     ],
-    "19": [
+    "22": [
       "site_public_sw"
     ],
-    "20": [
+    "23": [
       "string"
     ],
-    "21": [
+    "24": [
       "vite_config"
     ]
   },
   "cohesion": {
-    "0": 0.17142857142857143,
-    "1": 0.07407407407407407,
-    "2": 0.2015810276679842,
-    "3": 0.19473684210526315,
-    "4": 0.10526315789473684,
-    "5": 0.18181818181818182,
-    "6": 0.2857142857142857,
-    "7": 0.3333333333333333,
-    "8": 0.3333333333333333,
-    "9": 0.5,
-    "10": 0.5,
-    "11": 0.6666666666666666,
-    "12": 1.0,
-    "13": 1.0,
-    "14": 1.0,
+    "0": 0.07142857142857142,
+    "1": 0.18461538461538463,
+    "2": 0.18333333333333332,
+    "3": 0.10526315789473684,
+    "4": 0.27450980392156865,
+    "5": 0.23636363636363636,
+    "6": 0.18181818181818182,
+    "7": 0.35555555555555557,
+    "8": 0.25,
+    "9": 0.3333333333333333,
+    "10": 0.3333333333333333,
+    "11": 0.6,
+    "12": 0.5,
+    "13": 0.5,
+    "14": 0.6666666666666666,
     "15": 1.0,
     "16": 1.0,
     "17": 1.0,
     "18": 1.0,
     "19": 1.0,
     "20": 1.0,
-    "21": 1.0
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0
   },
   "gods": [
     {
@@ -279,13 +307,13 @@
       "degree": 11
     },
     {
-      "id": "src_lib_audit",
-      "label": "Audit",
-      "degree": 9
-    },
-    {
       "id": "package_scripts",
       "label": "scripts",
+      "degree": 10
+    },
+    {
+      "id": "src_lib_audit",
+      "label": "Audit",
       "degree": 9
     },
     {
