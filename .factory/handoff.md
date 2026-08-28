@@ -1,54 +1,51 @@
-# Polish 2 handoff — Photo Exit Manifest
+# Review 3 handoff — Photo Exit Manifest
 
 ## Outcome
 
-Perfection-loop round 2 is complete. All ten review-2 findings and every earlier review-1 finding are resolved. The CLI remains the artifact, and the site keeps its luminous archive-glass identity.
+Adversarial first-read review 3 is complete with a **FAIL** and two blocking claim-gate findings. No product code was modified.
 
-Implementation commit: `ea43307`
+Review report: `.factory/review-3.md`
 
-Deployment: `a63a129e-48d9-4d0e-b77a-e818acaa30f3`
+Reviewed candidate: `1d3201a241f90a9b5908768ad6ad1439f07119b4`
 
 Live URL: https://photo-exit-manifest.sociobot.in/
 
-## What changed
+## What was done
 
-- Canonicalized the one-click `/?demo=1` route and made query-bearing navigation work from the offline cache.
-- Corrected the edited-file readiness rule and clarified the first-screen folder, exception, and command-line labels.
-- Expanded `.factory/claims.json` from 11 to 16 entries with readiness, device-policy, album-label, tracking, and build claims.
-- Added runtime CLI network denial/recording and explicit browser request/storage/beacon checks.
-- Removed unprovable release-ownership wording and the “quickest” comparison.
-- Added reproducible landing/README word counts through `npm run audit:copy`.
-- Updated the verb-first catalog line to 83 characters.
-
-The finding-by-finding record is `.factory/polish-2.md`.
+- Opened the live site cold at 390×844 and 1366×900 and recorded the unscrolled first-screen interpretation.
+- Audited every landing/README sentence, headings, labels, actions, conditional copy, and image alt text for length, jargon, terminology, and action clarity.
+- Exercised the one-click browser demo, reset, real-data sentinel isolation, storage behavior, same-origin network behavior, offline reload, and offline re-entry.
+- Ran the CLI demo in a new temporary directory and verified its sibling sentinel remained unchanged.
+- Read every prior review, polish report, verification report, and handoff; independently rechecked every earlier finding.
+- Ran all 16 claim commands separately from a clean clone, then ran the full quality suite and a clean source install.
+- Crawled every live link and hash target; checked real routes, HTTP 404 behavior, metadata, history focus, mobile reflow, and visual identity.
+- Ran live axe checks on five routes at phone and desktop sizes and ran the factory URL verifier.
+- Compared local-build and live SHA-256 hashes for home, demo, privacy, terms, 404, and the service worker; all matched.
 
 ## How to verify
+
+From a clean checkout:
 
 ```sh
 npm ci
 npm test
+npm run build
 cargo fmt --check
 cargo clippy --all-targets -- -D warnings
-npm run build
-cargo package --allow-dirty
+node scripts/a11y.mjs https://photo-exit-manifest.sociobot.in
 ```
 
-Run an individual claim with `npm run test:claims -- @claim:<id>`. The claim runner performs a production build before executing the observable test. Regenerate the copy audit with `npm run audit:copy`.
+Run an individual registered claim with:
 
-Clean-clone evidence at `/tmp/photo-exit-polish2-clean-9nzNyk/repo` passed all 16 claim commands separately and the complete command set above. `dist/site/` and executable `dist/package/photo-exit-manifest-linux-x86_64` were produced.
+```sh
+npm run test:claims -- @claim:<id>
+```
 
-## Live evidence
-
-- Factory URL verifier: HTTP 200, no console errors, correct title/lang/h1/main/alt/button checks.
-- Axe: zero violations on five routes at 390px and 1366px.
-- Cold browser: `/?demo=1` → `/demo/`; banner/reset/sentinel isolation passed; reload and direct documented-entry revisit passed offline.
-- Routes: home/demo/privacy/terms returned 200 with distinct titles; unknown route returned 404 with the designed page; all local links and hashes passed.
-- Tracking: five routes made 31 allowlisted same-origin static requests; no cookies, local/session storage, IndexedDB, or beacon calls.
-- Deployment fidelity: home, demo, privacy, terms, 404, and service-worker SHA-256 values matched local build output.
-- Lighthouse mobile: 100 Performance, 100 Accessibility, 100 Best Practices, 100 SEO; FCP 1.1s, LCP 1.4s, TBT 40ms, CLS 0.022.
-
-Screenshots and reports are under `.factory/evidence/polish-2/` in this worktree.
+The review used the clean clone `/tmp/photo-exit-review3-clean-aEiRI2/repo`. All 16 registered claim commands passed separately. The full suite passed 7 Rust unit, 4 CLI integration, 4 site contract, 1 PWA, 4 browser, and 16 claim tests. The build, format check, strict Clippy check, and `cargo install --path . --locked` also passed.
 
 ## Known gaps and next steps
 
-None. The Lighthouse process logged a Chrome teardown crash after writing its complete scored report; independent browser, axe, and URL checks all passed.
+- `F-3-1`: register and assert the README promise that missing Google export notes produce warnings, or remove that promise.
+- `F-3-2`: make `package-contract` compile/test the locked package with Rust 1.85 rather than checking only Cargo metadata.
+
+After both fixes, rerun all claim commands separately and repeat the cold-browser review. All other reviewed behavior passed.
