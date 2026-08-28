@@ -1,59 +1,53 @@
-# Polish 1 handoff — Photo Exit Manifest
+# Review 2 handoff — Photo Exit Manifest
 
 ## Outcome
 
-Perfection-loop round 1 is complete. Every finding in `.factory/review-1.md` is fixed and mapped in `.factory/polish-1.md`.
+Adversarial first-read review 2 is complete for commit `ea7f415fe17cd754d73b3a3a8bed36b84de9bb5c` and the matching live deployment.
 
-Repair commit `e1a7155b6aa851ee51aa2127eff032803cefb630` is pushed to `origin/main`. Final static deployment `27e83bb0-0303-4bcc-91e8-55c19f3d90c0` is live at https://photo-exit-manifest.sociobot.in/.
+Verdict: **FAIL** with seven blocking and three minor findings. The full evidence, exact quotes, rewrites, claim results, historical-finding audit, copy audit, and remediation criteria are in `.factory/review-2.md`.
 
-## Delivered
+No product code was changed.
 
-- A one-click `/?demo=1` browser demo with a persistent sandbox banner, reset, exit, complete sample audit, signed migration report, and terminal record.
-- A real `photo-exit-manifest demo` command using bundled fixtures in a new temporary workspace.
-- Eleven registered claims with one tagged observable test each.
-- Plain first-screen wording, one primary action, consistent terminology, and a completed copy audit.
-- Distinct titles and metadata for home, demo, privacy, terms, and the styled 404.
-- Real static routes, HTTP 404 handling, route-change focus, consistent navigation/footer/legal links, and mobile-specific layout.
-- An original art-derived 1200×630 social card and 180×180 archive-mark touch icon.
-- A one-to-one planning comparison fix so one destination item cannot satisfy two source items.
-- Updated README, demo guide, visual thesis, catalog description, privacy policy, and terms.
+## Main findings
 
-## Verification evidence
+- The documented one-click demo lands on `/demo/?demo=1`, which fails to reload offline; the registered test only checks `/demo/`.
+- Landing copy falsely says edited files hold a report, while the live demo shows an edit warning in a ready report.
+- The CLI no-network promise lacks runtime network interception.
+- Device-policy recording, album-label gating, tracking absence, and release/build statements are not fully represented in `.factory/claims.json`.
+- Two first-page labels are unclear, “quickest” is untested marketing copy, and nine prior landing word counts are inaccurate.
 
-A separate clean checkout of `e1a7155` passed:
+## Verification performed
+
+From a separate clean clone at `/tmp/photo-exit-review2-clean-QmTXYg/repo`:
 
 ```sh
 npm ci
-# all 11 commands listed in .factory/claims.json, run separately
-npm test
-cargo fmt --check
-cargo clippy --all-targets -- -D warnings
-npm run build
-cargo package --allow-dirty
-```
-
-Totals: 7 Rust unit tests, 4 CLI integration tests, 2 route tests, 1 production PWA test, 4 browser tests, and 11 claim tests. The package verification compiled all 87 packaged files.
-
-Live evidence after deployment:
-
-- Factory URL verifier: HTTP 200, correct title/lang/h1/main/alt labels, zero console errors.
-- Axe: 0 violations at 390px and 1366px across all five pages.
-- Cold browser: sample redirect, banner/reset/exit, empty storage, same-origin requests, mobile fit, real route titles, HTTP 404, and offline demo reload passed.
-- Local/live hashes match for all HTML routes and `sw.js`.
-- Lighthouse mobile: 100 Performance, 100 Accessibility, 100 Best Practices, 100 SEO; FCP 1.1s, LCP 1.5s, TBT 90ms, CLS 0.022.
-- Build sizes: initial route JS 2.00 KB raw / 1.12 KB gzip; CSS 21.68 KB raw / 5.60 KB gzip; fonts 44.98 KB; hero 71.84 KB.
-
-Screenshots and reports are under `.factory/evidence/polish-1/`, including `screenshot-desktop.png`, `screenshot-mobile.png`, `live-demo-mobile.png`, `verify.json`, and `lighthouse-live.json`.
-
-## Run and deploy
-
-```sh
-npm ci
+# Each of the 11 commands in .factory/claims.json, separately
 npm test
 npm run build
-/opt/fleet/lib/deploy-static.sh photo-exit-manifest dist/site
+./target/debug/photo-exit-manifest demo --json
 ```
 
-## Known gaps
+All listed claim commands, the full test suite, and the build passed. The build produced `dist/site/` and the packaged Linux executable.
 
-None. The unavailable paid offer was removed instead of linking to a nonexistent checkout. Registry publication remains factory-owned and was not performed.
+Live checks covered:
+
+- cold 390×844 and 1440×900 first screens;
+- one-click demo, banner, reset, focus, storage sentinel, same-origin requests, and offline reload;
+- route metadata, HTTP status, security headers, all links and hash targets;
+- forward/back focus restoration;
+- the factory URL verifier;
+- axe on home, demo, privacy, terms, and 404 at mobile and desktop sizes.
+
+Axe reported zero violations and the URL verifier found no console errors. Local production HTML and `sw.js` hashes matched the live responses.
+
+## Files changed
+
+- `.factory/review-2.md` — added the independent review.
+- `.factory/handoff.md` — replaced the prior repair handoff with this review handoff, as required by the work order.
+
+Pre-existing `graphify-out/` modifications and untracked cache files were left untouched and excluded from the review commit.
+
+## Next step
+
+Repair F-2-1 through F-2-10, then run a new adversarial review from a fresh browser context and clean clone. A green existing suite is not sufficient until the documented one-click offline path and every public claim are tested directly.
