@@ -77,8 +77,8 @@ Token rule: collapse whitespace, then count whitespace-delimited tokens. Hyphena
 | 4 | Five match the archive. |
 | 7 | One missing video has a named exception. |
 | 7 | You can also open the browser demo. |
-| 8 | The demo stores no sample or family data. |
-| 11 | A service worker caches the app files needed for offline use. |
+| 8 | The demo does not store your family data. |
+| 11 | Its offline cache keeps the static app and bundled sample page. |
 | 9 | Create a policy file, then review its device choices. |
 | 4 | Run the complete check. |
 | 7 | The output folder contains these five files. |

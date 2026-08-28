@@ -1,1 +1,1 @@
-Check a Google Photos export against a family archive before leaving the cloud.
+Verify a Google Photos export against your family archive before leaving the cloud.

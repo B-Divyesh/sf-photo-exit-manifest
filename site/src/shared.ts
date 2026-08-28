@@ -1,5 +1,6 @@
 const offline = document.querySelector<HTMLElement>('#offline-notice');
 const scrollStateKey = 'photoExitScrollY';
+let scrollWasSavedForNavigation = false;
 
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
@@ -10,6 +11,11 @@ function updateNetwork() {
 function rememberScrollPosition() {
   const state = history.state && typeof history.state === 'object' ? history.state : {};
   history.replaceState({ ...state, [scrollStateKey]: window.scrollY }, '');
+}
+
+function rememberLeavingScrollPosition() {
+  rememberScrollPosition();
+  scrollWasSavedForNavigation = true;
 }
 
 function announceRoute(event?: PageTransitionEvent) {
@@ -33,7 +39,7 @@ function announceRoute(event?: PageTransitionEvent) {
   };
   if (restoreScroll && typeof savedScroll === 'number') {
     window.requestAnimationFrame(() => {
-      window.scrollTo(0, savedScroll);
+      window.scrollTo({ left: 0, top: savedScroll, behavior: 'instant' });
       focusHeading();
     });
   } else {
@@ -44,12 +50,18 @@ function announceRoute(event?: PageTransitionEvent) {
 window.addEventListener('online', updateNetwork);
 window.addEventListener('offline', updateNetwork);
 window.addEventListener('pageshow', announceRoute);
-window.addEventListener('pagehide', rememberScrollPosition);
+window.addEventListener('pageshow', () => { scrollWasSavedForNavigation = false; });
+window.addEventListener('pagehide', () => {
+  // A same-origin link click has already captured the current page position.
+  // Saving again here can happen after the browser has reset scroll to zero,
+  // which would overwrite the position needed by Back.
+  if (!scrollWasSavedForNavigation) rememberScrollPosition();
+});
 document.addEventListener('click', (event) => {
   const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
-  if (!link) return;
+  if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target || link.hasAttribute('download')) return;
   const destination = new URL(link.href, location.href);
-  if (destination.origin === location.origin && destination.href !== location.href) rememberScrollPosition();
+  if (destination.origin === location.origin && destination.href !== location.href) rememberLeavingScrollPosition();
 });
 updateNetwork();
 

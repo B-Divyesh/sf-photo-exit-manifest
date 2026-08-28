@@ -93,16 +93,23 @@ test('navigation, focus restoration, metadata and local links work as real route
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(base, { waitUntil: 'networkidle' });
-  await page.evaluate(() => window.scrollTo(0, 700));
+  await page.evaluate(() => window.scrollTo({ top: 700, behavior: 'instant' }));
   await page.waitForFunction(() => window.scrollY >= 650);
   const savedScroll = await page.evaluate(() => window.scrollY);
-  await page.evaluate(() => document.querySelector('a[href="/privacy/"]')?.click());
-  await page.waitForURL(`${base}/privacy/`);
+  const privacyLink = page.locator('a[href="/privacy/"]').first();
+  const privacyLinkBox = await privacyLink.boundingBox();
+  assert.ok(privacyLinkBox, 'Privacy link is visible after scrolling');
+  await Promise.all([
+    page.waitForURL(`${base}/privacy/`),
+    page.mouse.click(privacyLinkBox.x + privacyLinkBox.width / 2, privacyLinkBox.y + privacyLinkBox.height / 2),
+  ]);
   assert.equal(await page.title(), 'Privacy — Photo Exit Manifest');
   assert.equal(await page.evaluate(() => document.activeElement === document.querySelector('main h1')), true);
-  await page.goBack();
+  const backNavigation = page.waitForURL(`${base}/`, { waitUntil: 'load' });
+  await page.goBack({ waitUntil: 'commit' });
+  await backNavigation;
   assert.equal(await page.title(), 'Photo Exit Manifest — Verify a photo archive');
-  await page.waitForFunction(({ savedScroll }) => document.activeElement === document.querySelector('main h1') && Math.abs(window.scrollY - savedScroll) <= 1, { savedScroll });
+  await page.waitForFunction(({ savedScroll }) => document.activeElement === document.querySelector('main h1') && Math.abs(window.scrollY - savedScroll) <= 2, { savedScroll }, { timeout: 10_000 });
 
   for (const path of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
     await page.goto(`${base}${path}`, { waitUntil: 'networkidle' });

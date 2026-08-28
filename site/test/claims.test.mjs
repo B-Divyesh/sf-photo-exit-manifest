@@ -332,6 +332,8 @@ test('@claim:album-exception-gate an album-only gap holds until its named resolu
 });
 
 test('@claim:no-tracking public routes use only allowlisted static resources and cache only the documented app shell', async () => {
+  const readme = await readFile('README.md', 'utf8');
+  assert.match(readme, /The demo does not store your family data\. Its offline cache keeps the static app and bundled sample page\./, 'README must distinguish family data from the bundled sample page cached for offline use');
   const browser = await chromium.launch();
   const allowedFixed = new Set(['/archive-landscape.webp', '/mark.svg', '/apple-touch-icon.png', '/sw.js']);
   const worker = await readFile(join(siteRoot, 'sw.js'), 'utf8');
@@ -351,6 +353,10 @@ test('@claim:no-tracking public routes use only allowlisted static resources and
     const requests = [];
     page.on('request', (request) => requests.push(request.url()));
     await page.goto(`${base}${path}`, { waitUntil: 'networkidle' });
+    if (path === '/privacy/') {
+      const privacyCopy = await page.locator('main').textContent();
+      assert.match(privacyCopy, /The offline cache keeps the static app and bundled sample page\. It never adds user-entered or family data to that cache\./, 'privacy copy must disclose the bundled sample page in Cache Storage');
+    }
     for (const raw of requests) {
       const url = new URL(raw);
       assert.equal(url.origin, new URL(base).origin, `third-party request on ${path}: ${raw}`);
