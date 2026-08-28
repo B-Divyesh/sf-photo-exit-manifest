@@ -93,13 +93,16 @@ test('navigation, focus restoration, metadata and local links work as real route
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(base, { waitUntil: 'networkidle' });
-  await page.getByRole('link', { name: 'Privacy', exact: true }).first().click();
+  await page.evaluate(() => window.scrollTo(0, 700));
+  await page.waitForFunction(() => window.scrollY >= 650);
+  const savedScroll = await page.evaluate(() => window.scrollY);
+  await page.evaluate(() => document.querySelector('a[href="/privacy/"]')?.click());
   await page.waitForURL(`${base}/privacy/`);
   assert.equal(await page.title(), 'Privacy — Photo Exit Manifest');
   assert.equal(await page.evaluate(() => document.activeElement === document.querySelector('main h1')), true);
   await page.goBack();
   assert.equal(await page.title(), 'Photo Exit Manifest — Verify a photo archive');
-  assert.equal(await page.evaluate(() => document.activeElement === document.querySelector('main h1')), true);
+  await page.waitForFunction(({ savedScroll }) => document.activeElement === document.querySelector('main h1') && Math.abs(window.scrollY - savedScroll) <= 1, { savedScroll });
 
   for (const path of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
     await page.goto(`${base}${path}`, { waitUntil: 'networkidle' });
