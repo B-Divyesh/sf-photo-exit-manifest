@@ -85,33 +85,44 @@
       "label": "announceRoute()",
       "_callable": true,
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "announceroute()",
       "source_file": "site/src/shared.ts",
-      "source_location": "L15"
+      "source_location": "L21"
+    },
+    {
+      "id": "site_src_shared_rememberleavingscrollposition",
+      "label": "rememberLeavingScrollPosition()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "file_type": "code",
+      "norm_label": "rememberleavingscrollposition()",
+      "source_file": "site/src/shared.ts",
+      "source_location": "L16"
     },
     {
       "id": "site_src_shared_rememberscrollposition",
       "label": "rememberScrollPosition()",
       "_callable": true,
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "rememberscrollposition()",
       "source_file": "site/src/shared.ts",
-      "source_location": "L10"
+      "source_location": "L11"
     },
     {
       "id": "site_src_shared_updatenetwork",
       "label": "updateNetwork()",
       "_callable": true,
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "updatenetwork()",
       "source_file": "site/src/shared.ts",
-      "source_location": "L6"
+      "source_location": "L7"
     },
     {
       "id": "scripts_copy_audit_cleanmarkdown",
@@ -235,312 +246,12 @@
       "source_location": "L40"
     },
     {
-      "id": "package",
-      "label": "package.json",
+      "id": "option",
+      "label": "Option",
       "_origin": "ast",
       "community": 0,
       "file_type": "code",
-      "norm_label": "package.json",
-      "source_file": "package.json",
-      "source_location": "L1"
-    },
-    {
-      "id": "package_devdependencies",
-      "label": "devDependencies",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "devdependencies",
-      "source_file": "package.json",
-      "source_location": "L17"
-    },
-    {
-      "id": "package_devdependencies_axe_core",
-      "label": "axe-core",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "axe-core",
-      "source_file": "package.json",
-      "source_location": "L20"
-    },
-    {
-      "id": "package_devdependencies_fontsource_ibm_plex_mono",
-      "label": "@fontsource/ibm-plex-mono",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "@fontsource/ibm-plex-mono",
-      "source_file": "package.json",
-      "source_location": "L19"
-    },
-    {
-      "id": "package_devdependencies_fontsource_variable_instrument_sans",
-      "label": "@fontsource-variable/instrument-sans",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "@fontsource-variable/instrument-sans",
-      "source_file": "package.json",
-      "source_location": "L18"
-    },
-    {
-      "id": "package_devdependencies_playwright",
-      "label": "playwright",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "playwright",
-      "source_file": "package.json",
-      "source_location": "L21"
-    },
-    {
-      "id": "package_devdependencies_typescript",
-      "label": "typescript",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "typescript",
-      "source_file": "package.json",
-      "source_location": "L22"
-    },
-    {
-      "id": "package_devdependencies_vite",
-      "label": "vite",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "vite",
-      "source_file": "package.json",
-      "source_location": "L23"
-    },
-    {
-      "id": "package_name",
-      "label": "name",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "name",
-      "source_file": "package.json",
-      "source_location": "L2"
-    },
-    {
-      "id": "package_private",
-      "label": "private",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "private",
-      "source_file": "package.json",
-      "source_location": "L4"
-    },
-    {
-      "id": "package_scripts",
-      "label": "scripts",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "scripts",
-      "source_file": "package.json",
-      "source_location": "L6"
-    },
-    {
-      "id": "package_scripts_audit_copy",
-      "label": "audit:copy",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "audit:copy",
-      "source_file": "package.json",
-      "source_location": "L13"
-    },
-    {
-      "id": "package_scripts_build",
-      "label": "build",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "build",
-      "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
-      "id": "package_scripts_build_site",
-      "label": "build:site",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "build:site",
-      "source_file": "package.json",
-      "source_location": "L14"
-    },
-    {
-      "id": "package_scripts_dev",
-      "label": "dev",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "dev",
-      "source_file": "package.json",
-      "source_location": "L7"
-    },
-    {
-      "id": "package_scripts_test",
-      "label": "test",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "test",
-      "source_file": "package.json",
-      "source_location": "L8"
-    },
-    {
-      "id": "package_scripts_test_browser",
-      "label": "test:browser",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "test:browser",
-      "source_file": "package.json",
-      "source_location": "L11"
-    },
-    {
-      "id": "package_scripts_test_claims",
-      "label": "test:claims",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "test:claims",
-      "source_file": "package.json",
-      "source_location": "L12"
-    },
-    {
-      "id": "package_scripts_test_pwa",
-      "label": "test:pwa",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "test:pwa",
-      "source_file": "package.json",
-      "source_location": "L10"
-    },
-    {
-      "id": "package_scripts_test_site",
-      "label": "test:site",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "test:site",
-      "source_file": "package.json",
-      "source_location": "L9"
-    },
-    {
-      "id": "package_type",
-      "label": "type",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "type",
-      "source_file": "package.json",
-      "source_location": "L5"
-    },
-    {
-      "id": "package_version",
-      "label": "version",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "code",
-      "norm_label": "version",
-      "source_file": "package.json",
-      "source_location": "L3"
-    },
-    {
-      "id": "axe_core",
-      "label": "axe-core",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "concept",
-      "norm_label": "axe-core",
-      "source_file": "package.json",
-      "source_location": "L20"
-    },
-    {
-      "id": "fontsource_ibm_plex_mono",
-      "label": "@fontsource/ibm-plex-mono",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "concept",
-      "norm_label": "@fontsource/ibm-plex-mono",
-      "source_file": "package.json",
-      "source_location": "L19"
-    },
-    {
-      "id": "fontsource_variable_instrument_sans",
-      "label": "@fontsource-variable/instrument-sans",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "concept",
-      "norm_label": "@fontsource-variable/instrument-sans",
-      "source_file": "package.json",
-      "source_location": "L18"
-    },
-    {
-      "id": "playwright",
-      "label": "playwright",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "concept",
-      "norm_label": "playwright",
-      "source_file": "package.json",
-      "source_location": "L21"
-    },
-    {
-      "id": "typescript",
-      "label": "typescript",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "concept",
-      "norm_label": "typescript",
-      "source_file": "package.json",
-      "source_location": "L22"
-    },
-    {
-      "id": "vite",
-      "label": "vite",
-      "_origin": "ast",
-      "community": 0,
-      "file_type": "concept",
-      "norm_label": "vite",
-      "source_file": "package.json",
-      "source_location": "L23"
-    },
-    {
-      "id": "path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 1,
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "pathbuf",
-      "label": "PathBuf",
-      "_origin": "ast",
-      "community": 1,
-      "file_type": "code",
-      "norm_label": "pathbuf",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "result",
-      "label": "Result",
-      "_origin": "ast",
-      "community": 1,
-      "file_type": "code",
-      "norm_label": "result",
+      "norm_label": "option",
       "source_file": "",
       "source_location": ""
     },
@@ -548,37 +259,107 @@
       "id": "src_lib",
       "label": "lib.rs",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "lib.rs",
       "source_file": "src/lib.rs",
       "source_location": "L1"
     },
     {
-      "id": "src_lib_album_for",
-      "label": "album_for()",
+      "id": "src_lib_asset",
+      "label": "Asset",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "album_for()",
+      "norm_label": "asset",
       "source_file": "src/lib.rs",
-      "source_location": "L302"
+      "source_location": "L28"
+    },
+    {
+      "id": "src_lib_audit",
+      "label": "Audit",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "audit",
+      "source_file": "src/lib.rs",
+      "source_location": "L84"
+    },
+    {
+      "id": "src_lib_auditsummary",
+      "label": "AuditSummary",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "auditsummary",
+      "source_file": "src/lib.rs",
+      "source_location": "L173"
     },
     {
       "id": "src_lib_backupmode",
       "label": "BackupMode",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "backupmode",
       "source_file": "src/lib.rs",
       "source_location": "L129"
     },
     {
+      "id": "src_lib_build_manifest",
+      "label": "build_manifest()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "build_manifest()",
+      "source_file": "src/lib.rs",
+      "source_location": "L722"
+    },
+    {
+      "id": "src_lib_compare",
+      "label": "compare()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "compare()",
+      "source_file": "src/lib.rs",
+      "source_location": "L483"
+    },
+    {
+      "id": "src_lib_compare_deduplicates_warnings_shared_by_both_inventories",
+      "label": "compare_deduplicates_warnings_shared_by_both_inventories()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "compare_deduplicates_warnings_shared_by_both_inventories()",
+      "source_file": "src/lib.rs",
+      "source_location": "L1078"
+    },
+    {
+      "id": "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
+      "label": "compare_never_accepts_name_and_size_when_hashes_disagree()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "compare_never_accepts_name_and_size_when_hashes_disagree()",
+      "source_file": "src/lib.rs",
+      "source_location": "L1067"
+    },
+    {
+      "id": "src_lib_compare_requires_hashes_and_accounts_named_exception",
+      "label": "compare_requires_hashes_and_accounts_named_exception()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "compare_requires_hashes_and_accounts_named_exception()",
+      "source_file": "src/lib.rs",
+      "source_location": "L1008"
+    },
+    {
       "id": "src_lib_conflictpolicy",
       "label": "ConflictPolicy",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "conflictpolicy",
       "source_file": "src/lib.rs",
@@ -588,7 +369,7 @@
       "id": "src_lib_deletionbehavior",
       "label": "DeletionBehavior",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "deletionbehavior",
       "source_file": "src/lib.rs",
@@ -598,181 +379,461 @@
       "id": "src_lib_devicepolicy",
       "label": "DevicePolicy",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "devicepolicy",
       "source_file": "src/lib.rs",
       "source_location": "L118"
     },
     {
-      "id": "src_lib_ensure_writable",
-      "label": "ensure_writable()",
+      "id": "src_lib_exceptionfile",
+      "label": "ExceptionFile",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "ensure_writable()",
+      "norm_label": "exceptionfile",
       "source_file": "src/lib.rs",
-      "source_location": "L917"
+      "source_location": "L56"
     },
     {
-      "id": "src_lib_enum_label",
-      "label": "enum_label()",
+      "id": "src_lib_fallback_key",
+      "label": "fallback_key()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "enum_label()",
+      "norm_label": "fallback_key()",
       "source_file": "src/lib.rs",
-      "source_location": "L781"
+      "source_location": "L475"
     },
     {
-      "id": "src_lib_hashmode",
-      "label": "HashMode",
+      "id": "src_lib_inventory_fixture",
+      "label": "inventory_fixture()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "hashmode",
+      "norm_label": "inventory_fixture()",
       "source_file": "src/lib.rs",
-      "source_location": "L22"
+      "source_location": "L1201"
     },
     {
-      "id": "src_lib_inventory",
-      "label": "Inventory",
+      "id": "src_lib_manifest_holds_when_retention_is_unsafe",
+      "label": "manifest_holds_when_retention_is_unsafe()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "inventory",
+      "norm_label": "manifest_holds_when_retention_is_unsafe()",
       "source_file": "src/lib.rs",
-      "source_location": "L41"
+      "source_location": "L1159"
     },
     {
-      "id": "src_lib_inventorykind",
-      "label": "InventoryKind",
+      "id": "src_lib_matchrecord",
+      "label": "MatchRecord",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "inventorykind",
+      "norm_label": "matchrecord",
       "source_file": "src/lib.rs",
-      "source_location": "L15"
+      "source_location": "L77"
+    },
+    {
+      "id": "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
+      "label": "missing_album_labels_block_until_each_has_a_reviewed_exception()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "missing_album_labels_block_until_each_has_a_reviewed_exception()",
+      "source_file": "src/lib.rs",
+      "source_location": "L1117"
+    },
+    {
+      "id": "src_lib_namedalbumexception",
+      "label": "NamedAlbumException",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "namedalbumexception",
+      "source_file": "src/lib.rs",
+      "source_location": "L71"
+    },
+    {
+      "id": "src_lib_namedexception",
+      "label": "NamedException",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "namedexception",
+      "source_file": "src/lib.rs",
+      "source_location": "L65"
+    },
+    {
+      "id": "src_lib_now",
+      "label": "now()",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "now()",
+      "source_file": "src/lib.rs",
+      "source_location": "L184"
     },
     {
       "id": "src_lib_offlinebehavior",
       "label": "OfflineBehavior",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "offlinebehavior",
       "source_file": "src/lib.rs",
       "source_location": "L154"
     },
     {
-      "id": "src_lib_parse_sidecar",
-      "label": "parse_sidecar()",
+      "id": "src_lib_planning_comparison_never_reuses_one_destination_for_two_sources",
+      "label": "planning_comparison_never_reuses_one_destination_for_two_sources()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "parse_sidecar()",
+      "norm_label": "planning_comparison_never_reuses_one_destination_for_two_sources()",
       "source_file": "src/lib.rs",
-      "source_location": "L274"
+      "source_location": "L1096"
     },
     {
-      "id": "src_lib_portable_relative",
-      "label": "portable_relative()",
+      "id": "src_lib_policy_template",
+      "label": "policy_template()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "portable_relative()",
+      "norm_label": "policy_template()",
       "source_file": "src/lib.rs",
-      "source_location": "L227"
+      "source_location": "L659"
     },
     {
-      "id": "src_lib_save",
-      "label": "save()",
+      "id": "src_lib_policyset",
+      "label": "PolicySet",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "save()",
+      "norm_label": "policyset",
       "source_file": "src/lib.rs",
-      "source_location": "L971"
+      "source_location": "L109"
     },
     {
-      "id": "src_lib_sha256",
-      "label": "sha256()",
+      "id": "src_lib_ready_audit_stays_on_hold_until_signed",
+      "label": "ready_audit_stays_on_hold_until_signed()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "sha256()",
+      "norm_label": "ready_audit_stays_on_hold_until_signed()",
       "source_file": "src/lib.rs",
-      "source_location": "L236"
+      "source_location": "L1189"
     },
     {
-      "id": "src_lib_sidecar_candidates",
-      "label": "sidecar_candidates()",
+      "id": "src_lib_render_manifest",
+      "label": "render_manifest()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "sidecar_candidates()",
+      "norm_label": "render_manifest()",
       "source_file": "src/lib.rs",
-      "source_location": "L292"
+      "source_location": "L789"
     },
     {
       "id": "src_lib_sidecardata",
       "label": "SidecarData",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
       "norm_label": "sidecardata",
       "source_file": "src/lib.rs",
       "source_location": "L254"
     },
     {
-      "id": "src_lib_supported_extension",
-      "label": "supported_extension()",
+      "id": "src_lib_signedmanifest",
+      "label": "SignedManifest",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "supported_extension()",
+      "norm_label": "signedmanifest",
       "source_file": "src/lib.rs",
-      "source_location": "L188"
+      "source_location": "L160"
     },
     {
-      "id": "src_lib_takeout_inventory_collapses_album_copies_and_reads_sidecars",
-      "label": "takeout_inventory_collapses_album_copies_and_reads_sidecars()",
+      "id": "src_lib_timestamp_to_rfc3339",
+      "label": "timestamp_to_rfc3339()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "takeout_inventory_collapses_album_copies_and_reads_sidecars()",
+      "norm_label": "timestamp_to_rfc3339()",
       "source_file": "src/lib.rs",
-      "source_location": "L977"
+      "source_location": "L259"
     },
     {
-      "id": "src_lib_write_json",
-      "label": "write_json()",
+      "id": "src_lib_validate_policies",
+      "label": "validate_policies()",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "write_json()",
+      "norm_label": "validate_policies()",
       "source_file": "src/lib.rs",
-      "source_location": "L898"
+      "source_location": "L676"
     },
     {
-      "id": "src_lib_write_text",
-      "label": "write_text()",
+      "id": "string",
+      "label": "String",
       "_origin": "ast",
-      "community": 1,
+      "community": 0,
       "file_type": "code",
-      "norm_label": "write_text()",
-      "source_file": "src/lib.rs",
-      "source_location": "L908"
-    },
-    {
-      "id": "t",
-      "label": "T",
-      "_origin": "ast",
-      "community": 1,
-      "file_type": "code",
-      "norm_label": "t",
+      "norm_label": "string",
       "source_file": "",
       "source_location": ""
+    },
+    {
+      "id": "value",
+      "label": "Value",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "value",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "vec",
+      "label": "Vec",
+      "_origin": "ast",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "vec",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "from",
+      "label": "From",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "from",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "self",
+      "label": "Self",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "self",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_main",
+      "label": "main.rs",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "main.rs",
+      "source_file": "src/main.rs",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_main_cli",
+      "label": "Cli",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "cli",
+      "source_file": "src/main.rs",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_main_command",
+      "label": "Command",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "command",
+      "source_file": "src/main.rs",
+      "source_location": "L26"
+    },
+    {
+      "id": "src_main_create_demo_workspace",
+      "label": "create_demo_workspace()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "create_demo_workspace()",
+      "source_file": "src/main.rs",
+      "source_location": "L301"
+    },
+    {
+      "id": "src_main_empty_exceptions",
+      "label": "empty_exceptions()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "empty_exceptions()",
+      "source_file": "src/main.rs",
+      "source_location": "L166"
+    },
+    {
+      "id": "src_main_execute_full_run",
+      "label": "execute_full_run()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "execute_full_run()",
+      "source_file": "src/main.rs",
+      "source_location": "L173"
+    },
+    {
+      "id": "src_main_hasharg",
+      "label": "HashArg",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "hasharg",
+      "source_file": "src/main.rs",
+      "source_location": "L124"
+    },
+    {
+      "id": "src_main_hashmode",
+      "label": "HashMode",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "hashmode",
+      "source_file": "src/main.rs",
+      "source_location": "L138"
+    },
+    {
+      "id": "src_main_hashmode_from",
+      "label": ".from()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": ".from()",
+      "source_file": "src/main.rs",
+      "source_location": "L139"
+    },
+    {
+      "id": "src_main_inventorykind",
+      "label": "InventoryKind",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "inventorykind",
+      "source_file": "src/main.rs",
+      "source_location": "L129"
+    },
+    {
+      "id": "src_main_inventorykind_from",
+      "label": ".from()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": ".from()",
+      "source_file": "src/main.rs",
+      "source_location": "L130"
+    },
+    {
+      "id": "src_main_kindarg",
+      "label": "KindArg",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "kindarg",
+      "source_file": "src/main.rs",
+      "source_location": "L118"
+    },
+    {
+      "id": "src_main_main",
+      "label": "main()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "src/main.rs",
+      "source_location": "L480"
+    },
+    {
+      "id": "src_main_report",
+      "label": "report()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "report()",
+      "source_file": "src/main.rs",
+      "source_location": "L155"
+    },
+    {
+      "id": "src_main_rs_option",
+      "label": "Option",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "option",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_main_rs_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_main_rs_pathbuf",
+      "label": "PathBuf",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "pathbuf",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_main_rs_result",
+      "label": "Result",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "result",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_main_rs_string",
+      "label": "String",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "string",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_main_run",
+      "label": "run()",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "run()",
+      "source_file": "src/main.rs",
+      "source_location": "L329"
+    },
+    {
+      "id": "src_main_status",
+      "label": "Status",
+      "_origin": "ast",
+      "community": 1,
+      "file_type": "code",
+      "norm_label": "status",
+      "source_file": "src/main.rs",
+      "source_location": "L148"
     },
     {
       "id": "socklen_t",
@@ -998,24 +1059,44 @@
       "source_location": "L1"
     },
     {
-      "id": "from",
-      "label": "From",
+      "id": "path",
+      "label": "Path",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "from",
+      "norm_label": "path",
       "source_file": "",
       "source_location": ""
     },
     {
-      "id": "self",
-      "label": "Self",
+      "id": "pathbuf",
+      "label": "PathBuf",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "self",
+      "norm_label": "pathbuf",
       "source_file": "",
       "source_location": ""
+    },
+    {
+      "id": "result",
+      "label": "Result",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "result",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "src_lib_album_for",
+      "label": "album_for()",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "album_for()",
+      "source_file": "src/lib.rs",
+      "source_location": "L302"
     },
     {
       "id": "src_lib_ensure_output_outside",
@@ -1028,6 +1109,76 @@
       "source_location": "L927"
     },
     {
+      "id": "src_lib_ensure_writable",
+      "label": "ensure_writable()",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "ensure_writable()",
+      "source_file": "src/lib.rs",
+      "source_location": "L917"
+    },
+    {
+      "id": "src_lib_enum_label",
+      "label": "enum_label()",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "enum_label()",
+      "source_file": "src/lib.rs",
+      "source_location": "L781"
+    },
+    {
+      "id": "src_lib_hashmode",
+      "label": "HashMode",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "hashmode",
+      "source_file": "src/lib.rs",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_lib_inventory",
+      "label": "Inventory",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "inventory",
+      "source_file": "src/lib.rs",
+      "source_location": "L41"
+    },
+    {
+      "id": "src_lib_inventorykind",
+      "label": "InventoryKind",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "inventorykind",
+      "source_file": "src/lib.rs",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_lib_parse_sidecar",
+      "label": "parse_sidecar()",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "parse_sidecar()",
+      "source_file": "src/lib.rs",
+      "source_location": "L274"
+    },
+    {
+      "id": "src_lib_portable_relative",
+      "label": "portable_relative()",
+      "_origin": "ast",
+      "community": 2,
+      "file_type": "code",
+      "norm_label": "portable_relative()",
+      "source_file": "src/lib.rs",
+      "source_location": "L227"
+    },
+    {
       "id": "src_lib_read_json",
       "label": "read_json()",
       "_origin": "ast",
@@ -1038,214 +1189,84 @@
       "source_location": "L891"
     },
     {
-      "id": "src_main",
-      "label": "main.rs",
+      "id": "src_lib_save",
+      "label": "save()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "main.rs",
-      "source_file": "src/main.rs",
-      "source_location": "L1"
+      "norm_label": "save()",
+      "source_file": "src/lib.rs",
+      "source_location": "L971"
     },
     {
-      "id": "src_main_cli",
-      "label": "Cli",
+      "id": "src_lib_sha256",
+      "label": "sha256()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "cli",
-      "source_file": "src/main.rs",
-      "source_location": "L20"
+      "norm_label": "sha256()",
+      "source_file": "src/lib.rs",
+      "source_location": "L236"
     },
     {
-      "id": "src_main_command",
-      "label": "Command",
+      "id": "src_lib_sidecar_candidates",
+      "label": "sidecar_candidates()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "command",
-      "source_file": "src/main.rs",
-      "source_location": "L26"
+      "norm_label": "sidecar_candidates()",
+      "source_file": "src/lib.rs",
+      "source_location": "L292"
     },
     {
-      "id": "src_main_create_demo_workspace",
-      "label": "create_demo_workspace()",
+      "id": "src_lib_supported_extension",
+      "label": "supported_extension()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "create_demo_workspace()",
-      "source_file": "src/main.rs",
-      "source_location": "L301"
+      "norm_label": "supported_extension()",
+      "source_file": "src/lib.rs",
+      "source_location": "L188"
     },
     {
-      "id": "src_main_empty_exceptions",
-      "label": "empty_exceptions()",
+      "id": "src_lib_takeout_inventory_collapses_album_copies_and_reads_sidecars",
+      "label": "takeout_inventory_collapses_album_copies_and_reads_sidecars()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "empty_exceptions()",
-      "source_file": "src/main.rs",
-      "source_location": "L166"
+      "norm_label": "takeout_inventory_collapses_album_copies_and_reads_sidecars()",
+      "source_file": "src/lib.rs",
+      "source_location": "L977"
     },
     {
-      "id": "src_main_execute_full_run",
-      "label": "execute_full_run()",
+      "id": "src_lib_write_json",
+      "label": "write_json()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "execute_full_run()",
-      "source_file": "src/main.rs",
-      "source_location": "L173"
+      "norm_label": "write_json()",
+      "source_file": "src/lib.rs",
+      "source_location": "L898"
     },
     {
-      "id": "src_main_hasharg",
-      "label": "HashArg",
+      "id": "src_lib_write_text",
+      "label": "write_text()",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "hasharg",
-      "source_file": "src/main.rs",
-      "source_location": "L124"
+      "norm_label": "write_text()",
+      "source_file": "src/lib.rs",
+      "source_location": "L908"
     },
     {
-      "id": "src_main_hashmode",
-      "label": "HashMode",
+      "id": "t",
+      "label": "T",
       "_origin": "ast",
       "community": 2,
       "file_type": "code",
-      "norm_label": "hashmode",
-      "source_file": "src/main.rs",
-      "source_location": "L138"
-    },
-    {
-      "id": "src_main_hashmode_from",
-      "label": ".from()",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": ".from()",
-      "source_file": "src/main.rs",
-      "source_location": "L139"
-    },
-    {
-      "id": "src_main_inventorykind",
-      "label": "InventoryKind",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "inventorykind",
-      "source_file": "src/main.rs",
-      "source_location": "L129"
-    },
-    {
-      "id": "src_main_inventorykind_from",
-      "label": ".from()",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": ".from()",
-      "source_file": "src/main.rs",
-      "source_location": "L130"
-    },
-    {
-      "id": "src_main_kindarg",
-      "label": "KindArg",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "kindarg",
-      "source_file": "src/main.rs",
-      "source_location": "L118"
-    },
-    {
-      "id": "src_main_main",
-      "label": "main()",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "src/main.rs",
-      "source_location": "L480"
-    },
-    {
-      "id": "src_main_report",
-      "label": "report()",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "report()",
-      "source_file": "src/main.rs",
-      "source_location": "L155"
-    },
-    {
-      "id": "src_main_rs_option",
-      "label": "Option",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "option",
+      "norm_label": "t",
       "source_file": "",
       "source_location": ""
-    },
-    {
-      "id": "src_main_rs_path",
-      "label": "Path",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "path",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_main_rs_pathbuf",
-      "label": "PathBuf",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "pathbuf",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_main_rs_result",
-      "label": "Result",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "result",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_main_rs_string",
-      "label": "String",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "string",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "src_main_run",
-      "label": "run()",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "run()",
-      "source_file": "src/main.rs",
-      "source_location": "L329"
-    },
-    {
-      "id": "src_main_status",
-      "label": "Status",
-      "_origin": "ast",
-      "community": 2,
-      "file_type": "code",
-      "norm_label": "status",
-      "source_file": "src/main.rs",
-      "source_location": "L148"
     },
     {
       "id": "src_lib_rs_option",
@@ -1498,180 +1519,290 @@
       "source_location": "L12"
     },
     {
-      "id": "option",
-      "label": "Option",
+      "id": "package",
+      "label": "package.json",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "option",
-      "source_file": "",
-      "source_location": ""
+      "norm_label": "package.json",
+      "source_file": "package.json",
+      "source_location": "L1"
     },
     {
-      "id": "src_lib_asset",
-      "label": "Asset",
+      "id": "package_name",
+      "label": "name",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "asset",
-      "source_file": "src/lib.rs",
-      "source_location": "L28"
+      "norm_label": "name",
+      "source_file": "package.json",
+      "source_location": "L2"
     },
     {
-      "id": "src_lib_audit",
-      "label": "Audit",
+      "id": "package_private",
+      "label": "private",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "audit",
-      "source_file": "src/lib.rs",
-      "source_location": "L84"
+      "norm_label": "private",
+      "source_file": "package.json",
+      "source_location": "L4"
     },
     {
-      "id": "src_lib_auditsummary",
-      "label": "AuditSummary",
+      "id": "package_scripts",
+      "label": "scripts",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "auditsummary",
-      "source_file": "src/lib.rs",
-      "source_location": "L173"
+      "norm_label": "scripts",
+      "source_file": "package.json",
+      "source_location": "L6"
     },
     {
-      "id": "src_lib_exceptionfile",
-      "label": "ExceptionFile",
+      "id": "package_scripts_audit_copy",
+      "label": "audit:copy",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "exceptionfile",
-      "source_file": "src/lib.rs",
-      "source_location": "L56"
+      "norm_label": "audit:copy",
+      "source_file": "package.json",
+      "source_location": "L13"
     },
     {
-      "id": "src_lib_fallback_key",
-      "label": "fallback_key()",
+      "id": "package_scripts_build",
+      "label": "build",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "fallback_key()",
-      "source_file": "src/lib.rs",
-      "source_location": "L475"
+      "norm_label": "build",
+      "source_file": "package.json",
+      "source_location": "L15"
     },
     {
-      "id": "src_lib_matchrecord",
-      "label": "MatchRecord",
+      "id": "package_scripts_build_site",
+      "label": "build:site",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "matchrecord",
-      "source_file": "src/lib.rs",
-      "source_location": "L77"
+      "norm_label": "build:site",
+      "source_file": "package.json",
+      "source_location": "L14"
     },
     {
-      "id": "src_lib_namedalbumexception",
-      "label": "NamedAlbumException",
+      "id": "package_scripts_dev",
+      "label": "dev",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "namedalbumexception",
-      "source_file": "src/lib.rs",
-      "source_location": "L71"
+      "norm_label": "dev",
+      "source_file": "package.json",
+      "source_location": "L7"
     },
     {
-      "id": "src_lib_namedexception",
-      "label": "NamedException",
+      "id": "package_scripts_test",
+      "label": "test",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "namedexception",
-      "source_file": "src/lib.rs",
-      "source_location": "L65"
+      "norm_label": "test",
+      "source_file": "package.json",
+      "source_location": "L8"
     },
     {
-      "id": "src_lib_policyset",
-      "label": "PolicySet",
+      "id": "package_scripts_test_browser",
+      "label": "test:browser",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "policyset",
-      "source_file": "src/lib.rs",
-      "source_location": "L109"
+      "norm_label": "test:browser",
+      "source_file": "package.json",
+      "source_location": "L11"
     },
     {
-      "id": "src_lib_render_manifest",
-      "label": "render_manifest()",
+      "id": "package_scripts_test_claims",
+      "label": "test:claims",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "render_manifest()",
-      "source_file": "src/lib.rs",
-      "source_location": "L789"
+      "norm_label": "test:claims",
+      "source_file": "package.json",
+      "source_location": "L12"
     },
     {
-      "id": "src_lib_signedmanifest",
-      "label": "SignedManifest",
+      "id": "package_scripts_test_pwa",
+      "label": "test:pwa",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "signedmanifest",
-      "source_file": "src/lib.rs",
-      "source_location": "L160"
+      "norm_label": "test:pwa",
+      "source_file": "package.json",
+      "source_location": "L10"
     },
     {
-      "id": "src_lib_timestamp_to_rfc3339",
-      "label": "timestamp_to_rfc3339()",
+      "id": "package_scripts_test_site",
+      "label": "test:site",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "timestamp_to_rfc3339()",
-      "source_file": "src/lib.rs",
-      "source_location": "L259"
+      "norm_label": "test:site",
+      "source_file": "package.json",
+      "source_location": "L9"
     },
     {
-      "id": "src_lib_validate_policies",
-      "label": "validate_policies()",
+      "id": "package_type",
+      "label": "type",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "validate_policies()",
-      "source_file": "src/lib.rs",
-      "source_location": "L676"
+      "norm_label": "type",
+      "source_file": "package.json",
+      "source_location": "L5"
     },
     {
-      "id": "string",
-      "label": "String",
+      "id": "package_version",
+      "label": "version",
       "_origin": "ast",
       "community": 4,
       "file_type": "code",
-      "norm_label": "string",
-      "source_file": "",
-      "source_location": ""
+      "norm_label": "version",
+      "source_file": "package.json",
+      "source_location": "L3"
     },
     {
-      "id": "value",
-      "label": "Value",
+      "id": "package_devdependencies",
+      "label": "devDependencies",
       "_origin": "ast",
-      "community": 4,
+      "community": 5,
       "file_type": "code",
-      "norm_label": "value",
-      "source_file": "",
-      "source_location": ""
+      "norm_label": "devdependencies",
+      "source_file": "package.json",
+      "source_location": "L17"
     },
     {
-      "id": "vec",
-      "label": "Vec",
+      "id": "package_devdependencies_axe_core",
+      "label": "axe-core",
       "_origin": "ast",
-      "community": 4,
+      "community": 5,
       "file_type": "code",
-      "norm_label": "vec",
-      "source_file": "",
-      "source_location": ""
+      "norm_label": "axe-core",
+      "source_file": "package.json",
+      "source_location": "L20"
+    },
+    {
+      "id": "package_devdependencies_fontsource_ibm_plex_mono",
+      "label": "@fontsource/ibm-plex-mono",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "code",
+      "norm_label": "@fontsource/ibm-plex-mono",
+      "source_file": "package.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "package_devdependencies_fontsource_variable_instrument_sans",
+      "label": "@fontsource-variable/instrument-sans",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "code",
+      "norm_label": "@fontsource-variable/instrument-sans",
+      "source_file": "package.json",
+      "source_location": "L18"
+    },
+    {
+      "id": "package_devdependencies_playwright",
+      "label": "playwright",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "code",
+      "norm_label": "playwright",
+      "source_file": "package.json",
+      "source_location": "L21"
+    },
+    {
+      "id": "package_devdependencies_typescript",
+      "label": "typescript",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "code",
+      "norm_label": "typescript",
+      "source_file": "package.json",
+      "source_location": "L22"
+    },
+    {
+      "id": "package_devdependencies_vite",
+      "label": "vite",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "code",
+      "norm_label": "vite",
+      "source_file": "package.json",
+      "source_location": "L23"
+    },
+    {
+      "id": "axe_core",
+      "label": "axe-core",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "axe-core",
+      "source_file": "package.json",
+      "source_location": "L20"
+    },
+    {
+      "id": "fontsource_ibm_plex_mono",
+      "label": "@fontsource/ibm-plex-mono",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "@fontsource/ibm-plex-mono",
+      "source_file": "package.json",
+      "source_location": "L19"
+    },
+    {
+      "id": "fontsource_variable_instrument_sans",
+      "label": "@fontsource-variable/instrument-sans",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "@fontsource-variable/instrument-sans",
+      "source_file": "package.json",
+      "source_location": "L18"
+    },
+    {
+      "id": "playwright",
+      "label": "playwright",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "playwright",
+      "source_file": "package.json",
+      "source_location": "L21"
+    },
+    {
+      "id": "typescript",
+      "label": "typescript",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "typescript",
+      "source_file": "package.json",
+      "source_location": "L22"
+    },
+    {
+      "id": "vite",
+      "label": "vite",
+      "_origin": "ast",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "vite",
+      "source_file": "package.json",
+      "source_location": "L23"
     },
     {
       "id": "site_src_app",
       "label": "app.ts",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "app.ts",
       "source_file": "site/src/app.ts",
@@ -1681,7 +1812,7 @@
       "id": "site_src_app_copy",
       "label": "copy",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "copy",
       "source_file": "site/src/app.ts",
@@ -1691,7 +1822,7 @@
       "id": "site_src_app_params",
       "label": "params",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "params",
       "source_file": "site/src/app.ts",
@@ -1701,7 +1832,7 @@
       "id": "site_src_demo",
       "label": "demo.ts",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "demo.ts",
       "source_file": "site/src/demo.ts",
@@ -1711,7 +1842,7 @@
       "id": "site_src_demo_reset",
       "label": "reset",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "reset",
       "source_file": "site/src/demo.ts",
@@ -1721,7 +1852,7 @@
       "id": "site_src_demo_status",
       "label": "status",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "status",
       "source_file": "site/src/demo.ts",
@@ -1731,7 +1862,7 @@
       "id": "site_src_legal",
       "label": "legal.ts",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "legal.ts",
       "source_file": "site/src/legal.ts",
@@ -1741,7 +1872,7 @@
       "id": "site_src_shared",
       "label": "shared.ts",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "shared.ts",
       "source_file": "site/src/shared.ts",
@@ -1751,131 +1882,11 @@
       "id": "site_src_shared_offline",
       "label": "offline",
       "_origin": "ast",
-      "community": 5,
+      "community": 6,
       "file_type": "code",
       "norm_label": "offline",
       "source_file": "site/src/shared.ts",
       "source_location": "L1"
-    },
-    {
-      "id": "src_lib_build_manifest",
-      "label": "build_manifest()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "build_manifest()",
-      "source_file": "src/lib.rs",
-      "source_location": "L722"
-    },
-    {
-      "id": "src_lib_compare",
-      "label": "compare()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "compare()",
-      "source_file": "src/lib.rs",
-      "source_location": "L483"
-    },
-    {
-      "id": "src_lib_compare_deduplicates_warnings_shared_by_both_inventories",
-      "label": "compare_deduplicates_warnings_shared_by_both_inventories()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "compare_deduplicates_warnings_shared_by_both_inventories()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1078"
-    },
-    {
-      "id": "src_lib_compare_never_accepts_name_and_size_when_hashes_disagree",
-      "label": "compare_never_accepts_name_and_size_when_hashes_disagree()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "compare_never_accepts_name_and_size_when_hashes_disagree()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1067"
-    },
-    {
-      "id": "src_lib_compare_requires_hashes_and_accounts_named_exception",
-      "label": "compare_requires_hashes_and_accounts_named_exception()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "compare_requires_hashes_and_accounts_named_exception()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1008"
-    },
-    {
-      "id": "src_lib_inventory_fixture",
-      "label": "inventory_fixture()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "inventory_fixture()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1201"
-    },
-    {
-      "id": "src_lib_manifest_holds_when_retention_is_unsafe",
-      "label": "manifest_holds_when_retention_is_unsafe()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "manifest_holds_when_retention_is_unsafe()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1159"
-    },
-    {
-      "id": "src_lib_missing_album_labels_block_until_each_has_a_reviewed_exception",
-      "label": "missing_album_labels_block_until_each_has_a_reviewed_exception()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "missing_album_labels_block_until_each_has_a_reviewed_exception()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1117"
-    },
-    {
-      "id": "src_lib_now",
-      "label": "now()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "now()",
-      "source_file": "src/lib.rs",
-      "source_location": "L184"
-    },
-    {
-      "id": "src_lib_planning_comparison_never_reuses_one_destination_for_two_sources",
-      "label": "planning_comparison_never_reuses_one_destination_for_two_sources()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "planning_comparison_never_reuses_one_destination_for_two_sources()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1096"
-    },
-    {
-      "id": "src_lib_policy_template",
-      "label": "policy_template()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "policy_template()",
-      "source_file": "src/lib.rs",
-      "source_location": "L659"
-    },
-    {
-      "id": "src_lib_ready_audit_stays_on_hold_until_signed",
-      "label": "ready_audit_stays_on_hold_until_signed()",
-      "_origin": "ast",
-      "community": 6,
-      "file_type": "code",
-      "norm_label": "ready_audit_stays_on_hold_until_signed()",
-      "source_file": "src/lib.rs",
-      "source_location": "L1189"
     },
     {
       "id": "scripts_copy_audit",
@@ -2063,6 +2074,18 @@
       "context": "call",
       "source_file": "scripts/copy-audit.mjs",
       "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "site_src_shared_rememberleavingscrollposition",
+      "target": "site_src_shared_rememberscrollposition",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "site/src/shared.ts",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -4865,6 +4888,28 @@
       "weight": 1.0
     },
     {
+      "source": "site_src_shared",
+      "target": "site_src_shared_rememberscrollposition",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/src/shared.ts",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "site_src_shared",
+      "target": "site_src_shared_rememberleavingscrollposition",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "site/src/shared.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
       "source": "site_test_browser_test",
       "target": "site_test_browser_test_siteroot",
       "relation": "contains",
@@ -5930,7 +5975,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "site/src/shared.ts",
-      "source_location": "L44",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -5942,19 +5987,7 @@
       "confidence_score": 0.85,
       "context": "argument",
       "source_file": "site/src/shared.ts",
-      "source_location": "L46",
-      "weight": 1.0
-    },
-    {
-      "source": "site_src_shared",
-      "target": "site_src_shared_rememberscrollposition",
-      "relation": "indirect_call",
-      "_origin": "ast",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "context": "argument",
-      "source_file": "site/src/shared.ts",
-      "source_location": "L47",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -6139,5 +6172,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ae40ca0600a80c888f485f88ac24af648f19e4b6"
+  "built_at_commit": "752baf29eb9f02d020cbd3b87c596ab8137bef66"
 }
