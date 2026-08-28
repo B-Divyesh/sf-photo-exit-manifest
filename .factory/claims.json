@@ -4,7 +4,7 @@
     "claim": "The bundled demo writes only inside a new temporary workspace and does not touch family data.",
     "where": "demo banner, demo page, README, examples/README.md",
     "test": "npm run test:claims -- @claim:demo-isolation",
-    "sandbox": "fresh temporary parent with a sentinel real archive; assert the sentinel and all siblings are unchanged"
+    "sandbox": "fresh isolated TMPDIR with a sentinel real archive; run demo without --output, parse its generated location, and assert it is a new child while the sentinel is unchanged"
   },
   {
     "id": "migration-report",
@@ -22,10 +22,24 @@
   },
   {
     "id": "takeout-evidence",
-    "claim": "The scanner records SHA-256 hashes, Google export notes and album labels; missing export notes and edited-looking files produce warnings.",
+    "claim": "The scanner records file names, byte sizes, dates, album labels, edit warnings and SHA-256 hashes; missing export notes produce a warning.",
     "where": "landing workflow and docs, demo, README",
     "test": "npm run test:claims -- @claim:takeout-evidence",
-    "sandbox": "fresh temporary demo; inspect the source inventory for hashes, a parsed export note, album labels and an edit marker; assert both exact warnings in audit.json"
+    "sandbox": "fresh temporary demo; verify every source file name and byte size against disk, then inspect dates, hashes, an export note, album labels and unique exact warnings"
+  },
+  {
+    "id": "exact-byte-matching",
+    "claim": "The default comparison matches identical files by SHA-256 and rejects same-name, same-size files with different bytes.",
+    "where": "landing workflow and evidence rail, demo, README",
+    "test": "npm run test:claims -- @claim:exact-byte-matching",
+    "sandbox": "fresh bundled demo plus isolated same-name and same-size fixture; assert five sha256 matches, then zero matches for different bytes"
+  },
+  {
+    "id": "demo-content",
+    "claim": "The browser demo shows the bundled CLI sample: six source items, five exact matches, one named exception and no unexplained items.",
+    "where": "landing sample preview, demo, README, examples/README.md",
+    "test": "npm run test:claims -- @claim:demo-content",
+    "sandbox": "fresh CLI demo and browser context; compare status, totals, evidence rows, signer and report-file list with generated CLI output"
   },
   {
     "id": "readiness-rules",
@@ -57,10 +71,10 @@
   },
   {
     "id": "no-tracking",
-    "claim": "The website uses no analytics, advertising, cookies, browser storage or third-party scripts.",
-    "where": "privacy policy, README",
+    "claim": "The website uses no analytics, advertising, cookies, personal-data storage or third-party scripts; its offline cache contains only documented static app files.",
+    "where": "privacy policy, README, demo documentation",
     "test": "npm run test:claims -- @claim:no-tracking",
-    "sandbox": "fresh browser contexts on every public route; enforce an explicit static-resource allowlist and assert no cookies, storage, IndexedDB or beacon calls"
+    "sandbox": "fresh browser contexts on every public route; enforce an explicit request and Cache Storage allowlist, then assert no cookies, local/session data, IndexedDB, OPFS or beacon calls"
   },
   {
     "id": "free-cli",

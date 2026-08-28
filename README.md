@@ -16,7 +16,7 @@ The command creates a new temporary workspace. It copies the fixtures there, run
 
 The workspace contains six unique source items. Five match the archive. One missing video has a named exception.
 
-You can also [open the browser demo](https://photo-exit-manifest.sociobot.in/?demo=1). It uses bundled data and stores nothing in your browser.
+You can also [open the browser demo](https://photo-exit-manifest.sociobot.in/?demo=1). The demo stores no sample or family data. A service worker caches the app files needed for offline use.
 
 ## Run an archive check
 

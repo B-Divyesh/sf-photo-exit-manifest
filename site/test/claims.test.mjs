@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { mkdtemp, mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { basename, dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import test, { after, before } from 'node:test';
 import { chromium } from 'playwright';
@@ -52,6 +52,14 @@ function run(args) {
   return spawnSync(binary, args, { encoding: 'utf8', timeout: 30_000 });
 }
 
+function runWithEnv(args, env) {
+  return spawnSync(binary, args, {
+    encoding: 'utf8',
+    timeout: 30_000,
+    env: { ...process.env, ...env },
+  });
+}
+
 function runGuarded(args, log) {
   return spawnSync(binary, args, {
     encoding: 'utf8',
@@ -73,19 +81,23 @@ after(async () => {
   await new Promise((resolveClose) => server.close(resolveClose));
 });
 
-test('@claim:demo-isolation bundled demo writes only below its new workspace', async () => {
+test('@claim:demo-isolation bundled demo chooses a new temporary workspace and writes only there', async () => {
   const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-demo-'));
   const real = join(sandbox, 'real-family-archive');
   await mkdir(real);
   await writeFile(join(real, 'never-touch.jpg'), 'family sentinel');
   const beforeDigest = await treeDigest(real);
-  const workspace = join(sandbox, 'demo');
-  const result = run(['demo', '--output', workspace, '--json']);
+  const result = runWithEnv(['demo', '--json'], { TMPDIR: sandbox });
   assert.equal(result.status, 0, result.stderr);
   const output = JSON.parse(result.stdout);
-  assert.ok(resolve(output.output).startsWith(`${resolve(workspace)}/`));
+  const report = resolve(output.output);
+  const workspace = dirname(report);
+  assert.equal(dirname(workspace), resolve(sandbox), 'automatic demo workspace must be a direct child of TMPDIR');
+  assert.match(basename(workspace), /^photo-exit-manifest-demo-[0-9]+-[0-9]+$/);
+  assert.equal(basename(report), 'migration-report');
   assert.deepEqual(await treeDigest(real), beforeDigest);
-  assert.equal((await readdir(sandbox)).sort().join(','), 'demo,real-family-archive');
+  assert.deepEqual((await readdir(sandbox)).sort(), [basename(workspace), 'real-family-archive'].sort());
+  assert.deepEqual((await readdir(report)).sort(), ['CUTOVER.md', 'audit.json', 'destination-inventory.json', 'manifest.json', 'source-inventory.json']);
 });
 
 test('@claim:migration-report demo produces the documented signed five-file report', async () => {
@@ -116,14 +128,19 @@ test('@claim:named-exception-gate an unexplained item holds the report and a nam
   assert.equal(ready.status, 'ready_for_cutover');
 });
 
-test('@claim:takeout-evidence scan records export evidence and warns about missing notes and edited files', async () => {
+test('@claim:takeout-evidence scan records every advertised field and emits unique warnings', async () => {
   const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-evidence-'));
   const workspace = join(sandbox, 'demo');
   assert.equal(run(['demo', '--output', workspace, '--json']).status, 0);
   const inventory = JSON.parse(await readFile(join(workspace, 'migration-report', 'source-inventory.json'), 'utf8'));
   assert.equal(inventory.hash_mode, 'sha256');
   assert.equal(inventory.assets.length, 6);
-  assert.ok(inventory.assets.every((asset) => /^[a-f0-9]{64}$/.test(asset.sha256)));
+  for (const asset of inventory.assets) {
+    assert.equal(asset.file_name, basename(asset.relative_path));
+    assert.equal(asset.bytes, (await stat(join(workspace, 'source', asset.relative_path))).size);
+    assert.ok(asset.bytes > 0);
+    assert.match(asset.sha256, /^[a-f0-9]{64}$/);
+  }
   const birthday = inventory.assets.find((asset) => asset.relative_path.endsWith('birthday-candles.jpg'));
   assert.equal(birthday.captured_at, '2021-07-31T00:00:00+00:00');
   assert.equal(birthday.sidecar_found, true);
@@ -132,8 +149,97 @@ test('@claim:takeout-evidence scan records export evidence and warns about missi
   const edited = inventory.assets.find((asset) => asset.relative_path.endsWith('bike-ride-edited.jpg'));
   assert.equal(edited.edited_version, true);
   const audit = JSON.parse(await readFile(join(workspace, 'migration-report', 'audit.json'), 'utf8'));
-  assert.ok(audit.warnings.includes('Some Takeout assets have no readable JSON sidecar; capture dates or provider edits may be unavailable.'));
-  assert.ok(audit.warnings.includes('Edited-looking files were found. Proprietary edit instructions may not be portable; verify rendered copies visually.'));
+  const missingNoteWarning = 'Some Takeout assets have no readable JSON sidecar; capture dates or provider edits may be unavailable.';
+  const editWarning = 'Edited-looking files were found. Proprietary edit instructions may not be portable; verify rendered copies visually.';
+  assert.ok(audit.warnings.includes(missingNoteWarning));
+  assert.ok(audit.warnings.includes(editWarning));
+  assert.equal(new Set(audit.warnings).size, audit.warnings.length, 'audit warnings are unique');
+  assert.equal(audit.warnings.filter((warning) => warning === editWarning).length, 1);
+  const markdown = await readFile(join(workspace, 'migration-report', 'CUTOVER.md'), 'utf8');
+  assert.equal(markdown.split(`- Review: ${editWarning}`).length - 1, 1, 'the edit warning appears once in CUTOVER.md');
+});
+
+test('@claim:exact-byte-matching SHA-256 matches identical bytes and rejects same-size different bytes', async () => {
+  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-exact-'));
+  const workspace = join(sandbox, 'demo');
+  assert.equal(run(['demo', '--output', workspace, '--json']).status, 0);
+  const sampleAudit = JSON.parse(await readFile(join(workspace, 'migration-report', 'audit.json'), 'utf8'));
+  assert.equal(sampleAudit.matched_assets, 5);
+  assert.equal(sampleAudit.matches.length, 5);
+  assert.ok(sampleAudit.matches.every((match) => match.method === 'sha256'));
+
+  const source = join(sandbox, 'same-name-source');
+  const destination = join(sandbox, 'same-name-destination');
+  await mkdir(source);
+  await mkdir(destination);
+  await writeFile(join(source, 'family.jpg'), 'AAAA');
+  await writeFile(join(destination, 'family.jpg'), 'BBBB');
+  const sourceInventory = join(sandbox, 'source.json');
+  const destinationInventory = join(sandbox, 'destination.json');
+  const differentAudit = join(sandbox, 'different-audit.json');
+  assert.equal(run(['inventory', source, '--output', sourceInventory, '--json']).status, 0);
+  assert.equal(run(['inventory', destination, '--output', destinationInventory, '--json']).status, 0);
+  const comparison = run(['compare', '--source', sourceInventory, '--destination', destinationInventory, '--output', differentAudit, '--json']);
+  assert.equal(comparison.status, 2, comparison.stderr);
+  const different = JSON.parse(await readFile(differentAudit, 'utf8'));
+  assert.equal(different.matched_assets, 0);
+  assert.deepEqual(different.matches, []);
+  assert.deepEqual(different.missing, ['family.jpg']);
+});
+
+test('@claim:demo-content browser sample matches a freshly generated CLI report', { timeout: 60_000 }, async () => {
+  const sandbox = await mkdtemp(join(tmpdir(), 'pem-claim-demo-content-'));
+  const workspace = join(sandbox, 'demo');
+  const result = run(['demo', '--output', workspace, '--json']);
+  assert.equal(result.status, 0, result.stderr);
+  const cliStatus = JSON.parse(result.stdout);
+  const report = join(workspace, 'migration-report');
+  const audit = JSON.parse(await readFile(join(report, 'audit.json'), 'utf8'));
+  const inventory = JSON.parse(await readFile(join(report, 'source-inventory.json'), 'utf8'));
+  const manifest = JSON.parse(await readFile(join(report, 'manifest.json'), 'utf8'));
+  const reportFiles = (await readdir(report)).sort();
+  const matchPaths = new Set(audit.matches.filter((item) => item.method === 'sha256').map((item) => item.source_path));
+  const expectedRows = inventory.assets.map((asset) => {
+    const exception = audit.exceptions.find((item) => item.source_path === asset.relative_path);
+    const resultText = exception ? 'Named exception' : matchPaths.has(asset.relative_path) ? 'Matched' : 'Unexplained';
+    let evidence = 'SHA-256';
+    if (exception) {
+      assert.match(exception.reason, /second encrypted backup/i);
+      evidence = 'Second encrypted backup';
+    }
+    else if (asset.albums.length) evidence = 'SHA-256 and album label';
+    else if (asset.sidecar_found) evidence = 'SHA-256 and export note';
+    else if (asset.edited_version) evidence = 'SHA-256 and edit warning';
+    return {
+      name: asset.file_name,
+      year: asset.relative_path.match(/Photos from (\d{4})/)?.[1] || '',
+      evidence,
+      result: resultText,
+    };
+  }).sort((left, right) => left.name.localeCompare(right.name));
+
+  const expectedTotals = [audit.source_assets, audit.matched_assets, audit.excepted_assets, audit.missing.length - audit.exceptions.length];
+  assert.deepEqual(expectedTotals, [6, 5, 1, 0]);
+  const browser = await chromium.launch();
+  try {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto(`${base}/demo/`, { waitUntil: 'networkidle' });
+    assert.equal(await page.locator('#result-title').textContent(), cliStatus.status === 'ready_for_cutover' ? 'Ready to review' : 'On hold');
+    assert.equal(await page.locator('.demo-result > strong').textContent(), `${audit.accounted_percent.toFixed(3)}% explained`);
+    assert.deepEqual(await page.locator('.demo-counts dd').allTextContents(), expectedTotals.map(String));
+    const browserRows = (await page.locator('.demo-ledger tbody tr').evaluateAll((rows) => rows.map((row) => {
+      const cells = [...row.querySelectorAll('td')].map((cell) => cell.textContent.trim());
+      return { name: cells[0], year: cells[1], evidence: cells[2], result: cells[3] };
+    }))).sort((left, right) => left.name.localeCompare(right.name));
+    assert.deepEqual(browserRows, expectedRows);
+    assert.equal(await page.locator('.report-mark small').textContent(), `signed by ${manifest.signed_by}`);
+    const browserFiles = (await page.locator('.demo-details').nth(1).locator('li').allTextContents()).sort();
+    assert.deepEqual(browserFiles, reportFiles);
+    await context.close();
+  } finally {
+    await browser.close();
+  }
 });
 
 test('@claim:readiness-rules hold conditions are separate from non-blocking edit warnings', async () => {
@@ -225,9 +331,13 @@ test('@claim:album-exception-gate an album-only gap holds until its named resolu
   assert.equal(manifest.audit.album_exceptions[0].album, 'Family Album');
 });
 
-test('@claim:no-tracking public routes use only allowlisted static resources and no browser tracking stores', async () => {
+test('@claim:no-tracking public routes use only allowlisted static resources and cache only the documented app shell', async () => {
   const browser = await chromium.launch();
   const allowedFixed = new Set(['/archive-landscape.webp', '/mark.svg', '/apple-touch-icon.png', '/sw.js']);
+  const worker = await readFile(join(siteRoot, 'sw.js'), 'utf8');
+  const shellMatch = worker.match(/^const SHELL = (.+);$/m);
+  assert.ok(shellMatch, 'generated service worker exposes its documented static shell');
+  const documentedCachePaths = JSON.parse(shellMatch[1]).sort();
   for (const path of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
     const context = await browser.newContext();
     await context.addInitScript(() => {
@@ -249,11 +359,14 @@ test('@claim:no-tracking public routes use only allowlisted static resources and
       assert.equal(allowed, true, `unexpected first-party endpoint on ${path}: ${url.pathname}`);
     }
     const state = await page.evaluate(async () => {
+      await navigator.serviceWorker.ready;
       const opfs = [];
       if (navigator.storage?.getDirectory) {
         const root = await navigator.storage.getDirectory();
         for await (const name of root.keys()) opfs.push(name);
       }
+      const cacheNames = await caches.keys();
+      const cacheRequests = (await Promise.all(cacheNames.map(async (name) => (await caches.open(name)).keys()))).flat();
       return {
         local: localStorage.length,
         session: sessionStorage.length,
@@ -261,9 +374,18 @@ test('@claim:no-tracking public routes use only allowlisted static resources and
         indexedDb: indexedDB.databases ? (await indexedDB.databases()).map((database) => database.name) : [],
         opfs,
         beacons: globalThis.__pemBeaconCalls,
+        cacheNames,
+        cacheEntries: cacheRequests.map((request) => {
+          const url = new URL(request.url);
+          return { method: request.method, pathname: url.pathname, search: url.search };
+        }),
       };
     });
-    assert.deepEqual(state, { local: 0, session: 0, cookies: '', indexedDb: [], opfs: [], beacons: [] }, path);
+    assert.deepEqual({ local: state.local, session: state.session, cookies: state.cookies, indexedDb: state.indexedDb, opfs: state.opfs, beacons: state.beacons }, { local: 0, session: 0, cookies: '', indexedDb: [], opfs: [], beacons: [] }, path);
+    assert.equal(state.cacheNames.length, 1, `${path} has one versioned app-shell cache`);
+    assert.match(state.cacheNames[0], /^photo-exit-manifest-[a-f0-9]{12}$/);
+    assert.ok(state.cacheEntries.every((entry) => entry.method === 'GET' && entry.search === ''), `${path} cache has static GET URLs without user or sample query data`);
+    assert.deepEqual(state.cacheEntries.map((entry) => entry.pathname).sort(), documentedCachePaths, `${path} cache contains only the documented static shell`);
     await context.close();
   }
   await browser.close();

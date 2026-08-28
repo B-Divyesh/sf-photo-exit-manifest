@@ -618,6 +618,8 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
             ));
         }
     }
+    let mut seen_warnings = HashSet::new();
+    warnings.retain(|warning| seen_warnings.insert(warning.clone()));
     Audit {
         schema_version: 1,
         tool_version: VERSION.into(),
@@ -1070,6 +1072,24 @@ mod tests {
         let audit = compare(&source, &destination, &ExceptionFile::default());
         assert_eq!(audit.matched_assets, 0);
         assert!(!audit.ready);
+    }
+
+    #[test]
+    fn compare_deduplicates_warnings_shared_by_both_inventories() {
+        let warning = "Edited-looking files were found. Proprietary edit instructions may not be portable; verify rendered copies visually.";
+        let mut source = inventory_fixture("same");
+        source.warnings.push(warning.into());
+        let mut destination = inventory_fixture("same");
+        destination.warnings.push(warning.into());
+
+        let audit = compare(&source, &destination, &ExceptionFile::default());
+
+        assert_eq!(audit.warnings, vec![warning]);
+        let manifest = build_manifest(&audit, policy_template(), Some("Reviewer".into()));
+        assert_eq!(
+            render_manifest(&manifest, &audit).matches(warning).count(),
+            1
+        );
     }
 
     #[test]

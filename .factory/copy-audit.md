@@ -1,4 +1,4 @@
-# Copy audit — polish 3
+# Copy audit — polish 4
 
 Generated from the production landing page and README on 28 August 2026 with `npm run audit:copy`.
 
@@ -13,7 +13,7 @@ Token rule: collapse whitespace, then count whitespace-delimited tokens. Hyphena
 | 11 | For families moving photos from Google Photos to their own archive. |
 | 5 | The audit compares the evidence. |
 | 8 | The signed migration report records the reviewed result. |
-| 13 | Read file sizes, dates, album labels, edited files, media types, and SHA-256 hashes. |
+| 13 | Record file names, byte sizes, dates, album labels, edit warnings, and SHA-256 hashes. |
 | 4 | Match exact file bytes. |
 | 8 | Name each missing item that your family accepts. |
 | 14 | Record each device’s backup, deletion, conflict, and offline choices before switching from Google Photos. |
@@ -77,7 +77,8 @@ Token rule: collapse whitespace, then count whitespace-delimited tokens. Hyphena
 | 4 | Five match the archive. |
 | 7 | One missing video has a named exception. |
 | 7 | You can also open the browser demo. |
-| 10 | It uses bundled data and stores nothing in your browser. |
+| 8 | The demo stores no sample or family data. |
+| 11 | A service worker caches the app files needed for offline use. |
 | 9 | Create a policy file, then review its device choices. |
 | 4 | Run the complete check. |
 | 7 | The output folder contains these five files. |

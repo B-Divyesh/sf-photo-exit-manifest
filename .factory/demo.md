@@ -8,7 +8,7 @@
 - Reset: **Reset demo** closes every disclosure and returns focus to the sample heading.
 - Exit: **Start for real** opens the local install instructions.
 
-The browser demo is static and writes no cookies, local storage, session storage, IndexedDB, or OPFS data. Its demo namespace is therefore an empty, isolated browser context rather than a shared persistence key. It cannot read local folders.
+The browser demo is static and writes no cookies, local storage, session storage, IndexedDB, or OPFS data. Its demo namespace is therefore an empty, isolated browser context rather than a shared persistence key. A versioned Cache Storage entry contains only the documented static app shell needed for offline use. The cached demo page contains the same bundled, non-personal sample shown on screen. No user-entered or family data is added to the cache. The demo cannot read local folders.
 
 ## CLI
 

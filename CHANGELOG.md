@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.0 — polish 4 — 2026-08-28
+
+- Prove exact SHA-256 matching, browser/CLI sample parity, static-cache privacy, and automatic demo isolation through registered claim tests.
+- Deduplicate report warnings and align inventory and browser-storage wording with observable output.
+
 ## 0.1.0 — polish 3 — 2026-08-28
 
 - Protect the missing Google export note warning with a direct claim assertion.
