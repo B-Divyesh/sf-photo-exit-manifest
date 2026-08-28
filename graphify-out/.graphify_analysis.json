@@ -317,8 +317,8 @@
       "degree": 9
     },
     {
-      "id": "src_lib_now",
-      "label": "now()",
+      "id": "src_main_command",
+      "label": "Command",
       "degree": 8
     },
     {
@@ -330,7 +330,7 @@
   "surprises": [
     {
       "source": "execute_full_run()",
-      "target": "build_manifest()",
+      "target": "write_json()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -341,7 +341,7 @@
     },
     {
       "source": "run()",
-      "target": "build_manifest()",
+      "target": "write_json()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -352,7 +352,7 @@
     },
     {
       "source": "execute_full_run()",
-      "target": "compare()",
+      "target": "write_text()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -363,7 +363,7 @@
     },
     {
       "source": "run()",
-      "target": "compare()",
+      "target": "write_text()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -373,8 +373,8 @@
       "why": "inferred connection - not explicitly stated in source; bridges separate communities"
     },
     {
-      "source": "run()",
-      "target": "policy_template()",
+      "source": "execute_full_run()",
+      "target": "build_manifest()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
