@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.js",
-    "test": "cargo test && npm run test:site && npm run test:pwa",
-    "test:site": "tsc --noEmit && node --test site/test/calculator.test.mjs",
+    "test": "cargo test && npm run test:site && npm run test:pwa && npm run test:browser && npm run test:claims",
+    "test:site": "tsc --noEmit && node --test site/test/routes.test.mjs",
     "test:pwa": "npm run build:site && node --test site/test/pwa.test.mjs",
+    "test:browser": "node --test site/test/browser.test.mjs",
+    "test:claims": "node scripts/run-claims.mjs",
     "build:site": "vite build --config vite.config.js && node scripts/build-sw.mjs",
     "build": "cargo build --release && npm run build:site && node scripts/package.mjs"
   },

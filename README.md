@@ -1,40 +1,57 @@
 # Photo Exit Manifest
 
-Photo Exit Manifest is a local, read-only CLI for families leaving Google Photos or another consumer cloud. It inventories an export and an independent archive, compares the evidence, records what every phone should do after cutover, and writes a signed checklist. It moves and deletes nothing.
+Photo Exit Manifest checks a Google Photos export against a family archive. It records the result in a signed migration report.
 
-## Usage
+The CLI reads local folders without changing them. It does not move, edit, restore, delete, or upload photos.
 
-The complete workflow is one command:
+## Try the bundled sample
+
+The sample is the quickest way to see a finished audit:
+
+```sh
+cargo run -- demo
+```
+
+The command creates a new temporary workspace. It copies the fixtures there, runs the normal audit, and prints the report path.
+
+The workspace contains six unique source items. Five match the archive. One missing video has a named exception.
+
+You can also [open the browser demo](https://photo-exit-manifest.sociobot.in/?demo=1). It uses bundled data and stores nothing in your browser.
+
+## Run an archive check
+
+Create a policy file, then review its device choices:
+
+```sh
+photo-exit-manifest init --output policies.json
+```
+
+Run the complete check:
 
 ```sh
 photo-exit-manifest run \
   --source ~/Downloads/Takeout/Google\ Photos \
   --destination /Volumes/FamilyArchive/Photos \
   --policies policies.json \
-  --out ./exit-manifest \
+  --out ./migration-report \
   --sign "Alex Morgan"
 ```
 
-Create and edit a documented policy template first:
+The output folder contains these five files:
 
-```sh
-photo-exit-manifest init --output policies.json
-```
+- `source-inventory.json`
+- `destination-inventory.json`
+- `audit.json`
+- `manifest.json`
+- `CUTOVER.md`
 
-The run writes `source-inventory.json`, `destination-inventory.json`, `audit.json`, `manifest.json`, and `CUTOVER.md`. It succeeds only when every source asset is matched or has a named exception, every source album label is observed at the destination or has a named reviewed resolution, at least 99.5% of assets are accounted for, and `--sign` names the reviewer. An unsigned or non-ready audit exits with code `2`, while invalid input or I/O failure exits with `1`.
+A report is ready only when every source item is matched or explained. Every missing album label also needs a reviewed resolution.
 
-For staged or automated workflows:
+An unsigned or held report exits with code `2`. Invalid input or an I/O failure exits with code `1`.
 
-```sh
-photo-exit-manifest inventory ~/Takeout --kind takeout --output source.json --json
-photo-exit-manifest inventory /mnt/archive --kind folder --output destination.json --json
-photo-exit-manifest compare --source source.json --destination destination.json \
-  --exceptions exceptions.json --output audit.json --json
-photo-exit-manifest manifest --audit audit.json --policies policies.json \
-  --output CUTOVER.md --sign "Alex Morgan" --json
-```
+## Review differences
 
-`exceptions.json` names intentional differences:
+`exceptions.json` records accepted differences by name:
 
 ```json
 {
@@ -47,9 +64,24 @@ photo-exit-manifest manifest --audit audit.json --policies policies.json \
 }
 ```
 
-An album exception is only for a source label the destination cannot expose (for example, a provider-only shared album). It must name that label and state the reviewed resolution; unreviewed album gaps keep the manifest on hold.
+SHA-256 is the default comparison mode. The scanner also reads adjacent Google Photos export notes and keeps album labels from duplicate copies.
 
-Use `--hash sha256` (the default) for cutover evidence. `--hash none` is a faster planning pass and matches conservatively by filename, byte size, and capture time where available. The scanner recognizes common photo, RAW, and video formats and reads adjacent Google Takeout JSON defensively. Proprietary edits may not be portable; edited-looking files and sidecar gaps are called out in the report.
+Use `--hash none` only for planning. That mode compares filenames, byte sizes, and capture times where available.
+
+Edited-looking files and missing export notes appear as warnings. Review those items before changing the old cloud library.
+
+## Use it in scripts
+
+Every command is non-interactive. Add `--json` for machine-readable status:
+
+```sh
+photo-exit-manifest inventory ~/Takeout --kind takeout --output source.json --json
+photo-exit-manifest inventory /mnt/archive --kind folder --output destination.json --json
+photo-exit-manifest compare --source source.json --destination destination.json \
+  --exceptions exceptions.json --output audit.json --json
+photo-exit-manifest manifest --audit audit.json --policies policies.json \
+  --output CUTOVER.md --sign "Alex Morgan" --json
+```
 
 ## Install
 
@@ -60,24 +92,27 @@ cargo install --path .
 photo-exit-manifest --help
 ```
 
-Rust 1.85 or newer is supported. Release archives are published by the factory; this repository does not publish itself.
+The crate supports Rust 1.85 or newer. The factory creates release archives; this repository does not publish itself.
 
 ## Develop and verify
 
 ```sh
-cargo test
-npm install
+npm ci
 npm test
-npm run build       # Rust release binary + static site in dist/site
-npm run build:site  # static site only in dist/site
+npm run build
+cargo fmt --check
+cargo clippy --all-targets -- -D warnings
+cargo package --allow-dirty
 ```
 
-The website is a Vite-powered static documentation site. `npm run dev` serves it locally. No archive data, license token, or policy content is sent by the CLI; billing verification on the website sends only the entered license token to Sociobot.
+`npm test` runs Rust, browser, offline, routing, and claim tests. Every public claim and its command is listed in `.factory/claims.json`.
+
+The Vite site builds to `dist/site/`. The packaged Linux binary builds to `dist/package/`.
+
+The CLI has no account, paid feature, analytics, telemetry, or network code. The website uses no analytics or third-party scripts.
 
 ## Deploy
 
-Deploy `dist/site/` as the static root. The factory owns deployment, DNS, billing registration, and package publishing.
+Deploy `dist/site/` as the static root. The factory owns deployment, DNS, and package publishing.
 
-## Project status
-
-Version `0.1.0`. See [CHANGELOG.md](CHANGELOG.md). Licensed under MIT.
+Version `0.1.0` is licensed under the [MIT License](LICENSE). See [CHANGELOG.md](CHANGELOG.md).

@@ -496,12 +496,18 @@ pub fn compare(source: &Inventory, destination: &Inventory, exceptions: &Excepti
             .sha256
             .as_deref()
             .and_then(|hash| destination_hashes.get(hash))
-            .and_then(|items| items.first().copied());
+            .and_then(|items| {
+                items
+                    .iter()
+                    .copied()
+                    .find(|asset| !used_destination.contains(&asset.relative_path))
+            });
         let fallback = || {
             destination.assets.iter().find(|candidate| {
                 let left = fallback_key(source_asset);
                 let right = fallback_key(candidate);
-                left.0 == right.0
+                !used_destination.contains(&candidate.relative_path)
+                    && left.0 == right.0
                     && left.1 == right.1
                     && (left.2.is_none() || right.2.is_none() || left.2 == right.2)
             })
@@ -1063,6 +1069,27 @@ mod tests {
         destination.assets[0].sha256 = Some("bbb".into());
         let audit = compare(&source, &destination, &ExceptionFile::default());
         assert_eq!(audit.matched_assets, 0);
+        assert!(!audit.ready);
+    }
+
+    #[test]
+    fn planning_comparison_never_reuses_one_destination_for_two_sources() {
+        let mut source = inventory_fixture("unused");
+        source.hash_mode = HashMode::None;
+        source.assets[0].sha256 = None;
+        let mut duplicate = source.assets[0].clone();
+        duplicate.relative_path = "album-copy/photo.jpg".into();
+        source.assets.push(duplicate);
+        source.physical_asset_count = 2;
+        source.unique_asset_count = 2;
+
+        let mut destination = inventory_fixture("unused");
+        destination.hash_mode = HashMode::None;
+        destination.assets[0].sha256 = None;
+
+        let audit = compare(&source, &destination, &ExceptionFile::default());
+        assert_eq!(audit.matched_assets, 1);
+        assert_eq!(audit.missing.len(), 1);
         assert!(!audit.ready);
     }
 

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Open a completed Photo Exit Manifest audit made from isolated sample data.">
+    <meta name="theme-color" content="#07121a">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Demo — Photo Exit Manifest">
+    <meta property="og:description" content="Open a completed family photo archive audit made from isolated sample data.">
+    <meta property="og:url" content="https://photo-exit-manifest.sociobot.in/demo/">
+    <meta property="og:image" content="https://photo-exit-manifest.sociobot.in/social-card.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Demo — Photo Exit Manifest">
+    <meta name="twitter:description" content="Open a completed family photo archive audit made from isolated sample data.">
+    <meta name="twitter:image" content="https://photo-exit-manifest.sociobot.in/social-card.webp">
+    <title>Demo — Photo Exit Manifest</title>
+    <link rel="canonical" href="https://photo-exit-manifest.sociobot.in/demo/">
+    <link rel="icon" href="/mark.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+  </head>
+  <body class="demo-page">
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <aside class="demo-banner" aria-label="Demo controls">
+      <strong>Demo — sample data, nothing is saved</strong>
+      <div><button id="reset-demo" type="button">Reset demo</button><a href="/#install">Start for real</a></div>
+    </aside>
+    <p id="offline-notice" class="offline" role="status" hidden>You’re offline. The complete sample remains available.</p>
+    <p id="route-status" class="sr-only" aria-live="polite"></p>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Photo Exit Manifest home"><span class="brand-mark" aria-hidden="true"></span><span>Photo Exit Manifest</span></a>
+      <nav aria-label="Primary"><a href="/demo/" aria-current="page">Demo</a><a class="wide-nav" href="/#workflow">How it works</a><a class="wide-nav" href="/#install">Install</a><a href="/privacy/">Privacy</a></nav>
+    </header>
+
+    <main id="main" class="demo-main">
+      <div class="demo-heading">
+        <p class="eyebrow">Completed sample audit</p>
+        <h1>Review the Morgan family archive check</h1>
+        <p class="lede">The real CLI scanned the bundled example and created this signed migration report.</p>
+      </div>
+
+      <section class="demo-summary" aria-labelledby="result-title">
+        <div class="demo-result"><span class="status-light" aria-hidden="true"></span><div><p>Report status</p><h2 id="result-title">Ready to review</h2></div><strong>100.000% explained</strong></div>
+        <dl class="demo-counts">
+          <div><dt>Source items</dt><dd data-demo-source="6">6</dd></div>
+          <div><dt>Exact matches</dt><dd data-demo-matched="5">5</dd></div>
+          <div><dt>Named exceptions</dt><dd data-demo-excepted="1">1</dd></div>
+          <div><dt>Unexplained</dt><dd data-demo-unresolved="0">0</dd></div>
+        </dl>
+        <p id="demo-status" class="demo-note" role="status">This sample uses only bundled fixture files. It cannot read your folders.</p>
+      </section>
+
+      <section class="demo-ledger" aria-labelledby="ledger-title">
+        <div class="section-heading"><p class="eyebrow">Audit evidence</p><h2 id="ledger-title">Every source item has a result.</h2><p>Five items match by SHA-256. One damaged video has a named exception.</p></div>
+        <div class="table-wrap" tabindex="0" aria-label="Scrollable sample audit table">
+          <table>
+            <thead><tr><th scope="col">Source item</th><th scope="col">Year</th><th scope="col">Evidence</th><th scope="col">Result</th></tr></thead>
+            <tbody>
+              <tr><td>lake-sunrise.jpg</td><td>2019</td><td>SHA-256 and album label</td><td><span class="result-chip matched">Matched</span></td></tr>
+              <tr><td>birthday-candles.jpg</td><td>2021</td><td>SHA-256 and export note</td><td><span class="result-chip matched">Matched</span></td></tr>
+              <tr><td>bike-ride-edited.jpg</td><td>2022</td><td>SHA-256 and edit warning</td><td><span class="result-chip matched">Matched</span></td></tr>
+              <tr><td>garden-first-bloom.heic</td><td>2023</td><td>SHA-256</td><td><span class="result-chip matched">Matched</span></td></tr>
+              <tr><td>school-concert.mov</td><td>2024</td><td>SHA-256</td><td><span class="result-chip matched">Matched</span></td></tr>
+              <tr><td>snow-day.mp4</td><td>2024</td><td>Second encrypted backup</td><td><span class="result-chip excepted">Named exception</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="demo-report" aria-labelledby="report-title">
+        <div class="section-heading"><p class="eyebrow">Signed migration report</p><h2 id="report-title">The family still makes the decision.</h2><p>The report records evidence and device rules. It never deletes the old library.</p></div>
+        <div class="report-sheet">
+          <div class="report-mark"><span>READY</span><small>signed by Morgan family</small></div>
+          <div><h3>Archive decision</h3><p>Keep Google Photos for 45 days. Keep an independent second copy.</p></div>
+          <div><h3>Device decisions</h3><p>Alex’s phone queues uploads offline. Sam’s phone retries uploads manually.</p></div>
+          <details class="demo-details"><summary>Read the named exception</summary><p><code>snow-day.mp4</code> — The damaged original is kept on the family’s second encrypted backup.</p></details>
+          <details class="demo-details"><summary>See the five report files</summary><ul><li>source-inventory.json</li><li>destination-inventory.json</li><li>audit.json</li><li>manifest.json</li><li>CUTOVER.md</li></ul></details>
+        </div>
+      </section>
+
+      <section class="demo-terminal" aria-labelledby="recording-title">
+        <div class="section-heading"><p class="eyebrow">Self-hosted terminal recording</p><h2 id="recording-title">Run the same sample locally.</h2><p>The command creates a new temporary workspace and prints its report location.</p></div>
+        <div class="terminal" aria-label="Recorded terminal session from the bundled sample">
+          <div class="terminal-bar"><span><i></i><i></i><i></i></span><span>photo-exit-manifest demo</span><span class="terminal-record">recorded locally</span></div>
+          <pre tabindex="0"><code><span class="prompt">$</span> photo-exit-manifest demo --json
+{
+  "status": <span class="success">"ready_for_cutover"</span>,
+  "output": "/tmp/photo-exit-manifest-demo-…/migration-report",
+  "accounted_percent": 100.0
+}</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand" href="/"><span class="brand-mark" aria-hidden="true"></span><span>Photo Exit Manifest</span></a>
+      <p>Checks a Google Photos export against your family archive.</p>
+      <nav aria-label="Footer"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-photo-exit-manifest" aria-label="Source code on GitHub, external site">Source</a></nav>
+      <p class="build-note">Built by Param Factory · v0.1.0</p>
+    </footer>
+    <script type="module" src="/src/demo.ts"></script>
+  </body>
+</html>

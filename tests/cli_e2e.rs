@@ -1,7 +1,57 @@
 use photo_exit_manifest::PolicySet;
 use std::fs;
+use std::path::Path;
 use std::process::Command;
 use tempfile::tempdir;
+
+#[test]
+fn claim_demo_isolation_runs_bundled_sample_only_in_its_workspace() {
+    let sandbox = tempdir().unwrap();
+    let untouched = sandbox.path().join("real-family-archive");
+    fs::create_dir(&untouched).unwrap();
+    fs::write(untouched.join("do-not-touch.jpg"), b"real archive sentinel").unwrap();
+    let before = fs::read(untouched.join("do-not-touch.jpg")).unwrap();
+    let demo_root = sandbox.path().join("isolated-demo");
+
+    let demo = Command::new(env!("CARGO_BIN_EXE_photo-exit-manifest"))
+        .args(["demo", "--output"])
+        .arg(&demo_root)
+        .arg("--json")
+        .output()
+        .unwrap();
+    assert_eq!(
+        demo.status.code(),
+        Some(0),
+        "{}",
+        String::from_utf8_lossy(&demo.stderr)
+    );
+    let status: serde_json::Value = serde_json::from_slice(&demo.stdout).unwrap();
+    let output = status["output"].as_str().unwrap();
+    assert!(Path::new(output).starts_with(&demo_root));
+    assert_eq!(status["status"], "ready_for_cutover");
+    assert_eq!(status["accounted_percent"], 100.0);
+    assert_eq!(
+        fs::read(untouched.join("do-not-touch.jpg")).unwrap(),
+        before
+    );
+
+    let audit: serde_json::Value =
+        serde_json::from_slice(&fs::read(demo_root.join("migration-report/audit.json")).unwrap())
+            .unwrap();
+    assert_eq!(audit["source_assets"], 6);
+    assert_eq!(audit["matched_assets"], 5);
+    assert_eq!(audit["excepted_assets"], 1);
+    assert_eq!(audit["ready"], true);
+    for name in [
+        "source-inventory.json",
+        "destination-inventory.json",
+        "audit.json",
+        "manifest.json",
+        "CUTOVER.md",
+    ] {
+        assert!(demo_root.join("migration-report").join(name).is_file());
+    }
+}
 
 #[test]
 fn documented_run_writes_a_signed_ready_manifest() {

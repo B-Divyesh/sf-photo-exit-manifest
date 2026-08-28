@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const siteRoot = resolve('dist/site');
-const pages = ['index.html', 'privacy/index.html', 'terms/index.html'];
+const pages = ['index.html', 'demo/index.html', 'privacy/index.html', 'terms/index.html', '404.html'];
 const html = await Promise.all(pages.map((page) => readFile(resolve(siteRoot, page), 'utf8')));
 const assets = [...new Set(
   html.flatMap((page) => [...page.matchAll(/(?:src|href)="(\/assets\/[^"\s]+)"/g)].map((match) => match[1])),
@@ -14,9 +14,13 @@ if (!assets.some((asset) => asset.endsWith('.js')) || !assets.some((asset) => as
 
 const shell = [
   '/',
+  '/demo/',
   '/privacy/',
   '/terms/',
+  '/404.html',
   '/archive-landscape.webp',
+  '/social-card.webp',
+  '/apple-touch-icon.png',
   '/mark.svg',
   '/fonts/instrument-sans-latin.woff2',
   '/fonts/ibm-plex-mono-latin-500.woff2',

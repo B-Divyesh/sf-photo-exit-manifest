@@ -34,14 +34,15 @@ Content is grouped by proximity first. Bordered panes appear only for independen
 ## Interaction grammar
 
 - Primary actions fill with cyan and depress by 1px; secondary actions remain clear glass.
-- Evidence counts roll into view once, while the connection line draws from source to archive over 700ms.
-- Disclosure panels open from their trigger edge in 180ms.
+- Evidence appears immediately; audit counts use stable tabular figures so no number can be mistaken during motion.
+- Native disclosure panels open from their trigger edge without scripted animation.
 - Errors use an icon and concrete recovery language in addition to color.
 - Keyboard focus uses a 3px frost ring with a 3px offset.
 
-Under `prefers-reduced-motion: reduce`, paths and counters render at their final state, transitions become opacity-only under 80ms, and smooth scrolling is disabled. Nothing loops or flashes.
+Under `prefers-reduced-motion: reduce`, control transitions drop to 0.01ms and smooth scrolling is disabled. Nothing loops, autoplays, or flashes.
 
 ## Original asset plan and provenance
 
 `site/public/archive-landscape.webp` is an original raster hero generated on 2026-08-27 with the factory image deployment via `/opt/fleet/lib/gen-image.sh`, then resized and encoded locally to WebP. Prompt: “A cinematic wide editorial 3D illustration for a privacy-first photo archive migration tool: a deep midnight data landscape with three translucent luminous glass planes receding toward a stable cyan archive vault, dozens of tiny warm amber photo slides moving along one clear cyan verification path, subtle etched hash marks and album tabs, calm precise atmosphere, high-end product art, lots of dark negative space on the left for copy, composition weighted to the right, physically plausible glass and soft volumetric light, no people, no logos, no words, no letters, no UI screenshot, no generic gradient, no watermark.” Generated asset is used under the product's MIT project license. No stock assets or third-party icon set are used; small interface marks are hand-authored CSS/SVG primitives.
 
+`site/public/social-card.webp` is a 1200×630 crop of that same original archive landscape. `site/public/apple-touch-icon.png` is a local rasterization of the hand-authored diamond archive mark. The demo ledger, status lamp, report sheet, and terminal frame are hand-authored HTML/CSS extensions of the same glass-plane system; they use no external asset or icon library.

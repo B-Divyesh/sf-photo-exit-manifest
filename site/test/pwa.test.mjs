@@ -71,8 +71,13 @@ test('production worker precaches the hashed shell, survives offline reload, and
       for (const asset of hashedAssets) assert.ok(cachedUrls.includes(asset), `${asset} is cached`);
       await context.setOffline(true);
       await page.reload({ waitUntil: 'domcontentloaded' });
-      await page.waitForSelector('#planner-form');
+      await page.waitForSelector('#hero-title');
       assert.equal(pageErrors.length, 0, `offline reload has no page errors: ${pageErrors.join('; ')}`);
+      await context.setOffline(false);
+      await page.goto(`${base}/demo/`, { waitUntil: 'networkidle' });
+      await context.setOffline(true);
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('.demo-banner');
       await context.close();
     });
 

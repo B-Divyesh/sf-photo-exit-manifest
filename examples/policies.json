@@ -1,0 +1,24 @@
+{
+  "household": "Morgan family",
+  "archive_label": "Family Archive",
+  "original_cloud_retention_days": 45,
+  "independent_second_copy": true,
+  "devices": [
+    {
+      "name": "Alex's phone",
+      "owner": "Alex Morgan",
+      "backup_mode": "backup",
+      "deletion_behavior": "manual_review",
+      "conflict_policy": "keep_both",
+      "offline_behavior": "queue_until_online"
+    },
+    {
+      "name": "Sam's phone",
+      "owner": "Sam Morgan",
+      "backup_mode": "backup",
+      "deletion_behavior": "manual_review",
+      "conflict_policy": "keep_both",
+      "offline_behavior": "manual_retry"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "id": "demo-isolation",
+    "claim": "The bundled demo writes only inside a new temporary workspace and does not touch family data.",
+    "where": "demo banner, demo page, README, examples/README.md",
+    "test": "npm run test:claims -- @claim:demo-isolation",
+    "sandbox": "fresh temporary parent with a sentinel real archive; assert the sentinel and all siblings are unchanged"
+  },
+  {
+    "id": "migration-report",
+    "claim": "A complete run writes a signed migration report made of five documented files.",
+    "where": "landing evidence rail, demo, README",
+    "test": "npm run test:claims -- @claim:migration-report",
+    "sandbox": "fresh temporary demo; assert ready status, signer, percentage and the exact five output files"
+  },
+  {
+    "id": "named-exception-gate",
+    "claim": "Every missing source item needs a named exception before the report is ready.",
+    "where": "landing workflow and docs, demo, README",
+    "test": "npm run test:claims -- @claim:named-exception-gate",
+    "sandbox": "fresh temporary demo; remove the exception and assert exit 2/hold, then inspect the ready report with the named exception"
+  },
+  {
+    "id": "takeout-evidence",
+    "claim": "The scanner records SHA-256 hashes, Google export notes, album labels and edited-file warnings.",
+    "where": "landing workflow and docs, demo, README",
+    "test": "npm run test:claims -- @claim:takeout-evidence",
+    "sandbox": "fresh temporary demo; inspect the generated source inventory for all four evidence types"
+  },
+  {
+    "id": "read-only-local",
+    "claim": "The CLI does not change source files or send archive data over the network; the website makes only same-origin requests.",
+    "where": "landing first screen and privacy section, privacy policy, README",
+    "test": "npm run test:claims -- @claim:read-only-local",
+    "sandbox": "fresh temporary demo plus fresh browser context; compare source hashes, reject network code paths and capture every browser request"
+  },
+  {
+    "id": "free-cli",
+    "claim": "The CLI and bundled sample work without an account, key, licence or paid feature.",
+    "where": "landing first screen, terms, README",
+    "test": "npm run test:claims -- @claim:free-cli",
+    "sandbox": "fresh process with a minimal environment and no credentials; assert the complete demo succeeds"
+  },
+  {
+    "id": "scriptable-cli",
+    "claim": "Commands are non-interactive, support machine-readable JSON and use documented exit codes.",
+    "where": "landing docs, README",
+    "test": "npm run test:claims -- @claim:scriptable-cli",
+    "sandbox": "fresh processes with closed standard input; assert help, valid JSON, success code 0 and invalid-input code 1"
+  },
+  {
+    "id": "planning-mode",
+    "claim": "Hash-free inventory is planning-only and matches conservatively by file evidence.",
+    "where": "README",
+    "test": "npm run test:claims -- @claim:planning-mode",
+    "sandbox": "fresh temporary demo; inventory both sides without hashes, compare, and assert five matches plus a held result"
+  },
+  {
+    "id": "package-contract",
+    "claim": "The package is an MIT-licensed single CLI with Rust 1.85 as its minimum version.",
+    "where": "README, LICENSE, Cargo.toml",
+    "test": "npm run test:claims -- @claim:package-contract",
+    "sandbox": "fresh Cargo metadata; assert license, rust-version and exactly one binary target"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "The website and bundled sample reload offline after one online visit.",
+    "where": "offline notices, README",
+    "test": "npm run test:claims -- @claim:offline-reload",
+    "sandbox": "fresh browser context; visit demo online, wait for its service worker, disable the network and reload"
+  },
+  {
+    "id": "route-contract",
+    "claim": "Home, demo, privacy and terms have distinct real routes; unknown routes return a designed 404.",
+    "where": "site navigation and metadata",
+    "test": "npm run test:claims -- @claim:route-contract",
+    "sandbox": "fresh browser context against the production build; direct-load all routes and an unknown path"
+  }
+]

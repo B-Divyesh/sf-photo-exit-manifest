@@ -4,7 +4,7 @@ import axe from 'axe-core';
 const base = process.argv[2] || 'http://127.0.0.1:4173';
 const browser = await chromium.launch();
 let failures = 0;
-for (const path of ['/', '/privacy/', '/terms/']) {
+for (const path of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
   for (const viewport of [{ width: 1366, height: 900 }, { width: 390, height: 844 }]) {
     const context = await browser.newContext({ viewport, bypassCSP: true });
     const page = await context.newPage();
