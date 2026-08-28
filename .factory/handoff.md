@@ -4,7 +4,7 @@
 
 Perfection-loop round 1 is complete. Every finding in `.factory/review-1.md` is fixed and mapped in `.factory/polish-1.md`.
 
-Repair commit `e1a7155b6aa851ee51aa2127eff032803cefb630` is pushed to `origin/main`. Static deployment `c0ab7d99-10a3-4ae9-af68-01322784fd68` is live at https://photo-exit-manifest.sociobot.in/.
+Repair commit `e1a7155b6aa851ee51aa2127eff032803cefb630` is pushed to `origin/main`. Final static deployment `27e83bb0-0303-4bcc-91e8-55c19f3d90c0` is live at https://photo-exit-manifest.sociobot.in/.
 
 ## Delivered
 

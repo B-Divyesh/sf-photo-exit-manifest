@@ -42,7 +42,7 @@ From a separate clean checkout of `e1a7155`:
 - `npm run build` — passed; produced `dist/site/` and the packaged Linux binary.
 - `cargo package --allow-dirty` — passed its verification compile; 87 files, 273.3 KiB compressed.
 
-After deployment `c0ab7d99-10a3-4ae9-af68-01322784fd68`:
+After final deployment `27e83bb0-0303-4bcc-91e8-55c19f3d90c0`:
 
 - `/opt/fleet/lib/verify-url.sh` passed the live home page with zero console errors.
 - Live axe: 0 violations at 390px and 1366px on `/`, `/demo/`, `/privacy/`, `/terms/`, and `/404.html`.
