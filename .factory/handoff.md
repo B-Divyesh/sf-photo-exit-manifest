@@ -1,21 +1,28 @@
-# Photo Exit Manifest — review 6 handoff
+# Photo Exit Manifest — review 7 handoff
 
 ## Outcome
 
-Adversarial review 6 is a zero-finding **PASS** for candidate `752baf29eb9f02d020cbd3b87c596ab8137bef66`. The review is recorded in `.factory/review-6.md`. No product code was changed.
+Independent review 7 is **FAIL** for implementation candidate `daec7e8593306c841eb4aa4d1072aac02fc4da61`.
 
-## Verification
+There is one major finding and zero untested public claims. At 390 px with text resized to 200%, the live home page widens to 504 px and moves the Privacy navigation link outside the visible viewport. No product code was changed because this work order was review-only.
 
-- Fresh live Chromium contexts at 390×844 and 1440×900 passed the cold first-read test.
-- One-click browser demo, reset/focus, real-data sentinels, the exact 16-file cache allowlist, same-origin networking, and online/offline re-entry passed.
-- A clean clone at the candidate commit ran all 18 `.factory/claims.json` commands separately; all passed.
-- Clean-clone `npm test` passed: 8 Rust unit, 4 CLI integration, 4 route/contract, 1 PWA, 4 browser, and 18 claim tests.
-- `npm run audit:copy` regenerated 25 landing and 38 README sentences without a diff.
-- The documented Git install command succeeded in a temporary install root, and the installed binary completed `demo --json`.
-- `/opt/fleet/lib/verify-url.sh` passed with zero console errors. Live axe checks found zero violations across home, demo, privacy, terms, and 404 at 390px and 1366px.
-- Live crawl, metadata, response headers, designed HTTP 404, route focus, real-pointer Back scroll restoration, reduced motion, touch targets, and mobile overflow checks passed.
-- Live and clean-build SHA-256 values matched for home, demo, privacy, terms, 404, and `sw.js`.
+The full report is `.factory/review-7.md`.
 
-## Known gaps and next steps
+## Verification completed
 
-None identified. No deployment was requested or performed. Four pre-existing `graphify-out/` generated-file modifications were preserved and excluded from the review commit.
+- Opened the live site in fresh 390×844 and 1440×900 Chromium contexts and recorded the job, audience, and first action before scrolling.
+- Entered the one-click sample, checked the 6/5/1/0 populated output and five report files, confirmed the sticky sample label, reset it, followed Start for real, and proved seeded real-data stores were unchanged.
+- Verified same-origin networking, the exact 16-file static cache, offline reload and query entry, distinct route titles, designed HTTP 404, route focus, Back scroll restoration, keyboard focus, reduced motion, target size, metadata, links, legal pages, security headers, and normal-size mobile layout.
+- Ran all 18 declared claim commands separately after `npm ci` in a clean detached worktree; all passed.
+- Ran `npm test`, `npm run build`, `npm run audit:copy`, `cargo fmt --check`, strict Clippy, and `cargo package --allow-dirty`; all passed.
+- Installed the CLI into a new consumer root and exercised help, version, demo JSON, missing-input failure, and existing-output refusal.
+- Playwright axe found zero violations on five routes at phone and desktop sizes. The factory URL verifier found zero console errors.
+- Mobile Lighthouse scored 100 Performance, 100 Accessibility, 100 Best Practices, and 100 SEO; FCP 1.1 s, LCP 1.5 s, TBT 0 ms, CLS 0.022.
+- Live and clean-build SHA-256 values matched for home, demo, privacy, terms, 404, and the service worker.
+- Rechecked every finding from reviews 1–5; each remains fixed. Review 6 had no findings.
+
+## Next step
+
+Repair the mobile header and decorative overflow so 200% text resizing does not widen the document or move navigation out of view. Add this boundary to the browser regression suite, redeploy, and rerun the live check.
+
+Four pre-existing modified `graphify-out/` files were preserved and excluded from this report change.
