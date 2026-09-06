@@ -269,7 +269,7 @@ footer nav a, .boundaries > p a, .legal p a:not(.button) { min-height: 44px; dis
 
 @media (max-width: 600px) {
   body { font-size: 16px; }
-  .site-header { min-height: 68px; }
+  .site-header { min-height: 68px; flex-wrap: wrap; padding-block: 8px; }
   .brand { font-size: .85rem; }
   .brand-mark { width: 22px; height: 22px; }
   .site-header nav a { padding-inline: 7px; font-size: .82rem; }

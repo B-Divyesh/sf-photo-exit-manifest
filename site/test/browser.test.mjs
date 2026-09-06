@@ -62,6 +62,34 @@ test('mobile and desktop routes have no serious accessibility, overflow or conso
   }
 });
 
+test('all routes reflow without hiding navigation when phone text is doubled', async () => {
+  const browser = await chromium.launch();
+  try {
+    for (const path of ['/', '/demo/', '/privacy/', '/terms/', '/404.html']) {
+      const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+      const page = await context.newPage();
+      await page.goto(`${base}${path}`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+
+      const layout = await page.evaluate(() => {
+        const privacy = document.querySelector('.site-header a[href="/privacy/"]');
+        const bounds = privacy?.getBoundingClientRect();
+        return {
+          clientWidth: document.documentElement.clientWidth,
+          scrollWidth: document.documentElement.scrollWidth,
+          privacyVisible: Boolean(bounds && bounds.left >= 0 && bounds.right <= window.innerWidth),
+        };
+      });
+
+      assert.equal(layout.scrollWidth, layout.clientWidth, `${path} stays within the 390px viewport at 200% text size`);
+      assert.equal(layout.privacyVisible, true, `${path} keeps Privacy navigation on-screen at 200% text size`);
+      await context.close();
+    }
+  } finally {
+    await browser.close();
+  }
+});
+
 test('the phone first screen states the job and opens the isolated demo in one click', async () => {
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
