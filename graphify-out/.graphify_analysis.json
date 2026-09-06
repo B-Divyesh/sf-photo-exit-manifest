@@ -324,20 +324,20 @@
       "degree": 9
     },
     {
-      "id": "src_main_command",
-      "label": "Command",
+      "id": "src_lib_inventory_fixture",
+      "label": "inventory_fixture()",
       "degree": 8
     },
     {
-      "id": "src_lib_policyset",
-      "label": "PolicySet",
+      "id": "src_lib_now",
+      "label": "now()",
       "degree": 8
     }
   ],
   "surprises": [
     {
       "source": "execute_full_run()",
-      "target": "write_json()",
+      "target": "build_manifest()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -348,7 +348,7 @@
     },
     {
       "source": "run()",
-      "target": "write_json()",
+      "target": "build_manifest()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -359,7 +359,7 @@
     },
     {
       "source": "execute_full_run()",
-      "target": "write_text()",
+      "target": "compare()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -370,7 +370,7 @@
     },
     {
       "source": "run()",
-      "target": "write_text()",
+      "target": "compare()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
@@ -380,8 +380,8 @@
       "why": "inferred connection - not explicitly stated in source; bridges separate communities"
     },
     {
-      "source": "execute_full_run()",
-      "target": "ensure_output_outside()",
+      "source": "run()",
+      "target": "policy_template()",
       "source_files": [
         "src/main.rs",
         "src/lib.rs"
