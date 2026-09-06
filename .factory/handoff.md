@@ -1,40 +1,36 @@
-# Photo Exit Manifest — verification 3 handoff
+# Photo Exit Manifest — review 8 handoff
 
 ## Outcome
 
-**PASS.** Independent verification 3 found zero defects and zero untested public claims. The product remains a local, read-only CLI and static demo for families checking a photo-cloud exit before changing their old library.
+**PASS — 0 findings, 0 untested claims.** Review 8 independently confirmed that Photo Exit Manifest is a local, read-only CLI and static sample for families checking a photo-cloud exit before changing their old library.
 
 - Implementation SHA: `d4536a151c62ffe2f4fece13b1a4cb9a07f31c72`
-- Documentation SHA: `b0d1426`
+- Documentation baseline: `0da02fb8b33f7f46369a7e1bd53ef84376bf59a4`
 - Live URL: <https://photo-exit-manifest.sociobot.in/>
-- Deployment: `5458bda2-72ee-43ed-8c0b-777ee3f26dd1`
-- Deployed: 6 September 2026 UTC
 
-The implementation SHA was pushed to `origin/main` before deployment. The documentation SHA is report-only; live hashes for all HTML routes and `sw.js` match the implementation candidate.
+Clean candidate-build hashes match live home, demo, privacy, terms, 404, and service-worker files. Later commits are report-only or pre-existing Graphify output.
 
-## Verification 3
+## What was verified
 
-Fresh phone and desktop browsers confirmed the job, audience, and first action before scrolling. The one-click sample showed its realistic 6/5/1/0 result, kept its persistent sample label after scrolling, reset cleanly, and preserved seeded real-data storage sentinels. The installed package completed the same CLI sample in a clean consumer root.
+Fresh phone and desktop browsers confirmed the job, audience, and first action before scrolling. The one-click sample showed its realistic 6/5/1/0 result, kept its persistent sample label after scrolling, reset cleanly, preserved seeded real-state storage values, and reloaded offline after a first visit.
 
-Live verification at 200% text size recorded `clientWidth: 390` and `scrollWidth: 390` on all five routes. Demo and Privacy remained visible. Review 7's earlier 504 px phone width is fixed.
+All 18 registered claim commands passed individually. `npm test`, build, copy audit, format, clippy, and package verification passed in a clean checkout. A clean consumer installation completed the same CLI demo, returned useful errors for nonexistent input, and refused an existing output directory. Axe had zero violations on all public and 404 routes at phone and desktop sizes. Five live routes also passed 200% phone text reflow with no overflow.
 
 ## How to verify
 
-Use the documented commands from a clean checkout:
+From a clean checkout:
 
 - `npm ci && npm test && npm run build`
 - `npm run audit:copy`
 - `cargo fmt --check && cargo clippy --all-targets -- -D warnings`
 - `cargo package --allow-dirty`
 
-To run the product locally, use `cargo run -- demo` or install it with `cargo install --path .` and run `photo-exit-manifest demo --json`. The browser demo is at `https://photo-exit-manifest.sociobot.in/?demo=1`.
+Run `cargo run -- demo`, or install with `cargo install --path .` and run `photo-exit-manifest demo --json`. The browser sample is <https://photo-exit-manifest.sociobot.in/?demo=1>.
 
-Verification 3 passed all 18 registered claim commands separately, `npm test`, production build, copy audit, format/lint, package verification, live five-route Axe check at phone and desktop sizes, offline reload, 200% text reflow, and clean installed-artifact paths. The complete evidence and earlier-finding dispositions are in `.factory/verification-3.md`.
+The complete independent report is `.factory/review-8.md`. Its matching factory evidence is `/work/.evidence/qa-report.md` and `/work/.evidence/qa-result.json`.
 
-The independent report is `.factory/verification-3.md`, copied to `/work/.evidence/qa-report.md`; its matching machine result is `/work/.evidence/qa-result.json`.
+## Known gaps
 
-## Known gaps and next steps
+No product defect remains in scope. The product has no backend, shared database, paid offer, billing registration, or AI dependency. Registry publication remains a factory operation and was not performed.
 
-No known product defect remains in scope. The product has no backend, shared database, paid offer, billing registration, or AI dependency. Registry publication remains a factory operation and was not performed.
-
-The pre-existing modified Graphify files were preserved and excluded from the implementation and handoff commits.
+The pre-existing modified Graphify files were preserved and excluded from this report commit.
